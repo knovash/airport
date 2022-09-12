@@ -5,10 +5,19 @@ import com.solvd.airport.port.carrier.AirCarrier;
 import java.util.List;
 
 public class AirPort {
+    private Long id;
     private String airPortName;
     private List<AirCarrier> airCarriers;
     private List<AirStrip> airStrips;
     private List<Gate> gates;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAirPortName() {
         return airPortName;

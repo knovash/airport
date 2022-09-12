@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Flight {
+    private Long id;
     private Integer flightNumber;
     private AirCraft flightAirCraft;
     private AirStrip airStrip;
@@ -16,6 +17,14 @@ public class Flight {
     private Direction flightDirection;
     private List<Passenger> flightPassengers;
     private List<Pilot> flightPilots;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Integer getFlightNumber() {
         return flightNumber;
