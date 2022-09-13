@@ -1,10 +1,11 @@
-package com.solvd.airport.port.carrier.flight;
+package com.solvd.airport.flight;
 
 import java.math.BigDecimal;
 
 public class Direction {
+
     private Long id;
-    private String countryName;
+    private String country;
     private BigDecimal distance;
 
     public Long getId() {
@@ -15,12 +16,12 @@ public class Direction {
         this.id = id;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getCountry() {
+        return country;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public BigDecimal getDistance() {

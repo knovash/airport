@@ -1,13 +1,15 @@
-package com.solvd.airport.port.carrier;
+package com.solvd.airport.carrier;
 
-import com.solvd.airport.port.carrier.flight.Flight;
+import com.solvd.airport.PilotFlight;
+
+import java.util.List;
 
 public class Pilot {
+
     private Long id;
     private String name;
     private PilotLicense pilotLicense;
-    private Flight flight;
-    private AirCarrier airCarrier;
+    private List<PilotFlight> pilotFlights;
 
     public Long getId() {
         return id;
@@ -33,19 +35,11 @@ public class Pilot {
         this.pilotLicense = pilotLicense;
     }
 
-    public Flight getFlight() {
-        return flight;
+    public List<PilotFlight> getPilotFlights() {
+        return pilotFlights;
     }
 
-    public void setFlight(Flight flight) {
-        this.flight = flight;
-    }
-
-    public AirCarrier getAirCarrier() {
-        return airCarrier;
-    }
-
-    public void setAirCarrier(AirCarrier airCarrier) {
-        this.airCarrier = airCarrier;
+    public void setPilotFlights(List<PilotFlight> pilotFlights) {
+        this.pilotFlights = pilotFlights;
     }
 }

@@ -1,6 +1,6 @@
 package com.solvd.airport.port;
 
-public class Gate {
+public class Airstrip {
 
     private Long id;
     private Integer number;

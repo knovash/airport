@@ -1,9 +1,10 @@
-package com.solvd.airport.port.carrier.flight.passenger;
+package com.solvd.airport.passenger;
 
 public class Passenger {
+
     private Long id;
-    private String name;
     private Passport passport;
+    private String name;
 
     public Long getId() {
         return id;
@@ -13,19 +14,19 @@ public class Passenger {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Passport getPassport() {
         return passport;
     }
 
     public void setPassport(Passport passport) {
         this.passport = passport;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
