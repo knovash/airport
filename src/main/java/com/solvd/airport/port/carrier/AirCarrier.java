@@ -1,5 +1,6 @@
 package com.solvd.airport.port.carrier;
 
+import com.solvd.airport.port.AirPort;
 import com.solvd.airport.port.carrier.flight.Flight;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 public class AirCarrier {
     private Long id;
     private String airCarrierName;
+    private AirPort airPort;
     private List<Flight> Flights;
     private List<AirCraft> airCrafts;
     private List<Pilot> pilots;
@@ -25,6 +27,14 @@ public class AirCarrier {
 
     public void setAirCarrierName(String airCarrierName) {
         this.airCarrierName = airCarrierName;
+    }
+
+    public AirPort getAirPort() {
+        return airPort;
+    }
+
+    public void setAirPort(AirPort airPort) {
+        this.airPort = airPort;
     }
 
     public List<Flight> getFlights() {

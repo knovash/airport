@@ -9,9 +9,9 @@ public class Ticket {
     private Long id;
     private Flight flight;
     private Passenger passenger;
+    private Gate gate;
     private BigDecimal price;
     private Integer ticketNumber;
-    private Gate gate;
     private Integer seatNumber;
 
     public Long getId() {

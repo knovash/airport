@@ -15,7 +15,7 @@ public class Flight {
     private AirStrip airStrip;
     private LocalDate flightDate;
     private Direction flightDirection;
-    private List<Passenger> flightPassengers;
+    private List<Ticket> tickets;
     private List<Pilot> flightPilots;
 
     public Long getId() {
@@ -66,12 +66,12 @@ public class Flight {
         this.flightDirection = flightDirection;
     }
 
-    public List<Passenger> getFlightPassengers() {
-        return flightPassengers;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setFlightPassengers(List<Passenger> flightPassengers) {
-        this.flightPassengers = flightPassengers;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public List<Pilot> getFlightPilots() {

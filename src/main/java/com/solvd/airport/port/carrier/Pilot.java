@@ -1,9 +1,13 @@
 package com.solvd.airport.port.carrier;
 
+import com.solvd.airport.port.carrier.flight.Flight;
+
 public class Pilot {
     private Long id;
     private String name;
     private PilotLicense pilotLicense;
+    private Flight flight;
+    private AirCarrier airCarrier;
 
     public Long getId() {
         return id;
@@ -27,5 +31,21 @@ public class Pilot {
 
     public void setPilotLicense(PilotLicense pilotLicense) {
         this.pilotLicense = pilotLicense;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
+    public AirCarrier getAirCarrier() {
+        return airCarrier;
+    }
+
+    public void setAirCarrier(AirCarrier airCarrier) {
+        this.airCarrier = airCarrier;
     }
 }

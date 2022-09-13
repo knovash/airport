@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class AirCraft {
     private Long id;
+    private AirCarrier airCarrier;
     private Integer airCraftNumber;
     private String airCraftModel;
     private LocalDate dateOfService;
@@ -14,6 +15,14 @@ public class AirCraft {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AirCarrier getAirCarrier() {
+        return airCarrier;
+    }
+
+    public void setAirCarrier(AirCarrier airCarrier) {
+        this.airCarrier = airCarrier;
     }
 
     public Integer getAirCraftNumber() {
