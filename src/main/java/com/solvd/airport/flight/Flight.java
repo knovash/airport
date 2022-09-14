@@ -10,7 +10,6 @@ import java.util.List;
 public class Flight {
 
     private Long id;
-    private Aircarrier aircarrier;
     private Aircraft aircraft;
     private Airstrip airstrip;
     private Direction direction;
@@ -24,14 +23,6 @@ public class Flight {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Aircarrier getAircarrier() {
-        return aircarrier;
-    }
-
-    public void setAircarrier(Aircarrier aircarrier) {
-        this.aircarrier = aircarrier;
     }
 
     public Aircraft getAircraft() {

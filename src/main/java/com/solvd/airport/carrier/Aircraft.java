@@ -5,7 +5,6 @@ import java.time.LocalDate;
 public class Aircraft {
 
     private Long id;
-    private Aircarrier aircarrier;
     private Integer number;
     private String model;
     private Integer seats;
@@ -17,14 +16,6 @@ public class Aircraft {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Aircarrier getAircarrier() {
-        return aircarrier;
-    }
-
-    public void setAircarrier(Aircarrier aircarrier) {
-        this.aircarrier = aircarrier;
     }
 
     public Integer getNumber() {
