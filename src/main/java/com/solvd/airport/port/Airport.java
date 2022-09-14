@@ -1,5 +1,7 @@
 package com.solvd.airport.port;
 
+import com.solvd.airport.carrier.Aircarrier;
+
 import java.util.List;
 
 public class Airport {
@@ -8,6 +10,7 @@ public class Airport {
     private String name;
     private List<Airstrip> airstrips;
     private List<Gate> gates;
+    private List<Aircarrier> aircarriers;
 
     public Long getId() {
         return id;
@@ -39,5 +42,13 @@ public class Airport {
 
     public void setGates(List<Gate> gates) {
         this.gates = gates;
+    }
+
+    public List<Aircarrier> getAircarriers() {
+        return aircarriers;
+    }
+
+    public void setAircarriers(List<Aircarrier> aircarriers) {
+        this.aircarriers = aircarriers;
     }
 }
