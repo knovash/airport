@@ -1,23 +1,35 @@
 package com.solvd.airport;
 
-import com.solvd.airport.port.Airport;
+import com.solvd.airport.persistance.Settings;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+
+        Settings settings = new Settings();
+        settings.getFromFile("config.properties");
+        System.out.println(settings);
+        String driver = settings.getDriver();
+        String url = settings.getUrl();
+        String username = settings.getUsername();
+        String password = settings.getPassword();
+        String poolsize = settings.getPoolsize();
+        System.out.println(driver + "\n" + url + "\n" + username + "\n" + password + "\n" + poolsize);
+
+
         Connection connection;
         //drivermanager class который помогает создавать получать конекшены к бд
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // вызовется статический блок и зарегистрируется драйвер
+            Class.forName(driver);
+//            Class.forName("com.mysql.cj.jdbc.Driver"); // вызовется статический блок и зарегистрируется драйвер
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/airport", "novash", "12345");
+//            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/airport", "novash", "12345");
+            connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package com.solvd.airport.carrier;
+package com.solvd.airport.domain.carrier;
 
 import java.time.LocalDate;
 

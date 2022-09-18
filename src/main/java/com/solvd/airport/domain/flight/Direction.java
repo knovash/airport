@@ -1,4 +1,4 @@
-package com.solvd.airport.flight;
+package com.solvd.airport.domain.flight;
 
 import java.math.BigDecimal;
 

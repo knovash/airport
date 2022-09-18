@@ -1,6 +1,6 @@
-package com.solvd.airport.port;
+package com.solvd.airport.domain.port;
 
-import com.solvd.airport.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircarrier;
 
 import java.util.List;
 

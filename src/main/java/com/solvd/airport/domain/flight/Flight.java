@@ -1,8 +1,7 @@
-package com.solvd.airport.flight;
+package com.solvd.airport.domain.flight;
 
-import com.solvd.airport.carrier.Aircarrier;
-import com.solvd.airport.carrier.Aircraft;
-import com.solvd.airport.port.Airstrip;
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.port.Airstrip;
 
 import java.time.LocalDate;
 import java.util.List;

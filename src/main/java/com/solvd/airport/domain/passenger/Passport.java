@@ -1,6 +1,6 @@
-package com.solvd.airport.port;
+package com.solvd.airport.domain.passenger;
 
-public class Airstrip {
+public class Passport {
 
     private Long id;
     private Integer number;

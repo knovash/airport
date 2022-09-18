@@ -1,4 +1,4 @@
-package com.solvd.airport.passenger;
+package com.solvd.airport.domain.passenger;
 
 public class Passenger {
 

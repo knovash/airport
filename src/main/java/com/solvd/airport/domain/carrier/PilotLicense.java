@@ -1,9 +1,10 @@
-package com.solvd.airport.port;
+package com.solvd.airport.domain.carrier;
 
-public class Gate {
+public class PilotLicense {
 
     private Long id;
     private Integer number;
+    private String type;
 
     public Long getId() {
         return id;
@@ -19,5 +20,13 @@ public class Gate {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
