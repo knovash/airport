@@ -1,7 +1,6 @@
-package com.solvd.airport.service;
+package com.solvd.airport.persistance;
 
 import com.solvd.airport.Main;
-import com.solvd.airport.persistance.Settings;
 import org.apache.commons.io.FileUtils;
 
 import javax.xml.bind.JAXBContext;
@@ -17,21 +16,21 @@ import java.nio.charset.Charset;
 public class ParseJAXB implements IParse {
 
     @Override
-    public Settings fileToObject(String fileName) {
+    public Config fileToObject(String fileName) {
         URL resource = Main.class.getClassLoader().getResource(fileName);
         File file = new File(resource.getFile());
         /** use JAXB parser from XML to JavaObject */
         JAXBContext context = null;
         try {
-            context = JAXBContext.newInstance(Settings.class);
+            context = JAXBContext.newInstance(Config.class);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
-        Settings object = null;
+        Config object = null;
         Unmarshaller um = null;
         try {
             um = context.createUnmarshaller();
-            object = (Settings) um.unmarshal(file);
+            object = (Config) um.unmarshal(file);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
@@ -39,16 +38,16 @@ public class ParseJAXB implements IParse {
     }
 
     @Override
-    public void objectToFile(Settings settings, File file) {
+    public void objectToFile(Config config, File file) {
         /** use JAXB parser from Object to XML */
         StringWriter writer = new StringWriter();
         JAXBContext context = null;
         try {
-            context = JAXBContext.newInstance(Settings.class);
+            context = JAXBContext.newInstance(Config.class);
             Marshaller marshaller = null;
             marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            marshaller.marshal(settings, writer);
+            marshaller.marshal(config, writer);
             String result = writer.toString();
             System.out.println(result);
             FileUtils.writeStringToFile(file, result, Charset.defaultCharset());

@@ -1,19 +1,17 @@
 package com.solvd.airport.persistance;
 
-import com.solvd.airport.service.ParseJAXB;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
 @XmlType(propOrder = {"driver", "url", "username", "password", "poolsize"})
-public class Settings {
-    private String driver;
-    private String url;
-    private String username;
-    private String password;
-    private String poolsize;
+public class Config {
+    private static String driver;
+    private static String url;
+    private static String username;
+    private static String password;
+    private static String poolsize;
 
     public String toString() {
         return ("Settings: \ndriver: " + this.driver + "\nurl: " + this.url + "\nusername: " + this.username + "\npassword: " + this.password + "\npoolsize: " + this.poolsize);
@@ -21,15 +19,15 @@ public class Settings {
 
     public void getFromFile(String fileName) {
         ParseJAXB parseJAXB = new ParseJAXB();
-        Settings settings = parseJAXB.fileToObject(fileName);
-        this.driver = settings.getDriver();
-        this.url = settings.getUrl();
-        this.username = settings.getUsername();
-        this.password = settings.getPassword();
-        this.poolsize = settings.getPoolsize();
+        Config config = parseJAXB.fileToObject(fileName);
+        this.driver = config.getDriver();
+        this.url = config.getUrl();
+        this.username = config.getUsername();
+        this.password = config.getPassword();
+        this.poolsize = config.getPoolsize();
     }
 
-    public String getDriver() {
+    public static String getDriver() {
         return driver;
     }
 
@@ -38,7 +36,7 @@ public class Settings {
         this.driver = driver;
     }
 
-    public String getUrl() {
+    public static String getUrl() {
         return url;
     }
 
@@ -47,7 +45,7 @@ public class Settings {
         this.url = url;
     }
 
-    public String getUsername() {
+    public static String getUsername() {
         return username;
     }
 
@@ -56,7 +54,7 @@ public class Settings {
         this.username = username;
     }
 
-    public String getPassword() {
+    public static String getPassword() {
         return password;
     }
 
@@ -65,7 +63,7 @@ public class Settings {
         this.password = password;
     }
 
-    public String getPoolsize() {
+    public static String getPoolsize() {
         return poolsize;
     }
 

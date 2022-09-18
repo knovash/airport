@@ -1,28 +1,30 @@
 package com.solvd.airport;
 
-import com.solvd.airport.persistance.Settings;
+import com.solvd.airport.persistance.Config;
+import com.solvd.airport.persistance.impl.Insert;
+import com.solvd.airport.persistance.impl.SelectAircarrier;
+import com.solvd.airport.persistance.impl.SelectFlight;
+import com.solvd.airport.persistance.impl.Update;
 
 import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        Settings settings = new Settings();
-        settings.getFromFile("config.properties");
-        System.out.println(settings);
-        String driver = settings.getDriver();
-        String url = settings.getUrl();
-        String username = settings.getUsername();
-        String password = settings.getPassword();
-        String poolsize = settings.getPoolsize();
+        Config config = new Config();
+        config.getFromFile("config.properties");
+        String driver = Config.getDriver();
+        String url = Config.getUrl();
+        String username = Config.getUsername();
+        String password = Config.getPassword();
+        String poolsize = Config.getPoolsize();
         System.out.println(driver + "\n" + url + "\n" + username + "\n" + password + "\n" + poolsize);
 
-
         Connection connection;
-        //drivermanager class который помогает создавать получать конекшены к бд
-        try {
-            Class.forName(driver);
-//            Class.forName("com.mysql.cj.jdbc.Driver"); // вызовется статический блок и зарегистрируется драйвер
+
+        try { //drivermanager class который помогает создавать получать конекшены к бд
+            Class.forName(driver); // вызовется статический блок и зарегистрируется драйвер
+//            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -34,58 +36,19 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        try {
-            connection.prepareStatement("insert into aircarriers(name) values ('NewAir')");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-//        String carrierName = "NewAir2";
-//        try {
-//            PreparedStatement statement = connection.prepareStatement("insert into aircarriers(name) values (?)", Statement.RETURN_GENERATED_KEYS);
-//            statement.setString(1, carrierName );
-//            statement.executeUpdate();
-//            ResultSet resultSet = statement.getGeneratedKeys();
-//            while (resultSet.next())
-//            {
-//                long id = resultSet.getLong(1);
-//                System.out.println(id);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        Insert.insert("insert into aircarriers(name) values ('NewAirdddff')");
 
-        try {
-            PreparedStatement statement = connection.prepareStatement("select id, name from aircarriers where id=?;", Statement.RETURN_GENERATED_KEYS);
-            statement.setLong(1, 2 );
-            statement.executeQuery();
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next())
-            {
-                long id = resultSet.getLong(1);
-                String name = resultSet.getString(2);
-                System.out.println(id + " " + name);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        System.out.println("\n");
+        System.out.println("\nSelectAircarrier.select()");
+        SelectAircarrier.select();
 
-        try {
-            PreparedStatement statement = connection.prepareStatement("select id, name from aircarriers order by id;", Statement.RETURN_GENERATED_KEYS);
-//            statement.setLong(1, 2 );
-            statement.executeQuery();
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next())
-            {
-                long id = resultSet.getLong(1);
-                String name = resultSet.getString(2);
-                System.out.println(id + " " + name);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println("\nSelectFlight.select()");
+        SelectFlight.select();
+
+        System.out.println("\nupdate directions set country");
+        int res = Update.update("update directions set country = 'dddd' where id = 1;");
+        System.out.println("update result " + res);
 
     }
 }

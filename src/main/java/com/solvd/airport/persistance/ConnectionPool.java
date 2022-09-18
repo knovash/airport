@@ -1,4 +1,4 @@
-package com.solvd.airport.service;
+package com.solvd.airport.persistance;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -41,7 +41,13 @@ public class ConnectionPool {
 
     public static Connection createConnection() {
         System.out.println("createConnection:");
-        return new Connection(); // этот класс можно вообще удалить...
+        Connection connection = null;
+//        try {
+//            connection = DriverManager.getConnection(Config.getUrl(), Config.getUsername(), Config.getPassword());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+        return connection;
     }
 
     public synchronized Connection getConnection() { /** надо забирать конекшн из списка connections */
