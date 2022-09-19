@@ -1,21 +1,23 @@
-package com.solvd.airport.persistance.impl;
+package com.solvd.airport;
 
 import com.solvd.airport.persistance.Config;
+import com.solvd.airport.persistance.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.*;
-import java.time.LocalDate;
 
 public class SelectFlight {
 
-    public static void select() {
-        Connection connection;
+    private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
-        try {
-            connection = DriverManager.getConnection(Config.getUrl(), Config.getUsername(), Config.getPassword());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public static void select() {
+//        Connection connection;
+//        try {
+//            connection = DriverManager.getConnection(Config.getUrl(), Config.getUsername(), Config.getPassword());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+        Connection connection = CONNECTION_POOL.getConnection();
 
         try { // SELECT
             PreparedStatement statement = connection.prepareStatement(

@@ -1,5 +1,8 @@
 package com.solvd.airport.persistance;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,56 +24,56 @@ public class ConnectionPool {
     private ConnectionPool(int poolSize) { /** приватный конструктор */
         System.out.println("Constructor: ConnectionPool size=" + poolSize);
         for (int i = 0; i < poolSize; i++) {
-            System.out.println("availableConns.add(createConnection() i=" + i);
+//            System.out.println("availableConns.add(createConnection() i=" + i);
             availableConns.add(createConnection()); /** createConnection создает новое подключние */
         }
-        System.out.println("availableConns: " + availableConns);
-        System.out.println("Constructor: availableConns.size=" + availableConns.size());
+//        System.out.println("availableConns: " + availableConns);
+//        System.out.println("Constructor: availableConns.size=" + availableConns.size());
 
     }
 
     /**  метод для создание объекта класса ConnectionPool. создать инстанс */
-    public static ConnectionPool getInstance(int poolSize) { /** первый раз для создания объекта вызываем метод getInstance */
+    public static ConnectionPool getInstance() { /** первый раз для создания объекта вызываем метод getInstance */
         /** сначало проверить небыл ли создан ранее. для этого есть поле */
         if (INSTANCE == null) {
-            INSTANCE = new ConnectionPool(poolSize); /** если небыло то создается объект */
-            System.out.println("\ngetInstance: Created ConnectionPool size=" + poolSize);
+            INSTANCE = new ConnectionPool(Config.getPoolsize()); /** если небыло то создается объект */
+//            System.out.println("\ngetInstance: Created ConnectionPool size=" + Config.getPoolsize());
         }
         return INSTANCE; /** если был создан уже то возвращается ранее созданный объект */
     }
 
     public static Connection createConnection() {
-        System.out.println("createConnection:");
+//        System.out.println("createConnection:");
         Connection connection = null;
-//        try {
-//            connection = DriverManager.getConnection(Config.getUrl(), Config.getUsername(), Config.getPassword());
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            connection = DriverManager.getConnection(Config.getUrl(), Config.getUsername(), Config.getPassword());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return connection;
     }
 
     public synchronized Connection getConnection() { /** надо забирать конекшн из списка connections */
-        System.out.println("\nSTART getConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
+//        System.out.println("\nSTART getConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
         Connection connection = null;
         try {
             connection = availableConns.take(); /** забираем из свободных */
-            System.out.println("availableConns.take " + connection);
+//            System.out.println("availableConns.take " + connection);
             usedConns.offer(connection); /** добавляем его в активные */
-            System.out.println("try getConnection ok");
+//            System.out.println("try getConnection ok");
         } catch (InterruptedException e) {
             System.out.println("try getConnection: error");
         }
-        System.out.println("END getConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
-        System.out.println("availableConns: " + availableConns);
-        System.out.println("usedConns: " + usedConns);
+//        System.out.println("END getConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
+//        System.out.println("availableConns: " + availableConns);
+//        System.out.println("usedConns: " + usedConns);
         return connection;
     }
 
     public void releaseConnection(Connection connection) {
-        System.out.println("\nSTART releaseConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
+//        System.out.println("\nSTART releaseConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
         usedConns.remove(connection); /** удаляем конекшен из пула активных конекшенов */
         availableConns.offer(connection); /** добавляем его в пул свободных конекшенов */
-        System.out.println("END releaseConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
+//        System.out.println("END releaseConnection: used=" + usedConns.size() + " availible=" + availableConns.size());
     }
 }

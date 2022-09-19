@@ -11,20 +11,20 @@ public class Config {
     private static String url;
     private static String username;
     private static String password;
-    private static String poolsize;
+    private static Integer poolsize;
 
     public String toString() {
-        return ("Settings: \ndriver: " + this.driver + "\nurl: " + this.url + "\nusername: " + this.username + "\npassword: " + this.password + "\npoolsize: " + this.poolsize);
+        return ("Settings: \ndriver: " + driver + "\nurl: " + url + "\nusername: " + username + "\npassword: " + password + "\npoolsize: " + poolsize);
     }
 
     public void getFromFile(String fileName) {
         ParseJAXB parseJAXB = new ParseJAXB();
         Config config = parseJAXB.fileToObject(fileName);
-        this.driver = config.getDriver();
-        this.url = config.getUrl();
-        this.username = config.getUsername();
-        this.password = config.getPassword();
-        this.poolsize = config.getPoolsize();
+        driver = getDriver();
+        url = getUrl();
+        username = getUsername();
+        password = getPassword();
+        poolsize = getPoolsize();
     }
 
     public static String getDriver() {
@@ -63,12 +63,12 @@ public class Config {
         this.password = password;
     }
 
-    public static String getPoolsize() {
+    public static Integer getPoolsize() {
         return poolsize;
     }
 
     @XmlElement(name = "poolsize")
-    public void setPoolsize(String poolsize) {
+    public void setPoolsize(Integer poolsize) {
         this.poolsize = poolsize;
     }
 }

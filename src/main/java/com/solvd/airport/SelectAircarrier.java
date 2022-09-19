@@ -1,20 +1,17 @@
-package com.solvd.airport.persistance.impl;
+package com.solvd.airport;
 
 import com.solvd.airport.persistance.Config;
+import com.solvd.airport.persistance.ConnectionPool;
 
 import java.sql.*;
 import java.sql.Connection;
 
 public class SelectAircarrier {
 
-    public static void select() {
-        Connection connection;
+    private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
-        try {
-            connection = DriverManager.getConnection(Config.getUrl(), Config.getUsername(), Config.getPassword());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public static void select() {
+        Connection connection = CONNECTION_POOL.getConnection();
 
         try { // SELECT
             PreparedStatement statement = connection.prepareStatement("select id, name from aircarriers order by id;", Statement.RETURN_GENERATED_KEYS);
