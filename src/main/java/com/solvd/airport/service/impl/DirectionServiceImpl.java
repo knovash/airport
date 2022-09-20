@@ -17,7 +17,7 @@ public class DirectionServiceImpl implements DirectionService {
     @Override
     public Direction create(Direction direction) {
         direction.setId(null);
-        directionRepository.create(direction); // directionRepository в persistance там sql insert зааносит информацию в бд
+        directionRepository.create(direction); // directionRepository в persistance там sql insert зааносит информацию из полей в бд
         return direction;
     }
 }

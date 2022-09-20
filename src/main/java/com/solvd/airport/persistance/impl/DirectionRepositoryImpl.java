@@ -12,7 +12,7 @@ public class DirectionRepositoryImpl implements DirectionRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Direction direction) { // вызывается из сервиса
+    public void create(Direction direction) { // вызывается из сервиса. делает инсерт данных объекта в бд.
         Connection connection = CONNECTION_POOL.getConnection();
         // тут SQL запрос INSERT заносит в бд новое направление
         try { // INSERT
