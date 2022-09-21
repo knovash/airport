@@ -5,6 +5,10 @@ public class Passport {
     private Long id;
     private Integer number;
 
+    public String toString() {
+        return ("Passport: id: " + this.id + " number: " + this.number);
+    }
+
     public Long getId() {
         return id;
     }

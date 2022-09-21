@@ -6,6 +6,10 @@ public class Passenger {
     private Passport passport;
     private String name;
 
+    public String toString() {
+        return ("Passenger: id: " + this.id + " name: " + this.name + " passport: " + this.passport);
+    }
+
     public Long getId() {
         return id;
     }
