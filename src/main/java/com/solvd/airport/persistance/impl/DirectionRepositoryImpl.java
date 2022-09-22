@@ -4,8 +4,10 @@ import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.persistance.ConnectionPool;
 import com.solvd.airport.persistance.DirectionRepository;
 
-import java.sql.Connection;
+import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DirectionRepositoryImpl implements DirectionRepository {
 
@@ -13,10 +15,11 @@ public class DirectionRepositoryImpl implements DirectionRepository {
 
     @Override
     public void create(Direction direction) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+        System.out.println("CREATE direction");
         Connection connection = CONNECTION_POOL.getConnection();
-        // тут SQL запрос INSERT заносит в бд новое направление
-        try { // INSERT
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into directions(country, distance) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into directions(country, distance) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, direction.getCountry());
             preparedStatement.setBigDecimal(2, direction.getDistance());
             preparedStatement.executeUpdate();
@@ -27,5 +30,107 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        CONNECTION_POOL.releaseConnection(connection);
+    }
+
+    @Override
+    public List<Direction> readAll() {
+        System.out.println("READ all directions");
+        Connection connection = CONNECTION_POOL.getConnection();
+        List<Direction> directions = new ArrayList<>();
+        Direction direction;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select id as id, country as country, distance as distance from directions order by id;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                direction = new Direction();
+                long id = resultSet.getLong("id");
+                String country = resultSet.getString("country");
+                BigDecimal distance = resultSet.getBigDecimal("distance");
+                direction.setId(id);
+                direction.setCountry(country);
+                direction.setDistance(distance);
+                directions.add(direction);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
+        return directions;
+    }
+
+    @Override
+    public Direction readById(Long id) {
+        System.out.println("READ direction by id=" + id);
+        Connection connection = CONNECTION_POOL.getConnection();
+        Direction direction = new Direction();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select id as id, country as country, distance as distance from directions where id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                direction = new Direction();
+                String country = resultSet.getString("country");
+                BigDecimal distance = resultSet.getBigDecimal("distance");
+                direction.setId(id);
+                direction.setCountry(country);
+                direction.setDistance(distance);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
+        return direction;
+    }
+
+    @Override
+    public void update(Direction direction) {
+        System.out.println("UPDATE direction");
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update directions set country = ?, distance = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, direction.getCountry());
+            preparedStatement.setBigDecimal(2, direction.getDistance());
+            preparedStatement.setLong(3, direction.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        System.out.println("DELETE direction by id=" + id);
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "delete from directions where id = ?; ", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
+    }
+
+    @Override
+    public void deleteByCountry(String country) {
+        System.out.println("DELETE direction by country=" + country);
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "delete from directions where country = ?; ", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, country);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
     }
 }

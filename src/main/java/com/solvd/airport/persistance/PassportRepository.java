@@ -8,7 +8,9 @@ public interface PassportRepository {
 
     void create(Passport passport);
 
-    List<Passport> read();
+    List<Passport> readAll();
+
+    Passport readById(Long id);
 
     void update(Passport passport);
 
