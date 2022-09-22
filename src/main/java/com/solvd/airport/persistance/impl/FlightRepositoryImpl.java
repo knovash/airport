@@ -52,18 +52,15 @@ public class FlightRepositoryImpl implements FlightRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "flights.id as flight_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "flights.price as price,\n" +
-                            "flights.number as number,\n" +
-                            "flights.seat as seat\n" +
-                            "from flights \n" +
-                            "join flights on flights.flight_id = flights.id\n" +
-                            "join passengers on flights.passenger_id = passengers.id\n" +
-                            "join gates on flights.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
+                    "select \n" +
+                            " flights.id as flight_id, \n" +
+                            " flights.aircarrier_id as carrier_id,\n" +
+                            " flights.aircraft_id as aircraft_id,\n" +
+                            " flights.airstrip_id as airstrip_id,\n" +
+                            " flights.direction_id as direction_id,\n" +
+                            " flights.number as number,\n" +
+                            " flights.date as date \n" +
+                            " from flights;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -98,19 +95,15 @@ public class FlightRepositoryImpl implements FlightRepository {
         Flight flight = new Flight();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "flights.id as flight_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "flights.price as price,\n" +
-                            "flights.number as number,\n" +
-                            "flights.seat as seat\n" +
-                            "from flights \n" +
-                            "join flights on flights.flight_id = flights.id\n" +
-                            "join passengers on flights.passenger_id = passengers.id\n" +
-                            "join gates on flights.gate_id = gates.id\n" +
-                            "where flights.id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "select \n" +
+                            " flights.id as flight_id, \n" +
+                            " flights.aircarrier_id as carrier_id,\n" +
+                            " flights.aircraft_id as aircraft_id,\n" +
+                            " flights.airstrip_id as airstrip_id,\n" +
+                            " flights.direction_id as direction_id,\n" +
+                            " flights.number as number,\n" +
+                            " flights.date as date \n" +
+                            " from flights where flights.id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -140,19 +133,19 @@ public class FlightRepositoryImpl implements FlightRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "flights.id as flight_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "flights.price as price,\n" +
-                            "flights.number as number,\n" +
-                            "flights.seat as seat\n" +
-                            "from flights \n" +
-                            "join flights on flights.flight_id = flights.id\n" +
-                            "join passengers on flights.passenger_id = passengers.id\n" +
-                            "join gates on flights.gate_id = gates.id" +
-                            "where flights.pilot_id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    " select \n" +
+                            " flights.id as flight_id, \n" +
+                            " flights.aircarrier_id as carrier_id,\n" +
+                            " flights.aircraft_id as aircraft_id,\n" +
+                            " flights.airstrip_id as airstrip_id,\n" +
+                            " flights.direction_id as direction_id,\n" +
+                            " flights.number as number,\n" +
+                            " flights.date as date ,\n" +
+                            " pilot_flights.pilot_id as pilot_id\n" +
+                            " from flights\n" +
+                            " join pilot_flights on flights.id = pilot_flights.flight_id \n" +
+                            " where pilot_flights.pilot_id =?", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, pilotId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -189,19 +182,16 @@ public class FlightRepositoryImpl implements FlightRepository {
         Flight flight;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "flights.id as flight_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "flights.price as price,\n" +
-                            "flights.number as number,\n" +
-                            "flights.seat as seat\n" +
-                            "from flights \n" +
-                            "join flights on flights.flight_id = flights.id\n" +
-                            "join passengers on flights.passenger_id = passengers.id\n" +
-                            "join gates on flights.gate_id = gates.id" +
-                            "where flights.pilot_id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    " select \n" +
+                            " flights.id as flight_id, \n" +
+                            " flights.aircarrier_id as carrier_id,\n" +
+                            " flights.aircraft_id as aircraft_id,\n" +
+                            " flights.airstrip_id as airstrip_id,\n" +
+                            " flights.direction_id as direction_id,\n" +
+                            " flights.number as number,\n" +
+                            " flights.date as date \n" +
+                            " from flights where flights.aircarrier_id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, aircarrierId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

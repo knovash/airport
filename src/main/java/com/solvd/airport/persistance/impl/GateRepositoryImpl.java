@@ -97,7 +97,8 @@ public class GateRepositoryImpl implements GateRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as gate_id, number as number  FROM airport.gates;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as gate_id, number as number  FROM airport.gates where gates.airport_id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, airportId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

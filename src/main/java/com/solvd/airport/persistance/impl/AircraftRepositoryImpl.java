@@ -49,8 +49,8 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         Aircraft aircraft;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, model as model, seats as seats, service_date as service_date \n" +
-                            " FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date \n" +
+                            "FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -81,8 +81,8 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         Aircraft aircraft = new Aircraft();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, model as model, seats as seats, service_date as service_date \n" +
-                            " FROM airport.aircrafts where aircrafts.id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date \n" +
+                            "FROM airport.aircrafts where aircrafts.id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -109,41 +109,9 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         Aircraft aircraft;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, model as model, seats as seats, service_date as service_date \n" +
-                            " FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-//    private Long id;
-//    private Integer number;
-//    private String model;
-//    private Integer seats;
-//    private LocalDate serviceDate;
-                aircraft = new Aircraft();
-                aircraft.setId(resultSet.getLong("aircraft_id"));
-                aircraft.setNumber(resultSet.getInt("number"));
-                aircraft.setModel(resultSet.getString("model"));
-                aircraft.setSeats(resultSet.getInt("seats"));
-                aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
-                aircrafts.add(aircraft);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-        return aircrafts;
-    }
-
-    @Override
-    public List<Aircraft> readByAircarriertId(Long aircarrierId) {
-        System.out.println("READ all aircrafts");
-        Connection connection = CONNECTION_POOL.getConnection();
-        List<Aircraft> aircrafts = new ArrayList<>();
-        Aircraft aircraft;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, model as model, seats as seats, service_date as service_date \n" +
-                            " FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date \n" +
+                            "FROM airport.aircrafts where aircrafts.aircarrier_id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, aircarrierId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

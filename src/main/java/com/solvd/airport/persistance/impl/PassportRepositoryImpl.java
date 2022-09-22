@@ -38,7 +38,8 @@ public class PassportRepositoryImpl implements PassportRepository {
         List<Passport> passports = new ArrayList<>();
         Passport passport;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select id as id, number as number from passports order by id;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select id as id, number as number from passports;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -64,7 +65,7 @@ public class PassportRepositoryImpl implements PassportRepository {
         Passport passport = new Passport();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, number as number from passports where id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as id, number as number from passports where passports.id=?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();

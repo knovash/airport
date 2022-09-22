@@ -80,7 +80,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         Aircarrier aircarrier = new Aircarrier();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircarrier_id, name as name FROM airport.aircarriers where aircrafts.id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as aircarrier_id, name as name FROM airport.aircarriers where aircarriers.id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -107,7 +107,14 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         Aircarrier aircarrier;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircarrier_id, name as name FROM airport.aircarriers;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT \n" +
+                            "aircarriers.id as aircarrier_id, \n" +
+                            "aircarriers.name as name,\n" +
+                            "airport_aircarriers.airport_id as airport_id\n" +
+                            "FROM aircarriers \n" +
+                            "join airport_aircarriers on aircarriers.id = airport_aircarriers.aircarrier_id\n" +
+                            "where airport_aircarriers.airport_id=?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, airportId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

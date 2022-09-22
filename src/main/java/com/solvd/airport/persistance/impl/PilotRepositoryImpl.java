@@ -48,18 +48,7 @@ public class PilotRepositoryImpl implements PilotRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "pilots.id as pilot_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "pilots.price as price,\n" +
-                            "pilots.number as number,\n" +
-                            "pilots.seat as seat\n" +
-                            "from pilots \n" +
-                            "join flights on pilots.flight_id = flights.id\n" +
-                            "join passengers on pilots.passenger_id = passengers.id\n" +
-                            "join gates on pilots.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
+                    "select  pilots.id as pilot_id, pilots.name as name,  pilots.pilot_license_id as license_id from pilots;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -88,14 +77,7 @@ public class PilotRepositoryImpl implements PilotRepository {
         Pilot pilot = new Pilot();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select " +
-                            "pilots.id as pilot_id, " +
-                            "pilots.name as name, " +
-                            "pilots.pilot_license_id as license_id, " +
-                            "pilot_flights.flight_id as flight_id " +
-                            "from pilots " +
-                            "join pilot_flights on pilots.id = pilot_flights.pilot_id " +
-                            "where pilots.id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "select  pilots.id as pilot_id, pilots.name as name,  pilots.pilot_license_id as license_id from pilots where pilots.id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -128,18 +110,8 @@ public class PilotRepositoryImpl implements PilotRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "pilots.id as pilot_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "pilots.price as price,\n" +
-                            "pilots.number as number,\n" +
-                            "pilots.seat as seat\n" +
-                            "from pilots \n" +
-                            "join flights on pilots.flight_id = flights.id\n" +
-                            "join passengers on pilots.passenger_id = passengers.id\n" +
-                            "join gates on pilots.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
+                    "select  pilots.id as pilot_id, pilots.name as name,  pilots.pilot_license_id as license_id from pilots where pilots.aircarrier_id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, aircarrierId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

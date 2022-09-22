@@ -38,7 +38,8 @@ public class PilotLicenceRepositoryImpl implements PilotLicenseRepository {
         List<PilotLicense> pilotLicenses = new ArrayList<>();
         PilotLicense pilotLicense;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select id as id, number as number from pilotLicenses order by id;", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select id as id, number as number from pilots_licenses;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -64,7 +65,7 @@ public class PilotLicenceRepositoryImpl implements PilotLicenseRepository {
         PilotLicense pilotLicense = new PilotLicense();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, number as number from pilotLicenses where id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as id, number as number from pilots_licenses where pilots_licenses.id =?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();

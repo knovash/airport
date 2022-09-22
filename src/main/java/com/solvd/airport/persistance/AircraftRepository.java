@@ -14,8 +14,6 @@ public interface AircraftRepository {
 
     List<Aircraft> readByAircarrierId(Long aircarrierId);
 
-    List<Aircraft> readByAircarriertId(Long aircarrierId);
-
     void update(Aircraft aircraft);
 
     void deleteById(Long id);

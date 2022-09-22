@@ -41,7 +41,7 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         Direction direction;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, country as country, distance as distance from directions order by id;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as id, country as country, distance as distance from directions;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -68,7 +68,7 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         Direction direction = new Direction();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, country as country, distance as distance from directions where id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as id, country as country, distance as distance from directions where directions.id =?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -42,7 +42,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         Passenger passenger;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, name as name, passport_id as passport_id from passengers order by id;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as id, name as name, passport_id as passport_id from passengers;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

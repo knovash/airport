@@ -17,11 +17,11 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void create(Ticket ticket) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE ticket");
+//        System.out.println("CREATE ticket");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into tickets(ticket_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "insert into tickets(ticket_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
+//                   "insert into tickets(ticket_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setLong(1, ticket.getTicket().getId());
 //            preparedStatement.setString(2, ticket.getName());
 //            preparedStatement.executeUpdate();
@@ -43,18 +43,18 @@ public class TicketRepositoryImpl implements TicketRepository {
         Ticket ticket;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "tickets.id as ticket_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "tickets.price as price,\n" +
-                            "tickets.number as number,\n" +
-                            "tickets.seat as seat\n" +
-                            "from tickets \n" +
-                            "join flights on tickets.flight_id = flights.id\n" +
-                            "join passengers on tickets.passenger_id = passengers.id\n" +
-                            "join gates on tickets.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
+                   "select \n" +
+                           " tickets.id as ticket_id, \n" +
+                           " flights.id as flight_id, \n" +
+                           " passengers.id as passenger_id, \n" +
+                           " gates.id as gate_id, \n" +
+                           " tickets.price as price, \n" +
+                           " tickets.number as number, \n" +
+                           " tickets.seat as seat \n" +
+                           " from tickets \n" +
+                           " join flights on tickets.flight_id = flights.id \n" +
+                           " join passengers on tickets.passenger_id = passengers.id \n" +
+                           " join gates on tickets.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -89,19 +89,19 @@ public class TicketRepositoryImpl implements TicketRepository {
         Ticket ticket = new Ticket();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select\n" +
-                            "tickets.id as ticket_id, \n" +
-                            "flights.id as flight_id,\n" +
-                            "passengers.id as passenger_id,\n" +
-                            "gates.id as gate_id,\n" +
-                            "tickets.price as price,\n" +
-                            "tickets.number as number,\n" +
-                            "tickets.seat as seat\n" +
-                            "from tickets \n" +
-                            "join flights on tickets.flight_id = flights.id\n" +
-                            "join passengers on tickets.passenger_id = passengers.id\n" +
-                            "join gates on tickets.gate_id = gates.id\n" +
-                            "where tickets.id = ?;", Statement.RETURN_GENERATED_KEYS);
+                   "select \n" +
+                           " tickets.id as ticket_id, \n" +
+                           " flights.id as flight_id, \n" +
+                           " passengers.id as passenger_id, \n" +
+                           " gates.id as gate_id, \n" +
+                           " tickets.price as price, \n" +
+                           " tickets.number as number, \n" +
+                           " tickets.seat as seat \n" +
+                           " from tickets \n" +
+                           " join flights on tickets.flight_id = flights.id \n" +
+                           " join passengers on tickets.passenger_id = passengers.id \n" +
+                           " join gates on tickets.gate_id = gates.id  \n" +
+                           " where tickets.id =?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -130,16 +130,20 @@ public class TicketRepositoryImpl implements TicketRepository {
         Ticket ticket;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "passengers.id as passenger_id, \n" +
-                            "gates.id as gate_id,\n" +
-                            "                            tickets.price as price,\n" +
-                            "                            tickets.number as number,\n" +
-                            "                            tickets.seat as seat\n" +
-                            "                            from tickets \n" +
-                            "                            join flights on tickets.flight_id = flights.id\n" +
-                            "                            join passengers on tickets.passenger_id = passengers.id\n" +
-                            "                            join gates on tickets.gate_id = gates.id\n" +
-                            "                            where flights.id =?;", Statement.RETURN_GENERATED_KEYS);
+                   "select \n" +
+                           " tickets.id as ticket_id, \n" +
+                           " flights.id as flight_id, \n" +
+                           " passengers.id as passenger_id, \n" +
+                           " gates.id as gate_id, \n" +
+                           " tickets.price as price, \n" +
+                           " tickets.number as number, \n" +
+                           " tickets.seat as seat \n" +
+                           " from tickets \n" +
+                           " join flights on tickets.flight_id = flights.id \n" +
+                           " join passengers on tickets.passenger_id = passengers.id \n" +
+                           " join gates on tickets.gate_id = gates.id  \n" +
+                           " where flights.id =?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, flightId);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -166,7 +170,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try {
 //            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "update tickets set name = ?, set ticket_id = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
+//                   "update tickets set name = ?, set ticket_id = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setString(1, ticket.getName());
 //            preparedStatement.setLong(2, ticket.getTicket().getId());
 //            preparedStatement.setLong(3, ticket.getId());
@@ -183,7 +187,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try {
 //            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "delete from tickets where id = ?; ", Statement.RETURN_GENERATED_KEYS);
+//                   "delete from tickets where id = ?; ", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setLong(1, id);
 //            preparedStatement.executeUpdate();
 //        } catch (SQLException e) {
@@ -198,7 +202,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try {
 //            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "delete from tickets where number = ?; ", Statement.RETURN_GENERATED_KEYS);
+//                   "delete from tickets where number = ?; ", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setLong(1, number);
 //            preparedStatement.executeUpdate();
 //        } catch (SQLException e) {
