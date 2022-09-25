@@ -1,6 +1,11 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
+import com.solvd.airport.domain.passenger.Passenger;
+import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AircarrierRepository;
 
@@ -11,9 +16,9 @@ import java.util.List;
 public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    FlightRepository flightRepository = new FlightRepositoryImpl();
-    AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-    PilotRepository pilotRepository = new PilotRepositoryImpl();
+    private static final FlightRepository flightRepository = new FlightRepositoryImpl();
+    private static final AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
+    private static final PilotRepository pilotRepository = new PilotRepositoryImpl();
 
 //    private Long id;
 //    private String name;
@@ -23,7 +28,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     @Override
     public void create(Aircarrier aircarrier) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE aircarrier");
+//        System.out.println(" CREATE aircarrier");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into aircarriers(aircarrier_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
@@ -42,6 +47,38 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
     }
 
     @Override
+    public Aircarrier map(ResultSet resultSet) throws SQLException {
+        Aircarrier aircarrier = new Aircarrier();
+
+        List<Flight> flights = new ArrayList<>();
+        Flight flight;
+        flight = flightRepository.map(resultSet);
+        flights.add(flight);
+
+        List<Aircraft> aircrafts = new ArrayList<>();
+        Aircraft aircraft;
+        aircraft = aircraftRepository.map(resultSet);
+        aircrafts.add(aircraft);
+
+        List<Pilot> pilots = new ArrayList<>();
+        Pilot pilot;
+        pilot = pilotRepository.map(resultSet);
+        pilots.add(pilot);
+
+        aircarrier.setFlights(flights);
+        aircarrier.setAircrafts(aircrafts);
+        aircarrier.setPilots(pilots);
+        aircarrier.setId(resultSet.getLong("aircarrier_id"));
+        aircarrier.setName(resultSet.getString("name"));
+        return aircarrier;
+    }
+    //    private Long id;
+//    private String name;
+//    private List<Flight> flights;
+//    private List<Aircraft> aircrafts;
+//    private List<Pilot> pilots;
+
+    @Override
     public List<Aircarrier> readAll() {
         System.out.println("READ all aircarriers");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -53,18 +90,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//    private Long id;
-//    private String name;
-//    private List<Flight> flights;
-//    private List<Aircraft> aircrafts;
-//    private List<Pilot> pilots;
-                aircarrier = new Aircarrier();
-                aircarrier.setId(resultSet.getLong("aircarrier_id"));
-                aircarrier.setName(resultSet.getString("name"));
-                aircarrier.setFlights(flightRepository.readByAircarrierId(resultSet.getLong("aircarrier_id")));
-                aircarrier.setAircrafts(aircraftRepository.readByAircarrierId(resultSet.getLong("aircarrier_id")));
-                aircarrier.setPilots(pilotRepository.readByAircarrierId(resultSet.getLong("aircarrier_id")));
-                aircarriers.add(aircarrier);
+                aircarriers.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -72,6 +98,8 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         CONNECTION_POOL.releaseConnection(connection);
         return aircarriers;
     }
+
+
 
     @Override
     public Aircarrier readById(Long id) {
@@ -99,6 +127,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         return aircarrier;
     }
 
+
     @Override
     public List<Aircarrier> readByAirportId(Long airportId) {
         System.out.println("READ all aircarriers");
@@ -107,12 +136,12 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         Aircarrier aircarrier;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT \n" +
-                            "aircarriers.id as aircarrier_id, \n" +
-                            "aircarriers.name as name,\n" +
-                            "airport_aircarriers.airport_id as airport_id\n" +
-                            "FROM aircarriers \n" +
-                            "join airport_aircarriers on aircarriers.id = airport_aircarriers.aircarrier_id\n" +
+                    "SELECT  " +
+                            "aircarriers.id as aircarrier_id,  " +
+                            "aircarriers.name as name, " +
+                            "airport_aircarriers.airport_id as airport_id " +
+                            "FROM aircarriers  " +
+                            "join airport_aircarriers on aircarriers.id = airport_aircarriers.aircarrier_id " +
                             "where airport_aircarriers.airport_id=?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, airportId);
             preparedStatement.executeQuery();

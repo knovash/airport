@@ -1,6 +1,9 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Direction;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.ConnectionPool;
 import com.solvd.airport.persistance.DirectionRepository;
 
@@ -34,6 +37,18 @@ public class DirectionRepositoryImpl implements DirectionRepository {
     }
 
     @Override
+    public Direction map(ResultSet resultSet) throws SQLException {
+        Direction direction = new Direction();
+        direction.setId(resultSet.getLong("direction_id"));
+        direction.setCountry(resultSet.getString("country"));
+        direction.setDistance(resultSet.getBigDecimal("distance"));
+        return direction;
+    }
+//    private Long id;
+//    private String country;
+//    private BigDecimal distance;
+    
+    @Override
     public List<Direction> readAll() {
         System.out.println("READ all directions");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -41,18 +56,11 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         Direction direction;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, country as country, distance as distance from directions;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as direction_id, country as country, distance as distance from directions;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                direction = new Direction();
-                long id = resultSet.getLong("id");
-                String country = resultSet.getString("country");
-                BigDecimal distance = resultSet.getBigDecimal("distance");
-                direction.setId(id);
-                direction.setCountry(country);
-                direction.setDistance(distance);
-                directions.add(direction);
+                directions.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

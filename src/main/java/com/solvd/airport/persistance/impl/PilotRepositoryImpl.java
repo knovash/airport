@@ -1,6 +1,8 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.License;
 import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.PilotRepository;
 
@@ -11,17 +13,17 @@ import java.util.List;
 public class PilotRepositoryImpl implements PilotRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    PilotLicenseRepository pilotLicenseRepository = new PilotLicenceRepositoryImpl();
-    FlightRepository flightRepository = new FlightRepositoryImpl();
+    private static final LicenseRepository licenseRepository = new LicenseRepositoryImpl();
+    private static final FlightRepository flightRepository = new FlightRepositoryImpl();
 
 //    private Long id;
 //    private String name;
-//    private PilotLicense pilotLicense;
+//    private License license;
 //    private List<Flight> Flights;
 
     @Override
     public void create(Pilot pilot) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE pilot");
+//        System.out.println(" CREATE pilot");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into pilots(pilot_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
@@ -40,11 +42,33 @@ public class PilotRepositoryImpl implements PilotRepository {
     }
 
     @Override
+    public Pilot map(ResultSet resultSet) throws SQLException {
+        Pilot pilot = new Pilot();
+
+        License license;
+        license = licenseRepository.map(resultSet);
+
+        List<Flight> flights = new ArrayList<>();
+        Flight flight;
+        flight = flightRepository.map(resultSet);
+        flights.add(flight);
+
+        pilot.setLicense(license);
+        pilot.setFlights(flights);
+        pilot.setId(resultSet.getLong("pilot_id"));
+        pilot.setName(resultSet.getString("name"));
+        return pilot;
+    }
+//    private Long id;
+//    private String name;
+//    private License license;
+//    private List<Flight> Flights;
+    
+    @Override
     public List<Pilot> readAll() {
         System.out.println("READ all pilots");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Pilot> pilots = new ArrayList<>();
-        Pilot pilot;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -52,16 +76,7 @@ public class PilotRepositoryImpl implements PilotRepository {
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//                private Long id;
-//                private String name;
-//                private PilotLicense pilotLicense;
-//                private List<Flight> Flights;
-                pilot = new Pilot();
-                pilot.setId(resultSet.getLong("pilot_id"));
-                pilot.setName(resultSet.getString("name"));
-                pilot.setPilotLicense(pilotLicenseRepository.readById(resultSet.getLong("license_id")));
-                pilot.setFlights(flightRepository.readByPilotId(resultSet.getLong("pilot_id")));
-                pilots.add(pilot);
+                pilots.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -84,12 +99,12 @@ public class PilotRepositoryImpl implements PilotRepository {
             while (resultSet.next()) {
 //                private Long id;
 //                private String name;
-//                private PilotLicense pilotLicense;
+//                private License license;
 //                private List<Flight> Flights;
                 pilot = new Pilot();
                 pilot.setId(resultSet.getLong("pilot_id"));
                 pilot.setName(resultSet.getString("name"));
-                pilot.setPilotLicense(pilotLicenseRepository.readById(resultSet.getLong("license_id")));
+                pilot.setLicense(licenseRepository.readById(resultSet.getLong("license_id")));
                 Long pilotId = resultSet.getLong("pilot_id");
                 pilot.setFlights(flightRepository.readByPilotId(pilotId));
             }
@@ -117,12 +132,12 @@ public class PilotRepositoryImpl implements PilotRepository {
             while (resultSet.next()) {
 //                private Long id;
 //                private String name;
-//                private PilotLicense pilotLicense;
+//                private License license;
 //                private List<Flight> Flights;
                 pilot = new Pilot();
                 pilot.setId(resultSet.getLong("pilot_id"));
                 pilot.setName(resultSet.getString("name"));
-                pilot.setPilotLicense(pilotLicenseRepository.readById(resultSet.getLong("license_id")));
+                pilot.setLicense(licenseRepository.readById(resultSet.getLong("license_id")));
                 pilot.setFlights(flightRepository.readByPilotId(resultSet.getLong("pilot_id")));
                 pilots.add(pilot);
             }

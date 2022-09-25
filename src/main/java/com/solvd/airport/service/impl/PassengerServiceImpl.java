@@ -3,18 +3,16 @@ package com.solvd.airport.service.impl;
 
 import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.persistance.DirectionRepository;
-import com.solvd.airport.persistance.PassportRepository;
 import com.solvd.airport.persistance.impl.DirectionRepositoryImpl;
-import com.solvd.airport.persistance.impl.PassportRepositoryImpl;
 import com.solvd.airport.service.DirectionService;
 
 import java.util.List;
 
-public class DirectionServiceImpl implements DirectionService {
+public class PassengerServiceImpl implements DirectionService {
 
     private DirectionRepository directionRepository = new DirectionRepositoryImpl();
 
-    public DirectionServiceImpl() {
+    public PassengerServiceImpl() {
         this.directionRepository = new DirectionRepositoryImpl();
 
     }

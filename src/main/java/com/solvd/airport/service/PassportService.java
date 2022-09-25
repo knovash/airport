@@ -2,11 +2,9 @@ package com.solvd.airport.service;
 
 import com.solvd.airport.domain.flight.Direction;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
-public interface DirectionService {
+public interface PassportService {
 
     Direction create(Direction direction);
 

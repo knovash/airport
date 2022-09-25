@@ -8,6 +8,10 @@ public class Direction {
     private String country;
     private BigDecimal distance;
 
+    public String toString() {
+        return ("Direction: id: " + this.id + " country: " + this.country + " distance: " + this.distance);
+    }
+
     public Long getId() {
         return id;
     }

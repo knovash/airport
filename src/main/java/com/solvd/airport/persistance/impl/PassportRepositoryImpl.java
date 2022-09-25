@@ -32,6 +32,14 @@ public class PassportRepositoryImpl implements PassportRepository {
     }
 
     @Override
+    public Passport map(ResultSet resultSet) throws SQLException {
+        Passport passport = new Passport();
+        passport.setId(resultSet.getLong("passport_id"));
+        passport.setNumber(resultSet.getInt("passport_number"));
+        return passport;
+    }
+
+    @Override
     public List<Passport> readAll() {
         System.out.println("READ all passports");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -39,23 +47,17 @@ public class PassportRepositoryImpl implements PassportRepository {
         Passport passport;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, number as number from passports;", Statement.RETURN_GENERATED_KEYS);
+                    "select id as passport_id, number as passport_number from passports;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                passport = new Passport();
-                long id = resultSet.getLong("id");
-                Integer number = resultSet.getInt("number");
-                passport.setId(id);
-                passport.setNumber(number);
-                passports.add(passport);
+                passports.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         CONNECTION_POOL.releaseConnection(connection);
         return passports;
-
     }
 
     @Override

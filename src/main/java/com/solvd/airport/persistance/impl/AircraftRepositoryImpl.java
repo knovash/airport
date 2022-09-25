@@ -1,6 +1,11 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
+import com.solvd.airport.domain.passenger.Passenger;
+import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AircraftRepository;
 
@@ -11,9 +16,9 @@ import java.util.List;
 public class AircraftRepositoryImpl implements AircraftRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    FlightRepository flightRepository = new FlightRepositoryImpl();
-    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
-    GateRepository gateRepository = new GateRepositoryImpl();
+//    FlightRepository flightRepository = new FlightRepositoryImpl();
+//    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
+//    GateRepository gateRepository = new GateRepositoryImpl();
 
 //    private Long id;
 //    private Integer number;
@@ -23,7 +28,7 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     @Override
     public void create(Aircraft aircraft) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE aircraft");
+//        System.out.println(" CREATE aircraft");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into aircrafts(aircraft_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
@@ -42,6 +47,22 @@ public class AircraftRepositoryImpl implements AircraftRepository {
     }
 
     @Override
+    public Aircraft map(ResultSet resultSet) throws SQLException {
+        Aircraft aircraft = new Aircraft();
+        aircraft.setId(resultSet.getLong("aircraft_id"));
+        aircraft.setNumber(resultSet.getInt("aircraft_number"));
+        aircraft.setModel(resultSet.getString("model"));
+        aircraft.setSeats(resultSet.getInt("seats"));
+        aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
+        return aircraft;
+    }
+    //    private Long id;
+//    private Integer number;
+//    private String model;
+//    private Integer seats;
+//    private LocalDate serviceDate;
+
+    @Override
     public List<Aircraft> readAll() {
         System.out.println("READ all aircrafts");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -49,23 +70,12 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         Aircraft aircraft;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date \n" +
+                    "SELECT id as aircraft_id, number as aircraft_number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date  " +
                             "FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//    private Long id;
-//    private Integer number;
-//    private String model;
-//    private Integer seats;
-//    private LocalDate serviceDate;
-                aircraft = new Aircraft();
-                aircraft.setId(resultSet.getLong("aircraft_id"));
-                aircraft.setNumber(resultSet.getInt("number"));
-                aircraft.setModel(resultSet.getString("model"));
-                aircraft.setSeats(resultSet.getInt("seats"));
-                aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
-                aircrafts.add(aircraft);
+                aircrafts.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -74,6 +84,8 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         return aircrafts;
     }
 
+
+
     @Override
     public Aircraft readById(Long id) {
         System.out.println("READ aircraft by id=" + id);
@@ -81,7 +93,7 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         Aircraft aircraft = new Aircraft();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date \n" +
+                    "SELECT id as aircraft_id, number as aircraft_number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date  " +
                             "FROM airport.aircrafts where aircrafts.id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
@@ -89,7 +101,7 @@ public class AircraftRepositoryImpl implements AircraftRepository {
             while (resultSet.next()) {
                 aircraft = new Aircraft();
                 aircraft.setId(resultSet.getLong("aircraft_id"));
-                aircraft.setNumber(resultSet.getInt("number"));
+                aircraft.setNumber(resultSet.getInt("aircraft_number"));
                 aircraft.setModel(resultSet.getString("model"));
                 aircraft.setSeats(resultSet.getInt("seats"));
                 aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
@@ -109,7 +121,7 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         Aircraft aircraft;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date \n" +
+                    "SELECT id as aircraft_id, number as number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date  " +
                             "FROM airport.aircrafts where aircrafts.aircarrier_id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, aircarrierId);
             preparedStatement.executeQuery();

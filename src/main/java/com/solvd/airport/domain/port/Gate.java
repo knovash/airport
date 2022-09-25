@@ -5,6 +5,10 @@ public class Gate {
     private Long id;
     private Integer number;
 
+    public String toString() {
+        return ("Gate: id: " + this.id + " number: " + this.number);
+    }
+
     public Long getId() {
         return id;
     }

@@ -5,6 +5,10 @@ public class Airstrip {
     private Long id;
     private Integer number;
 
+    public String toString() {
+        return ("Airstrip: id: " + this.id + " number: " + this.number);
+    }
+
     public Long getId() {
         return id;
     }

@@ -2,9 +2,7 @@ package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
-import com.solvd.airport.persistance.ConnectionPool;
-import com.solvd.airport.persistance.PassengerRepository;
-import com.solvd.airport.persistance.PassportRepository;
+import com.solvd.airport.persistance.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,16 +11,17 @@ import java.util.List;
 public class PassengerRepositoryImpl implements PassengerRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
+    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
 
     @Override
     public void create(Passenger passenger) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-        System.out.println("\nCREATE passenger");
+        System.out.println(" CREATE passenger");
         Connection connection = CONNECTION_POOL.getConnection();
         try { //insert into passengers(passport_id, name) values (6, 'Denis');
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into passengers(passport_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, passenger.getPassport().getId());
-            preparedStatement.setString(2, passenger.getName());
+                    "insert into passengers(passport_id, name) values (?);", Statement.RETURN_GENERATED_KEYS);
+//            preparedStatement.setLong(1, passenger.getPassport().getId());
+            preparedStatement.setString(1, passenger.getName());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
@@ -37,25 +36,21 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     @Override
     public List<Passenger> readAll() {
         System.out.println("READ all passengers");
-        Connection connection = CONNECTION_POOL.getConnection();
         List<Passenger> passengers = new ArrayList<>();
-        Passenger passenger;
+        Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, name as name, passport_id as passport_id from passengers;", Statement.RETURN_GENERATED_KEYS);
+                    "select \n" +
+                            "passengers.id as passenger_id, \n" +
+                            "passengers.name as passenger_name, \n" +
+                            "passengers.passport_id as passport_id, \n" +
+                            "passports.number as passport_number \n" +
+                            "from passengers \n" +
+                            "join passports on passengers.passport_id = passports.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                passenger = new Passenger();
-                long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                Long passport_id = resultSet.getLong("passport_id");
-                PassportRepository passportRepository = new PassportRepositoryImpl();
-                Passport passport = passportRepository.readById(passport_id);
-                passenger.setId(id);
-                passenger.setName(name);
-                passenger.setPassport(passport);
-                passengers.add(passenger);
+                passengers.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -65,23 +60,45 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
+    public Passenger map(ResultSet resultSet) throws SQLException {
+        Passenger passenger = new Passenger();
+        Passport passport;
+        passport = passportRepository.map(resultSet);
+        passenger.setId(resultSet.getLong("passenger_id"));
+        passenger.setName(resultSet.getString("passenger_name"));
+        passenger.setPassport(passport);
+        return passenger;
+    }
+//    private Long id;
+//    private Passport passport;
+//    private String name;
+
+    @Override
     public Passenger readById(Long id) {
         System.out.println("READ passenger by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         Passenger passenger = new Passenger();
+        Passport passport;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select id as id, name as name, passport_id as passport_id from passengers where id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "select \n" +
+                            "passengers.id as passenger_id, \n" +
+                            "passengers.name as name, \n" +
+                            "passengers.passport_id as passport_id, \n" +
+                            "passports.number as passport_number \n" +
+                            "from passengers \n" +
+                            "join passports on passengers.passport_id = passports.id\n" +
+                            "where passengers.id = 1;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                Long passport_id = resultSet.getLong("passport_id");
-                PassportRepository passportRepository = new PassportRepositoryImpl();
-                Passport passport = passportRepository.readById(passport_id);
-                passenger.setId(id);
-                passenger.setName(name);
+                passenger = new Passenger();
+                passport = new Passport();
+                passenger.setId(resultSet.getLong("passenger_id"));
+                passenger.setName(resultSet.getString("name"));
+                passport.setId(resultSet.getLong("passport_id"));
+                passport.setNumber(resultSet.getInt("passport_number"));
                 passenger.setPassport(passport);
             }
         } catch (SQLException e) {

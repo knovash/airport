@@ -10,6 +10,10 @@ public class Aircraft {
     private Integer seats;
     private LocalDate serviceDate;
 
+    public String toString() {
+        return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model + " seats: " + this.seats + " serviceDate: " + this.serviceDate);
+    }
+
     public Long getId() {
         return id;
     }

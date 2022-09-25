@@ -1,9 +1,16 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.flight.Ticket;
+import com.solvd.airport.domain.passenger.Passenger;
+import com.solvd.airport.domain.passenger.Passport;
+import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.TicketRepository;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +18,9 @@ import java.util.List;
 public class TicketRepositoryImpl implements TicketRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    FlightRepository flightRepository = new FlightRepositoryImpl();
-    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
-    GateRepository gateRepository = new GateRepositoryImpl();
+    private static final FlightRepository flightRepository = new FlightRepositoryImpl();
+    private static final PassengerRepository passengerRepository = new PassengerRepositoryImpl();
+    private static final GateRepository gateRepository = new GateRepositoryImpl();
 
     @Override
     public void create(Ticket ticket) { // вызывается из сервиса. делает инсерт данных объекта в бд.
@@ -36,44 +43,65 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
+    public Ticket map(ResultSet resultSet) throws SQLException {
+        Ticket ticket = new Ticket();
+
+//        Flight flight;
+//        flight = flightRepository.map(resultSet);
+
+        Passenger passenger;
+        passenger = passengerRepository.map(resultSet);
+
+//        Gate gate;
+//        gate = gateRepository.map(resultSet);
+
+        ticket.setPassenger(passenger);
+        ticket.setFlight_number(resultSet.getBigDecimal("flight_number"));
+        ticket.setGate_number(resultSet.getBigDecimal("gate_number"));
+
+        ticket.setId(resultSet.getLong("ticket_id"));
+        ticket.setPrice(resultSet.getBigDecimal("price"));
+        ticket.setNumber(resultSet.getInt("number"));
+        ticket.setSeat(resultSet.getInt("seat"));
+        return ticket;
+    }
+//    private Long id;
+//    private Flight flight;
+//    private Passenger passenger;
+//    private Gate gate;
+//    private BigDecimal price;
+//    private Integer number;
+//    private Integer seat;
+    
+    @Override
     public List<Ticket> readAll() {
         System.out.println("READ all tickets");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Ticket> tickets = new ArrayList<>();
-        Ticket ticket;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                   "select \n" +
-                           " tickets.id as ticket_id, \n" +
-                           " flights.id as flight_id, \n" +
-                           " passengers.id as passenger_id, \n" +
-                           " gates.id as gate_id, \n" +
-                           " tickets.price as price, \n" +
-                           " tickets.number as number, \n" +
-                           " tickets.seat as seat \n" +
-                           " from tickets \n" +
-                           " join flights on tickets.flight_id = flights.id \n" +
-                           " join passengers on tickets.passenger_id = passengers.id \n" +
-                           " join gates on tickets.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
+                    "select \n" +
+                            " tickets.id as ticket_id, \n" +
+                            " flights.id as flight_id, \n" +
+                            " flights.number as flight_number,\n" +
+                            " passengers.id as passenger_id, \n" +
+                            " passengers.name as passenger_name, \n" +
+                            " passengers.passport_id as passport_id, \n" +
+                            " passports.number as passport_number,\n" +
+                            " gates.id as gate_id, \n" +
+                            " gates.number as gate_number, \n" +
+                            " tickets.price as price, \n" +
+                            " tickets.number as number, \n" +
+                            " tickets.seat as seat \n" +
+                            " from tickets \n" +
+                            " join flights on tickets.flight_id = flights.id \n" +
+                            " join passengers on tickets.passenger_id = passengers.id \n" +
+                            " join passports on passengers.passport_id = passports.id\n" +
+                            " join gates on tickets.gate_id = gates.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//        private Long id;
-//        private Flight flight;
-//        private Passenger passenger;
-//        private Gate gate;
-//        private BigDecimal price;
-//        private Integer number;
-//        private Integer seat;
-                ticket = new Ticket();
-                ticket.setId(resultSet.getLong("ticket_id"));
-                ticket.setFlight(flightRepository.readById(resultSet.getLong("flight_id")));
-                ticket.setPassenger(passengerRepository.readById(resultSet.getLong("passenger_id")));
-                ticket.setGate(gateRepository.readById(resultSet.getLong("gate_id")));
-                ticket.setPrice(resultSet.getBigDecimal("price"));
-                ticket.setNumber(resultSet.getInt("number"));
-                ticket.setSeat(resultSet.getInt("seat"));
-                tickets.add(ticket);
+                tickets.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -89,31 +117,24 @@ public class TicketRepositoryImpl implements TicketRepository {
         Ticket ticket = new Ticket();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                   "select \n" +
-                           " tickets.id as ticket_id, \n" +
-                           " flights.id as flight_id, \n" +
-                           " passengers.id as passenger_id, \n" +
-                           " gates.id as gate_id, \n" +
-                           " tickets.price as price, \n" +
-                           " tickets.number as number, \n" +
-                           " tickets.seat as seat \n" +
-                           " from tickets \n" +
-                           " join flights on tickets.flight_id = flights.id \n" +
-                           " join passengers on tickets.passenger_id = passengers.id \n" +
-                           " join gates on tickets.gate_id = gates.id  \n" +
+                   "select  " +
+                           " tickets.id as ticket_id,  " +
+                           " flights.id as flight_id,  " +
+                           " passengers.id as passenger_id,  " +
+                           " gates.id as gate_id,  " +
+                           " tickets.price as price,  " +
+                           " tickets.number as number,  " +
+                           " tickets.seat as seat  " +
+                           " from tickets  " +
+                           " join flights on tickets.flight_id = flights.id  " +
+                           " join passengers on tickets.passenger_id = passengers.id  " +
+                           " join gates on tickets.gate_id = gates.id   " +
                            " where tickets.id =?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ticket = new Ticket();
-                ticket.setId(resultSet.getLong("ticket_id"));
-                ticket.setFlight(flightRepository.readById(resultSet.getLong("flight_id")));
-                ticket.setPassenger(passengerRepository.readById(resultSet.getLong("passenger_id")));
-                ticket.setGate(gateRepository.readById(resultSet.getLong("gate_id")));
-                ticket.setPrice(resultSet.getBigDecimal("price"));
-                ticket.setNumber(resultSet.getInt("number"));
-                ticket.setSeat(resultSet.getInt("seat"));
+                ticket = map(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -130,18 +151,18 @@ public class TicketRepositoryImpl implements TicketRepository {
         Ticket ticket;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                   "select \n" +
-                           " tickets.id as ticket_id, \n" +
-                           " flights.id as flight_id, \n" +
-                           " passengers.id as passenger_id, \n" +
-                           " gates.id as gate_id, \n" +
-                           " tickets.price as price, \n" +
-                           " tickets.number as number, \n" +
-                           " tickets.seat as seat \n" +
-                           " from tickets \n" +
-                           " join flights on tickets.flight_id = flights.id \n" +
-                           " join passengers on tickets.passenger_id = passengers.id \n" +
-                           " join gates on tickets.gate_id = gates.id  \n" +
+                   "select  " +
+                           " tickets.id as ticket_id,  " +
+                           " flights.id as flight_id,  " +
+                           " passengers.id as passenger_id,  " +
+                           " gates.id as gate_id,  " +
+                           " tickets.price as price,  " +
+                           " tickets.number as number,  " +
+                           " tickets.seat as seat  " +
+                           " from tickets  " +
+                           " join flights on tickets.flight_id = flights.id  " +
+                           " join passengers on tickets.passenger_id = passengers.id  " +
+                           " join gates on tickets.gate_id = gates.id   " +
                            " where flights.id =?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, flightId);
             preparedStatement.executeQuery();
@@ -149,9 +170,9 @@ public class TicketRepositoryImpl implements TicketRepository {
             while (resultSet.next()) {
                 ticket = new Ticket();
                 ticket.setId(resultSet.getLong("ticket_id"));
-                ticket.setFlight(flightRepository.readById(resultSet.getLong("flight_id")));
+//                ticket.setFlight(flightRepository.readById(resultSet.getLong("flight_id")));
                 ticket.setPassenger(passengerRepository.readById(resultSet.getLong("passenger_id")));
-                ticket.setGate(gateRepository.readById(resultSet.getLong("gate_id")));
+//                ticket.setGate(gateRepository.readById(resultSet.getLong("gate_id")));
                 ticket.setPrice(resultSet.getBigDecimal("price"));
                 ticket.setNumber(resultSet.getInt("number"));
                 ticket.setSeat(resultSet.getInt("seat"));

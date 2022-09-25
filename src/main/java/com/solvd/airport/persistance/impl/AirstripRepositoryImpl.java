@@ -1,5 +1,8 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AirstripRepository;
@@ -20,7 +23,7 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
     @Override
     public void create(Airstrip airstrip) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE airstrip");
+//        System.out.println(" CREATE airstrip");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into airstrips(airstrip_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
@@ -39,6 +42,16 @@ public class AirstripRepositoryImpl implements AirstripRepository {
     }
 
     @Override
+    public Airstrip map(ResultSet resultSet) throws SQLException {
+        Airstrip airstrip = new Airstrip();
+        airstrip.setId(resultSet.getLong("airstrip_id"));
+        airstrip.setNumber(resultSet.getInt("airstrip_number"));
+        return airstrip;
+    }
+//    private Long id;
+//    private Integer number;
+    
+    @Override
     public List<Airstrip> readAll() {
         System.out.println("READ all airstrips");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -47,16 +60,13 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as airstrip_id, number as number  FROM airport.airstrips;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as airstrip_id, number as airstrip_number  FROM airport.airstrips;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 //                private Long id;
 //                private Integer number;
-                airstrip = new Airstrip();
-                airstrip.setId(resultSet.getLong("airstrip_id"));
-                airstrip.setNumber(resultSet.getInt("number"));
-                airstrips.add(airstrip);
+                airstrips.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

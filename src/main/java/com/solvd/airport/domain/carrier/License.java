@@ -1,10 +1,14 @@
 package com.solvd.airport.domain.carrier;
 
-public class PilotLicense {
+public class License {
 
     private Long id;
     private Integer number;
     private String type;
+
+    public String toString() {
+        return ("Licence: id: " + this.id + " number: " + this.number + " type: " + this.type);
+    }
 
     public Long getId() {
         return id;

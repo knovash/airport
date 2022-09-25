@@ -1,5 +1,8 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.GateRepository;
@@ -20,7 +23,7 @@ public class GateRepositoryImpl implements GateRepository {
 
     @Override
     public void create(Gate gate) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE gate");
+//        System.out.println(" CREATE gate");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into gates(gate_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
@@ -39,6 +42,16 @@ public class GateRepositoryImpl implements GateRepository {
     }
 
     @Override
+    public Gate map(ResultSet resultSet) throws SQLException {
+        Gate gate = new Gate();
+        gate.setId(resultSet.getLong("gate_id"));
+        gate.setNumber(resultSet.getInt("number"));
+        return gate;
+    }
+//    private Long id;
+//    private Integer number;
+    
+    @Override
     public List<Gate> readAll() {
         System.out.println("READ all gates");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -53,10 +66,7 @@ public class GateRepositoryImpl implements GateRepository {
             while (resultSet.next()) {
 //                private Long id;
 //                private Integer number;
-                gate = new Gate();
-                gate.setId(resultSet.getLong("gate_id"));
-                gate.setNumber(resultSet.getInt("number"));
-                gates.add(gate);
+                gates.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

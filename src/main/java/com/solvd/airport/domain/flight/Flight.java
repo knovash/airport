@@ -17,6 +17,16 @@ public class Flight {
     private LocalDate date;
     private List<Ticket> tickets;
 
+    public String toString() {
+        return ("Flight: id: " + this.id
+                + " number: " + this.number
+                + " date: " + this.date
+                + "\n  aircraft: " + this.aircraft
+                + "\n  airstrip: " + this.airstrip
+                + "\n  direction: " + this.direction
+        );
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,6 +1,9 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airport;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
@@ -14,19 +17,13 @@ import java.util.List;
 public class AirportRepositoryImpl implements AirportRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    AirstripRepository airstripRepository = new AirstripRepositoryImpl();
-    AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
-    GateRepository gateRepository = new GateRepositoryImpl();
-
-//    private Long id;
-//    private String name;
-//    private List<Airstrip> airstrips;
-//    private List<Gate> gates;
-//    private List<Aircarrier> aircarriers;
-
+    private static final AirstripRepository airstripRepository = new AirstripRepositoryImpl();
+    private static final AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
+    private static final GateRepository gateRepository = new GateRepositoryImpl();
+    
     @Override
     public void create(Airport airport) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println("\nCREATE airport");
+//        System.out.println(" CREATE airport");
 //        Connection connection = CONNECTION_POOL.getConnection();
 //        try { //insert into airports(airport_id, name) values (6, 'Denis');
 //            PreparedStatement preparedStatement = connection.prepareStatement(
@@ -45,6 +42,38 @@ public class AirportRepositoryImpl implements AirportRepository {
     }
 
     @Override
+    public Airport map(ResultSet resultSet) throws SQLException {
+        Airport airport = new Airport();
+
+        List<Airstrip> airstrips = new ArrayList<>();
+        Airstrip airstrip;
+        airstrip = airstripRepository.map(resultSet);
+        airstrips.add(airstrip);
+
+        List<Gate> gates = new ArrayList<>();
+        Gate gate;
+        gate = gateRepository.map(resultSet);
+        gates.add(gate);
+
+        List<Aircarrier> aircarriers = new ArrayList<>();
+        Aircarrier aircarrier;
+        aircarrier = aircarrierRepository.map(resultSet);
+        aircarriers.add(aircarrier);
+
+        airport.setAirstrips(airstrips);
+        airport.setGates(gates);
+        airport.setAircarriers(aircarriers);
+        airport.setId(resultSet.getLong("airport_id"));
+        airport.setName(resultSet.getString("name"));
+        return airport;
+    }
+//    private Long id;
+//    private String name;
+//    private List<Airstrip> airstrips;
+//    private List<Gate> gates;
+//    private List<Aircarrier> aircarriers;
+    
+    @Override
     public List<Airport> readAll() {
         System.out.println("READ all airports");
         Connection connection = CONNECTION_POOL.getConnection();
@@ -61,13 +90,7 @@ public class AirportRepositoryImpl implements AirportRepository {
 //                private List<Airstrip> airstrips;
 //                private List<Gate> gates;
 //                private List<Aircarrier> aircarriers;
-                airport = new Airport();
-                airport.setId(resultSet.getLong("airport_id"));
-                airport.setName(resultSet.getString("name"));
-                airport.setAirstrips(airstripRepository.readByAirportId(resultSet.getLong("airport_id")));
-                airport.setGates(gateRepository.readByAirportId(resultSet.getLong("airport_id")));
-                airport.setAircarriers(aircarrierRepository.readByAirportId(resultSet.getLong("airport_id")));
-                airports.add(airport);
+                airports.add(map(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
