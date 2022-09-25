@@ -8,21 +8,24 @@ import java.math.BigDecimal;
 public class Ticket {
 
     private Long id;
-    private BigDecimal flight_number;
+//    private BigDecimal flight_number;
+    private Flight flight;
     private Passenger passenger;
-    private BigDecimal gate_number;
+//    private BigDecimal gate_number;
+    private Gate gate;
     private BigDecimal price;
     private Integer number;
     private Integer seat;
 
     public String toString() {
         return ("Ticket: id: " + this.id
-                + " flight_number: " + this.flight_number
-                + " gate_number: " + this.gate_number
+//                + " flight_number : " + this.flight_number
+//                + " gate_number : " + this.gate_number
                 + " price: " + this.price
-                + " number: " + this.number
                 + " seat: " + this.seat
+                + "\n  gate : " + this.gate
                 + "\n  passenger: " + this.passenger
+                + "\n  flight : " + this.flight
         );
     }
 
@@ -66,19 +69,19 @@ public class Ticket {
         this.seat = seat;
     }
 
-    public BigDecimal getFlight_number() {
-        return flight_number;
+    public Flight getFlight() {
+        return flight;
     }
 
-    public void setFlight_number(BigDecimal flight_number) {
-        this.flight_number = flight_number;
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
-    public BigDecimal getGate_number() {
-        return gate_number;
+    public Gate getGate() {
+        return gate;
     }
 
-    public void setGate_number(BigDecimal gate_number) {
-        this.gate_number = gate_number;
+    public void setGate(Gate gate) {
+        this.gate = gate;
     }
 }

@@ -19,6 +19,4 @@ public interface PassengerRepository {
     void update(Passenger passenger);
 
     void deleteById(Long id);
-
-    void deleteByNumber(Integer number);
 }

@@ -17,11 +17,7 @@ public interface GateRepository {
 
     Gate readById(Long id);
 
-    List<Gate> readByAirportId(Long airportId);
-
     void update(Gate gate);
 
     void deleteById(Long id);
-
-    void deleteByNumber(Integer number);
 }

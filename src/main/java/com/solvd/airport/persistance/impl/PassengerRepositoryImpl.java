@@ -17,10 +17,10 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     public void create(Passenger passenger) { // вызывается из сервиса. делает инсерт данных объекта в бд.
         System.out.println(" CREATE passenger");
         Connection connection = CONNECTION_POOL.getConnection();
-        try { //insert into passengers(passport_id, name) values (6, 'Denis');
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into passengers(passport_id, name) values (?);", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, passenger.getPassport().getId());
+                    "insert into passengers(passport_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, passenger.getPassport().getId());
             preparedStatement.setString(1, passenger.getName());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -29,8 +29,8 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
+        } finally {
+        CONNECTION_POOL.releaseConnection(connection);}
     }
 
     @Override
@@ -69,9 +69,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         passenger.setPassport(passport);
         return passenger;
     }
-//    private Long id;
-//    private Passport passport;
-//    private String name;
 
     @Override
     public Passenger readById(Long id) {
@@ -133,21 +130,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "delete from passengers where id = ?; ", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteByNumber(Integer number) {
-        System.out.println("DELETE passenger by number=" + number);
-        Connection connection = CONNECTION_POOL.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "delete from passengers where number = ?; ", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, number);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

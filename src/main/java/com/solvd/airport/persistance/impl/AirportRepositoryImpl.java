@@ -1,9 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airport;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
@@ -23,22 +20,21 @@ public class AirportRepositoryImpl implements AirportRepository {
     
     @Override
     public void create(Airport airport) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println(" CREATE airport");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try { //insert into airports(airport_id, name) values (6, 'Denis');
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "insert into airports(airport_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, airport.getAirport().getId());
-//            preparedStatement.setString(2, airport.getName());
-//            preparedStatement.executeUpdate();
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-//            while (resultSet.next()) {
-//                airport.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
+        System.out.println(" CREATE airport");
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into airports(name) values (?);", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, airport.getName());
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            while (resultSet.next()) {
+                airport.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+        CONNECTION_POOL.releaseConnection(connection);}
     }
 
     @Override
@@ -67,12 +63,7 @@ public class AirportRepositoryImpl implements AirportRepository {
         airport.setName(resultSet.getString("name"));
         return airport;
     }
-//    private Long id;
-//    private String name;
-//    private List<Airstrip> airstrips;
-//    private List<Gate> gates;
-//    private List<Aircarrier> aircarriers;
-    
+
     @Override
     public List<Airport> readAll() {
         System.out.println("READ all airports");
@@ -85,11 +76,6 @@ public class AirportRepositoryImpl implements AirportRepository {
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//                private Long id;
-//                private String name;
-//                private List<Airstrip> airstrips;
-//                private List<Gate> gates;
-//                private List<Aircarrier> aircarriers;
                 airports.add(map(resultSet));
             }
         } catch (SQLException e) {
@@ -114,9 +100,9 @@ public class AirportRepositoryImpl implements AirportRepository {
                 airport = new Airport();
                 airport.setId(resultSet.getLong("airport_id"));
                 airport.setName(resultSet.getString("name"));
-                airport.setAirstrips(airstripRepository.readByAirportId(resultSet.getLong("airport_id")));
-                airport.setGates(gateRepository.readByAirportId(resultSet.getLong("airport_id")));
-                airport.setAircarriers(aircarrierRepository.readByAirportId(resultSet.getLong("airport_id")));
+//                airport.setAirstrips(airstripRepository.readByAirportId(resultSet.getLong("airport_id")));
+//                airport.setGates(gateRepository.readByAirportId(resultSet.getLong("airport_id")));
+//                airport.setAircarriers(aircarrierRepository.readByAirportId(resultSet.getLong("airport_id")));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -150,21 +136,6 @@ public class AirportRepositoryImpl implements AirportRepository {
 //            PreparedStatement preparedStatement = connection.prepareStatement(
 //                    "delete from airports where id = ?; ", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteByNumber(Integer number) {
-//        System.out.println("DELETE airport by number=" + number);
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "delete from airports where number = ?; ", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, number);
 //            preparedStatement.executeUpdate();
 //        } catch (SQLException e) {
 //            throw new RuntimeException(e);

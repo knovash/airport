@@ -1,31 +1,30 @@
 package com.solvd.airport.service.impl;
 
-
-import com.solvd.airport.domain.flight.Direction;
-import com.solvd.airport.persistance.DirectionRepository;
-import com.solvd.airport.persistance.impl.DirectionRepositoryImpl;
-import com.solvd.airport.service.DirectionService;
+import com.solvd.airport.domain.passenger.Passport;
+import com.solvd.airport.persistance.PassportRepository;
+import com.solvd.airport.persistance.impl.PassportRepositoryImpl;
+import com.solvd.airport.service.PassportService;
 
 import java.util.List;
 
-public class PassportServiceImpl implements DirectionService {
+public class PassportServiceImpl implements PassportService {
 
-    private DirectionRepository directionRepository = new DirectionRepositoryImpl();
+    private PassportRepository passportRepository = new PassportRepositoryImpl();
 
     public PassportServiceImpl() {
-        this.directionRepository = new DirectionRepositoryImpl();
+        this.passportRepository = new PassportRepositoryImpl();
 
     }
 
     @Override
-    public Direction create(Direction direction) {
-        direction.setId(null);
-        directionRepository.create(direction); // directionRepository в persistance там sql insert зааносит информацию из полей в бд
-        return direction;
+    public Passport create(Passport passport) {
+        passport.setId(null);
+        passportRepository.create(passport); // passportRepository в persistance там sql insert зааносит информацию из полей в бд
+        return passport;
     }
 
     @Override
-    public List<Direction> readAll() {
+    public List<Passport> readAll() {
         return null;
     }
 }

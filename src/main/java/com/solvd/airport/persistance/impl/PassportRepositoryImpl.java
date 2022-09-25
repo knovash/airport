@@ -27,8 +27,8 @@ public class PassportRepositoryImpl implements PassportRepository {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
+        } finally {
+        CONNECTION_POOL.releaseConnection(connection);}
     }
 
     @Override
@@ -107,21 +107,6 @@ public class PassportRepositoryImpl implements PassportRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "delete from passports where id = ?; ", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteByNumber(Integer number) {
-        System.out.println("DELETE passport by number=" + number);
-        Connection connection = CONNECTION_POOL.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "delete from passports where number = ?; ", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, number);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

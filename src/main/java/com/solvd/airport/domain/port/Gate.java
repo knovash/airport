@@ -4,9 +4,10 @@ public class Gate {
 
     private Long id;
     private Integer number;
+    private Long airportId;
 
     public String toString() {
-        return ("Gate: id: " + this.id + " number: " + this.number);
+        return ("Gate: id: " + this.id + " number: " + this.number + " airportId: " + this.airportId);
     }
 
     public Long getId() {
@@ -23,5 +24,13 @@ public class Gate {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Long getAirportId() {
+        return airportId;
+    }
+
+    public void setAirportId(Long airportId) {
+        this.airportId = airportId;
     }
 }

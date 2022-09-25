@@ -8,12 +8,15 @@ public class Pilot {
 
     private Long id;
     private String name;
-    private License license;
-    private List<Flight> flights;
+    private Long aircarrierId;
+//    private License license;
+//    private List<Flight> flights;
 
     public String toString() {
-        return ("Pilot: id: " + this.id + " name: " + this.name + " license: " + this.license + " Flights: " + this.flights);
+//        return ("Pilot: id: " + this.id + " name: " + this.name + " license: " + this.license + " Flights: " + this.flights);
+        return ("Pilot: id: " + this.id + " name: " + this.name + " aircarrierId: " + this.aircarrierId);
     }
+
 
     public Long getId() {
         return id;
@@ -31,19 +34,27 @@ public class Pilot {
         this.name = name;
     }
 
-    public License getLicense() {
-        return license;
+    public Long getAircarrierId() {
+        return aircarrierId;
     }
 
-    public void setLicense(License license) {
-        this.license = license;
+    public void setAircarrierId(Long aircarrier_id) {
+        this.aircarrierId = aircarrier_id;
     }
 
-    public List<Flight> getFlights() {
-        return flights;
-    }
-
-    public void setFlights(List<Flight> flights) {
-        flights = flights;
-    }
+    //    public License getLicense() {
+//        return license;
+//    }
+//
+//    public void setLicense(License license) {
+//        this.license = license;
+//    }
+//
+//    public List<Flight> getFlights() {
+//        return flights;
+//    }
+//
+//    public void setFlights(List<Flight> flights) {
+//        flights = flights;
+//    }
 }

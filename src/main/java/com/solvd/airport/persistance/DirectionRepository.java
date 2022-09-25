@@ -1,7 +1,6 @@
 package com.solvd.airport.persistance;
 
 import com.solvd.airport.domain.flight.Direction;
-import com.solvd.airport.domain.passenger.Passenger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +19,4 @@ public interface DirectionRepository {
     void update(Direction direction);
 
     void deleteById(Long id);
-
-    void deleteByCountry(String country);
 }

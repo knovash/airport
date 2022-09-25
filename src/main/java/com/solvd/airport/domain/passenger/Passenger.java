@@ -7,7 +7,7 @@ public class Passenger {
     private String name;
 
     public String toString() {
-        return ("Passenger: id: " + this.id + " name: " + this.name + " passport: " + this.passport);
+        return ("Passenger: id: " + this.id + " name: " + this.name + "\n  passport: " + this.passport);
     }
 
     public Long getId() {

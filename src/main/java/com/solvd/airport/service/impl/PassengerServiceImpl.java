@@ -1,31 +1,38 @@
 package com.solvd.airport.service.impl;
 
-
-import com.solvd.airport.domain.flight.Direction;
-import com.solvd.airport.persistance.DirectionRepository;
-import com.solvd.airport.persistance.impl.DirectionRepositoryImpl;
-import com.solvd.airport.service.DirectionService;
+import com.solvd.airport.domain.passenger.Passenger;
+import com.solvd.airport.domain.passenger.Passport;
+import com.solvd.airport.persistance.PassengerRepository;
+import com.solvd.airport.persistance.impl.PassengerRepositoryImpl;
+import com.solvd.airport.service.PassengerService;
+import com.solvd.airport.service.PassportService;
 
 import java.util.List;
 
-public class PassengerServiceImpl implements DirectionService {
+public class PassengerServiceImpl implements PassengerService {
 
-    private DirectionRepository directionRepository = new DirectionRepositoryImpl();
+    private final PassengerRepository passengerRepository;
+    private final PassportService passportService;
 
     public PassengerServiceImpl() {
-        this.directionRepository = new DirectionRepositoryImpl();
-
+        this.passportService = new PassportServiceImpl();
+        this.passengerRepository = new PassengerRepositoryImpl();
     }
 
     @Override
-    public Direction create(Direction direction) {
-        direction.setId(null);
-        directionRepository.create(direction); // directionRepository в persistance там sql insert зааносит информацию из полей в бд
-        return direction;
+    public Passenger create(Passenger passenger) {
+        passenger.setId(null);
+        passengerRepository.create(passenger); // passengerRepository в persistance там sql insert зааносит информацию из полей в бд
+        if (passenger.getPassport() != null) {
+            Passport passport = passenger.getPassport();
+            passportService.create(passport);
+            passenger.setPassport(passport);
+        }
+        return passenger;
     }
 
     @Override
-    public List<Direction> readAll() {
-        return null;
+    public List<Passenger> readAll() {
+        return passengerRepository.readAll();
     }
 }

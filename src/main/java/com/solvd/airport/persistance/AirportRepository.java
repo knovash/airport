@@ -1,6 +1,5 @@
 package com.solvd.airport.persistance;
 
-import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.port.Airport;
 
 import java.sql.ResultSet;
@@ -20,6 +19,4 @@ public interface AirportRepository {
     void update(Airport airport);
 
     void deleteById(Long id);
-
-    void deleteByNumber(Integer number);
 }

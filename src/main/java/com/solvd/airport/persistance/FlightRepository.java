@@ -17,13 +17,7 @@ public interface FlightRepository {
 
     Flight readById(Long id);
 
-    List<Flight> readByPilotId(Long pilotId);
-
-    List<Flight> readByAircarrierId(Long aircarrierId);
-
     void update(Flight flight);
 
     void deleteById(Long id);
-
-    void deleteByNumber(Integer number);
 }

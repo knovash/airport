@@ -1,8 +1,5 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.GateRepository;
@@ -18,38 +15,34 @@ public class GateRepositoryImpl implements GateRepository {
 //    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
 //    GateRepository gateRepository = new GateRepositoryImpl();
 
-//    private Long id;
-//    private Integer number;
-
     @Override
     public void create(Gate gate) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println(" CREATE gate");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try { //insert into gates(gate_id, name) values (6, 'Denis');
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "insert into gates(gate_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, gate.getGate().getId());
-//            preparedStatement.setString(2, gate.getName());
-//            preparedStatement.executeUpdate();
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-//            while (resultSet.next()) {
-//                gate.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
+        System.out.println(" CREATE gate");
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into gates(number, airport_id) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, gate.getNumber());
+            preparedStatement.setLong(1, gate.getAirportId());
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            while (resultSet.next()) {
+                gate.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override
     public Gate map(ResultSet resultSet) throws SQLException {
         Gate gate = new Gate();
         gate.setId(resultSet.getLong("gate_id"));
-        gate.setNumber(resultSet.getInt("number"));
+        gate.setNumber(resultSet.getInt("gate_number"));
+        gate.setAirportId(resultSet.getLong("gate_airport_id"));
         return gate;
     }
-//    private Long id;
-//    private Integer number;
     
     @Override
     public List<Gate> readAll() {
@@ -60,12 +53,10 @@ public class GateRepositoryImpl implements GateRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as gate_id, number as number  FROM airport.gates;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as gate_id, number as gate_number, airport_id as gate_airport_id FROM airport.gates;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//                private Long id;
-//                private Integer number;
                 gates.add(map(resultSet));
             }
         } catch (SQLException e) {
@@ -99,34 +90,6 @@ public class GateRepositoryImpl implements GateRepository {
     }
 
     @Override
-    public List<Gate> readByAirportId(Long airportId) {
-        System.out.println("READ all gates");
-        Connection connection = CONNECTION_POOL.getConnection();
-        List<Gate> gates = new ArrayList<>();
-        Gate gate;
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as gate_id, number as number  FROM airport.gates where gates.airport_id = ?;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, airportId);
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-//                private Long id;
-//                private Integer number;
-                gate = new Gate();
-                gate.setId(resultSet.getLong("gate_id"));
-                gate.setNumber(resultSet.getInt("number"));
-                gates.add(gate);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-        return gates;
-    }
-
-    @Override
     public void update(Gate gate) {
 //        System.out.println("UPDATE gate");
 //        Connection connection = CONNECTION_POOL.getConnection();
@@ -151,21 +114,6 @@ public class GateRepositoryImpl implements GateRepository {
 //            PreparedStatement preparedStatement = connection.prepareStatement(
 //                    "delete from gates where id = ?; ", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteByNumber(Integer number) {
-//        System.out.println("DELETE gate by number=" + number);
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "delete from gates where number = ?; ", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, number);
 //            preparedStatement.executeUpdate();
 //        } catch (SQLException e) {
 //            throw new RuntimeException(e);

@@ -52,10 +52,10 @@ public class Main {
 //        airports.forEach(System.out::println);
         
 // OK
-//        System.out.println("\nMain: READ all airstrips");
-//        AirstripRepository airstripRepository = new AirstripRepositoryImpl();
-//        List<Airstrip> airstrips = airstripRepository.readAll();
-//        airstrips.forEach(System.out::println);
+        System.out.println("\nMain: READ all airstrips");
+        AirstripRepository airstripRepository = new AirstripRepositoryImpl();
+        List<Airstrip> airstrips = airstripRepository.readAll();
+        airstrips.forEach(System.out::println);
 // OK
         System.out.println("\nMain: READ all directions");
         DirectionRepository directionRepository = new DirectionRepositoryImpl();
@@ -68,15 +68,11 @@ public class Main {
 //        List<Flight> flights = flightRepository.readAll();
 //        flights.forEach(System.out::println);
 // OK
-//        System.out.println("\nMain: READ all gates");
-//        GateRepository gateRepository = new GateRepositoryImpl();
-//        List<Gate> gates = gateRepository.readAll();
-//        gates.forEach(System.out::println);
-// OK
-//        System.out.println("\nMain: READ all licenses");
-//        LicenseRepository licenseRepository = new LicenseRepositoryImpl();
-//        List<License> licenses = licenseRepository.readAll();
-//        licenses.forEach(System.out::println);
+        System.out.println("\nMain: READ all gates");
+        GateRepository gateRepository = new GateRepositoryImpl();
+        List<Gate> gates = gateRepository.readAll();
+        gates.forEach(System.out::println);
+
 // OK
         System.out.println("\nMain: READ all passports");
         PassportRepository passportRepository = new PassportRepositoryImpl();
@@ -90,16 +86,16 @@ public class Main {
 // OK
 
         
-//        System.out.println("\nMain: READ all pilots");
-//        PilotRepository pilotRepository = new PilotRepositoryImpl();
-//        List<Pilot> pilots = pilotRepository.readAll();
-//        pilots.forEach(System.out::println);
+        System.out.println("\nMain: READ all pilots");
+        PilotRepository pilotRepository = new PilotRepositoryImpl();
+        List<Pilot> pilots = pilotRepository.readAll();
+        pilots.forEach(System.out::println);
 
         //UNDERCONSTRUCTION
-//        System.out.println("\nMain: READ all tickets");
-//        TicketRepository ticketRepository = new TicketRepositoryImpl();
-//        List<Ticket> tickets = ticketRepository.readAll();
-//        tickets.forEach(System.out::println);
+        System.out.println("\nMain: READ all tickets");
+        TicketRepository ticketRepository = new TicketRepositoryImpl();
+        List<Ticket> tickets = ticketRepository.readAll();
+        tickets.forEach(System.out::println);
 
 
 

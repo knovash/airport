@@ -1,28 +1,34 @@
 package com.solvd.airport.domain.flight;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.port.Airstrip;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class Flight {
 
     private Long id;
+    private Aircarrier aircarrier;
     private Aircraft aircraft;
     private Airstrip airstrip;
+    private Pilot pilot;
     private Direction direction;
     private Integer number;
-    private LocalDate date;
+    private Date date;
     private List<Ticket> tickets;
 
     public String toString() {
         return ("Flight: id: " + this.id
                 + " number: " + this.number
                 + " date: " + this.date
+                + "\n  aircarrier: " + this.aircarrier
                 + "\n  aircraft: " + this.aircraft
                 + "\n  airstrip: " + this.airstrip
+                + "\n  pilot: " + this.pilot
                 + "\n  direction: " + this.direction
         );
     }
@@ -67,11 +73,11 @@ public class Flight {
         this.number = number;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -81,5 +87,21 @@ public class Flight {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public Pilot getPilot() {
+        return pilot;
+    }
+
+    public void setPilot(Pilot pilot) {
+        this.pilot = pilot;
+    }
+
+    public Aircarrier getAircarrier() {
+        return aircarrier;
+    }
+
+    public void setAircarrier(Aircarrier aircarrier) {
+        this.aircarrier = aircarrier;
     }
 }

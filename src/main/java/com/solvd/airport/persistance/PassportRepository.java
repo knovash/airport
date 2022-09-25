@@ -19,6 +19,4 @@ public interface PassportRepository {
     void update(Passport passport);
 
     void deleteById(Long id);
-
-    void deleteByNumber(Integer number);
 }

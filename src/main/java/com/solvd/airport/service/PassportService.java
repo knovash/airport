@@ -1,13 +1,13 @@
 package com.solvd.airport.service;
 
-import com.solvd.airport.domain.flight.Direction;
+import com.solvd.airport.domain.passenger.Passport;
 
 import java.util.List;
 
 public interface PassportService {
 
-    Direction create(Direction direction);
+    Passport create(Passport passport);
 
-    List<Direction> readAll();
+    List<Passport> readAll();
 
 }

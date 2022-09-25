@@ -1,9 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Direction;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.ConnectionPool;
 import com.solvd.airport.persistance.DirectionRepository;
 
@@ -44,9 +41,6 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         direction.setDistance(resultSet.getBigDecimal("distance"));
         return direction;
     }
-//    private Long id;
-//    private String country;
-//    private BigDecimal distance;
     
     @Override
     public List<Direction> readAll() {
@@ -120,21 +114,6 @@ public class DirectionRepositoryImpl implements DirectionRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "delete from directions where id = ?; ", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteByCountry(String country) {
-        System.out.println("DELETE direction by country=" + country);
-        Connection connection = CONNECTION_POOL.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "delete from directions where country = ?; ", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, country);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

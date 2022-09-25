@@ -1,8 +1,5 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AirstripRepository;
@@ -18,27 +15,24 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 //    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
 //    AirstripRepository airstripRepository = new AirstripRepositoryImpl();
 
-//    private Long id;
-//    private Integer number;
-
     @Override
-    public void create(Airstrip airstrip) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-//        System.out.println(" CREATE airstrip");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try { //insert into airstrips(airstrip_id, name) values (6, 'Denis');
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "insert into airstrips(airstrip_id, name) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, airstrip.getAirstrip().getId());
-//            preparedStatement.setString(2, airstrip.getName());
-//            preparedStatement.executeUpdate();
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-//            while (resultSet.next()) {
-//                airstrip.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
+    public void create(Airstrip airstrip, Long airportId) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+        System.out.println(" CREATE airstrip");
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into airstrips(number, airport_id) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, airstrip.getNumber());
+            preparedStatement.setLong(2, airstrip.getAirportId());
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            while (resultSet.next()) {
+                airstrip.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override
@@ -46,10 +40,9 @@ public class AirstripRepositoryImpl implements AirstripRepository {
         Airstrip airstrip = new Airstrip();
         airstrip.setId(resultSet.getLong("airstrip_id"));
         airstrip.setNumber(resultSet.getInt("airstrip_number"));
+        airstrip.setAirportId(resultSet.getLong("airstrip_airport_id"));
         return airstrip;
     }
-//    private Long id;
-//    private Integer number;
     
     @Override
     public List<Airstrip> readAll() {
@@ -60,12 +53,10 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as airstrip_id, number as airstrip_number  FROM airport.airstrips;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as airstrip_id, number as airstrip_number, airport_id as airstrip_airport_id  FROM airport.airstrips;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//                private Long id;
-//                private Integer number;
                 airstrips.add(map(resultSet));
             }
         } catch (SQLException e) {
@@ -99,34 +90,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
     }
 
     @Override
-    public List<Airstrip> readByAirportId(Long airportId) {
-        System.out.println("READ all airstrips");
-        Connection connection = CONNECTION_POOL.getConnection();
-        List<Airstrip> airstrips = new ArrayList<>();
-        Airstrip airstrip;
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as airstrip_id, number as number  FROM airport.airstrips where airstrips.airport_id = ?;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, airportId);
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-//                private Long id;
-//                private Integer number;
-                airstrip = new Airstrip();
-                airstrip.setId(resultSet.getLong("airstrip_id"));
-                airstrip.setNumber(resultSet.getInt("number"));
-                airstrips.add(airstrip);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-        return airstrips;
-    }
-
-    @Override
     public void update(Airstrip airstrip) {
 //        System.out.println("UPDATE airstrip");
 //        Connection connection = CONNECTION_POOL.getConnection();
@@ -151,21 +114,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 //            PreparedStatement preparedStatement = connection.prepareStatement(
 //                    "delete from airstrips where id = ?; ", Statement.RETURN_GENERATED_KEYS);
 //            preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
-    }
-
-    @Override
-    public void deleteByNumber(Integer number) {
-//        System.out.println("DELETE airstrip by number=" + number);
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "delete from airstrips where number = ?; ", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, number);
 //            preparedStatement.executeUpdate();
 //        } catch (SQLException e) {
 //            throw new RuntimeException(e);
