@@ -1,7 +1,7 @@
 package com.solvd.airport.persistance;
 
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.flight.Flight;
-import com.solvd.airport.domain.passenger.Passenger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,8 +12,6 @@ public interface FlightRepository {
     void create(Flight flight);
 
     List<Flight> readAll();
-
-    Flight map(ResultSet resultSet) throws SQLException;
 
     Flight readById(Long id);
 

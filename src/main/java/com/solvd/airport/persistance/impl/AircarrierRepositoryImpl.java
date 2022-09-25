@@ -1,9 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AircarrierRepository;
 
@@ -34,57 +31,101 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-        CONNECTION_POOL.releaseConnection(connection);}
+            CONNECTION_POOL.releaseConnection(connection);
+        }
     }
 
-    @Override
-    public Aircarrier map(ResultSet resultSet) throws SQLException {
-        Aircarrier aircarrier = new Aircarrier();
-
-        List<Flight> flights = new ArrayList<>();
-        Flight flight;
-        flight = flightRepository.map(resultSet);
-        flights.add(flight);
-
-        List<Aircraft> aircrafts = new ArrayList<>();
-        Aircraft aircraft;
-        aircraft = aircraftRepository.map(resultSet);
-        aircrafts.add(aircraft);
-
-        List<Pilot> pilots = new ArrayList<>();
-        Pilot pilot;
-        pilot = pilotRepository.map(resultSet);
-        pilots.add(pilot);
-
-        aircarrier.setFlights(flights);
-        aircarrier.setAircrafts(aircrafts);
-        aircarrier.setPilots(pilots);
-        aircarrier.setId(resultSet.getLong("aircarrier_id"));
-        aircarrier.setName(resultSet.getString("name"));
-        return aircarrier;
+    private static Aircarrier findById(Long id, List<Aircarrier> aircarriers) {
+        return aircarriers.stream()
+                .filter(aircarrier -> aircarrier.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Aircarrier newAircarrier = new Aircarrier();
+                    newAircarrier.setId(id);
+                    aircarriers.add(newAircarrier);
+                    return newAircarrier;
+                });
     }
+
+
+    public List<Aircarrier> map(ResultSet resultSet) throws SQLException {
+        List<Aircarrier> aircarriers = new ArrayList<>();
+        while (resultSet.next()) {
+            aircarriers = mapRow(resultSet, aircarriers);
+        }
+        return aircarriers;
+    }
+
+
+    public List<Aircarrier> mapRow(ResultSet resultSet, List<Aircarrier> aircarriers) throws SQLException {
+        long id = resultSet.getLong("aircarrier_id");
+
+        if (id != 0) {
+            if (aircarriers == null) {
+                aircarriers = new ArrayList<>();
+            }
+            Aircarrier aircarrier = findById(id, aircarriers);
+            aircarrier.setName(resultSet.getString("aircarrier_name"));
+            aircarrier.setId(resultSet.getLong("aircarrier_id"));
+
+        }
+        return aircarriers;
+    }
+
+
+//    aircarriers = map(resultSet);
+
+//     aircarrier.setName(resultSet.getString("aircarrier_name"));
+//             aircarrier.setId(resultSet.getLong("aircarrier_id"));
+
+//    @Override
+//    public List<Aircarrier> map(ResultSet resultSet) throws SQLException {
+////        Aircarrier aircarrier = new Aircarrier();
+//        List<Aircarrier> aircarriers = new ArrayList<>();
+//
+//        while (resultSet.next()) {
+//            Long id = resultSet.getLong("aircarrier_id");
+//
+//            Aircarrier aircarrier = findById(id, aircarriers);
+//
+//            aircarrier.setName(resultSet.getString("aircarrier_name"));
+//            aircarrier.setId(resultSet.getLong("aircarrier_id"));
+//
+//            List<Pilot> pilots;
+//            pilots = pilotRepository.mapRow(resultSet);
+//            aircarrier.setPilots(pilots);
+//        }
+////        return aircarriers;
+//    }
+//
+
 
     @Override
     public List<Aircarrier> readAll() {
         System.out.println("READ all aircarriers");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Aircarrier> aircarriers = new ArrayList<>();
-        Aircarrier aircarrier;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircarrier_id, name as name FROM airport.aircarriers;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT \n" +
+                            "aircarriers.id as aircarrier_id, \n" +
+                            "aircarriers.name as aircarrier_name,\n" +
+                            "pilots.id as pilot_id,\n" +
+                            "pilots.name as pilot_name,\n" +
+                            "pilots.aircarrier_id as pilot_aircarrier_id\n" +
+                            "FROM aircarriers\n" +
+                            "join pilots on aircarriers.id = pilots.aircarrier_id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                aircarriers.add(map(resultSet));
-            }
+
+            aircarriers = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         CONNECTION_POOL.releaseConnection(connection);
         return aircarriers;
     }
-
 
 
     @Override

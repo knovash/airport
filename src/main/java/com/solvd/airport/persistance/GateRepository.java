@@ -1,6 +1,6 @@
 package com.solvd.airport.persistance;
 
-import com.solvd.airport.domain.passenger.Passenger;
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.port.Gate;
 
 import java.sql.ResultSet;
@@ -12,8 +12,6 @@ public interface GateRepository {
     void create(Gate gate);
 
     List<Gate> readAll();
-
-    Gate map(ResultSet resultSet) throws SQLException;
 
     Gate readById(Long id);
 

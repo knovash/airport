@@ -14,7 +14,10 @@ import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.impl.*;
+import com.solvd.airport.service.DirectionService;
+import com.solvd.airport.service.impl.DirectionServiceImpl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,44 +39,48 @@ public class Main {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-//        System.out.println("\nMain: READ all aircarriers");
-//        AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
-//        List<Aircarrier> aircarriers = aircarrierRepository.readAll();
-//        aircarriers.forEach(System.out::println);
+        System.out.println("\nMain: READ all aircarriers");
+        AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
+        List<Aircarrier> aircarriers = aircarrierRepository.readAll();
+        aircarriers.forEach(System.out::println);
 //
-//        System.out.println("\nMain: READ all aircrafts");
-//        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-//        List<Aircraft> aircrafts = aircraftRepository.readAll();
-//        aircrafts.forEach(System.out::println);
+        System.out.println("\nMain: READ all aircrafts");
+        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
+        List<Aircraft> aircrafts = aircraftRepository.readAll();
+        aircrafts.forEach(System.out::println);
 
 //        System.out.println("\nMain: READ all airports");
 //        AirportRepository airportRepository = new AirportRepositoryImpl();
 //        List<Airport> airports = airportRepository.readAll();
 //        airports.forEach(System.out::println);
-        
-// OK
+
         System.out.println("\nMain: READ all airstrips");
         AirstripRepository airstripRepository = new AirstripRepositoryImpl();
         List<Airstrip> airstrips = airstripRepository.readAll();
         airstrips.forEach(System.out::println);
-// OK
+
+//        System.out.println("\nMain: CREATE direction");
+//        DirectionService directionService = new DirectionServiceImpl();
+//        Direction d = new Direction();
+//        d.setCountry("newcountry");
+//        d.setDistance(new BigDecimal(999));
+//        directionService.create(d);
+
         System.out.println("\nMain: READ all directions");
         DirectionRepository directionRepository = new DirectionRepositoryImpl();
         List<Direction> directions = directionRepository.readAll();
         directions.forEach(System.out::println);
 
-        //UNDERCONSTRUCTION
-//        System.out.println("\nMain: READ all flights");
-//        FlightRepository flightRepository = new FlightRepositoryImpl();
-//        List<Flight> flights = flightRepository.readAll();
-//        flights.forEach(System.out::println);
-// OK
+        System.out.println("\nMain: READ all flights");
+        FlightRepository flightRepository = new FlightRepositoryImpl();
+        List<Flight> flights = flightRepository.readAll();
+        flights.forEach(System.out::println);
+
         System.out.println("\nMain: READ all gates");
         GateRepository gateRepository = new GateRepositoryImpl();
         List<Gate> gates = gateRepository.readAll();
         gates.forEach(System.out::println);
 
-// OK
         System.out.println("\nMain: READ all passports");
         PassportRepository passportRepository = new PassportRepositoryImpl();
         List<Passport> passports = passportRepository.readAll();
@@ -83,44 +90,18 @@ public class Main {
         PassengerRepository passengerRepository = new PassengerRepositoryImpl();
         List<Passenger> passengers = passengerRepository.readAll();
         passengers.forEach(System.out::println);
-// OK
 
-        
         System.out.println("\nMain: READ all pilots");
         PilotRepository pilotRepository = new PilotRepositoryImpl();
         List<Pilot> pilots = pilotRepository.readAll();
         pilots.forEach(System.out::println);
 
-        //UNDERCONSTRUCTION
         System.out.println("\nMain: READ all tickets");
         TicketRepository ticketRepository = new TicketRepositoryImpl();
         List<Ticket> tickets = ticketRepository.readAll();
         tickets.forEach(System.out::println);
 
 
-
-
-
-
-        
-        
-        
-        
-        
-        
-//        PassportRepositoryImpl passportRepository = new PassportRepositoryImpl();
-//        List<Passport> passports;
-//        Passport passport = new Passport();
-//        Long id;
-
-//        // READ to List ALL passports from bd
-//        passports = passportRepository.readAll();
-//        passports.forEach(System.out::println);
-//
-//        // READ by id passport from bd
-//        passport = passportRepository.readById(3L);
-//        System.out.println("passport by id: " + passport);
-//
         // CREATE NEW passport insert to bd
 //        System.out.println("\nMain: CREATE passport");
 //        passport.setNumber((int) (Math.random() * 313131));
@@ -135,13 +116,6 @@ public class Main {
 //        passportRepository.update(passport);
 //        System.out.println(passport);
 //
-//        // READ to print ALL passports from bd
-//        passportRepository.readAll().forEach(System.out::println);
-//
-//        // PRINT List objects pasports
-//        System.out.println("\nList passports:");
-//        passports.forEach(System.out::println);
-
         // DELETE by id passport
 //        id = 39L; // ид в бд удаляемого элемента
 //        System.out.println("id=" + id);
@@ -153,82 +127,5 @@ public class Main {
 //                .get();
 //        passports.remove(passports.indexOf(pById)); // delete passport from List objects by number
 
-        // DELETE by number passport
-//        Integer number = 184765;
-//        System.out.println("number=" + number);
-//        passportRepository.deleteByNumber(number); // delete passport from bd by number
-//        Passport pByNumber = passports.stream()
-//                .filter(p -> number.equals(p.getNumber()))
-//                .findFirst()
-//                .get();
-//        passports.remove(passports.indexOf(pByNumber)); // delete passport from List objects by number
-
-//        // PRINT list objects pasports
-//        System.out.println("\nList passports:");
-//        passports.forEach(System.out::println);
-//
-//        // READ to print ALL passports from bd
-//        passportRepository.readAll().forEach(System.out::println);
-               
-
-//        System.out.println("\nMain: READ all aircrafts");
-//        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-//        List<Aircraft> aircrafts = aircraftRepository.readAll();
-//        aircrafts.forEach(System.out::println);
-
-//        System.out.println("\nMain: READ all directions");
-//        DirectionRepository directionRepository = new DirectionRepositoryImpl();
-//        List<Direction> directions = directionRepository.readAll();
-//        directions.forEach(System.out::println);
-
-//        System.out.println("\nMain: READ all tickets");
-//        TicketRepository ticketRepository = new TicketRepositoryImpl();
-//        List<Ticket> tickets = ticketRepository.readAll();
-//        tickets.forEach(System.out::println);
-      
-
-        // ERROR
-
-//        System.out.println("\nMain: READ all flights");
-//        FlightRepository flightRepository = new FlightRepositoryImpl();
-//        List<Flight> flights = flightRepository.readAll();
-//        flights.forEach(System.out::println);
-
-//        System.out.println("\nMain: READ all airports");
-//        AirportRepository airportRepository = new AirportRepositoryImpl();
-//        List<Airport> airports = airportRepository.readAll();
-//        airports.forEach(System.out::println);
-
-//        System.out.println("\nMain: READ all aircarriers");
-//        AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
-//        List<Aircarrier> aircarriers = aircarrierRepository.readAll();
-//        aircarriers.forEach(System.out::println);
-
-        
-
-
-
-
-//        // CREATE NEW passenger insert to bd
-//        System.out.println("\nMain: CREATE passenger");
-//        passenger.setName("IvanNEW");
-//        passenger.setPassport(passport);
-//        System.out.println(passenger);
-//        passengerRepository.create(passenger);
-//        System.out.println(passenger);
-//
-//        // UPDATE passenger in bd
-//        System.out.println("\nMain: UPDATE passenger");
-//        id = 5L;
-//        passenger.setId(id);
-//        passenger.setName("NameUpdate");
-//        passenger.setPassport(passport);
-//        System.out.println(passenger);
-//        passengerRepository.update(passenger);
-//        System.out.println(passenger);
-//
-//        // READ to print ALL passengers from bd
-//        System.out.println("\nMain: READ all passengers");
-//        passengerRepository.readAll().forEach(System.out::println);
     }
 }

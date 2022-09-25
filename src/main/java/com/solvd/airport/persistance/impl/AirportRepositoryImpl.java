@@ -37,28 +37,28 @@ public class AirportRepositoryImpl implements AirportRepository {
         CONNECTION_POOL.releaseConnection(connection);}
     }
 
-    @Override
+
     public Airport map(ResultSet resultSet) throws SQLException {
         Airport airport = new Airport();
 
-        List<Airstrip> airstrips = new ArrayList<>();
-        Airstrip airstrip;
-        airstrip = airstripRepository.map(resultSet);
-        airstrips.add(airstrip);
+//        List<Airstrip> airstrips = new ArrayList<>();
+//        Airstrip airstrip;
+//        airstrip = airstripRepository.map(resultSet);
+//        airstrips.add(airstrip);
+//        airport.setAirstrips(airstrips);
 
-        List<Gate> gates = new ArrayList<>();
-        Gate gate;
-        gate = gateRepository.map(resultSet);
-        gates.add(gate);
+//        List<Gate> gates = new ArrayList<>();
+//        Gate gate;
+//        gate = gateRepository.map(resultSet);
+//        gates.add(gate);
+//        airport.setGates(gates);
 
-        List<Aircarrier> aircarriers = new ArrayList<>();
-        Aircarrier aircarrier;
-        aircarrier = aircarrierRepository.map(resultSet);
-        aircarriers.add(aircarrier);
+//        List<Aircarrier> aircarriers = new ArrayList<>();
+//        Aircarrier aircarrier;
+//        aircarrier = aircarrierRepository.map(resultSet);
+//        aircarriers.add(aircarrier);
+//        airport.setAircarriers(aircarriers);
 
-        airport.setAirstrips(airstrips);
-        airport.setGates(gates);
-        airport.setAircarriers(aircarriers);
         airport.setId(resultSet.getLong("airport_id"));
         airport.setName(resultSet.getString("name"));
         return airport;

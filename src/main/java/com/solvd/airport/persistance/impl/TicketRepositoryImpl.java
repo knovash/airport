@@ -1,8 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.flight.Ticket;
-import com.solvd.airport.domain.passenger.Passenger;
-import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.TicketRepository;
 
@@ -46,27 +44,67 @@ public class TicketRepositoryImpl implements TicketRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    @Override
-    public Ticket map(ResultSet resultSet) throws SQLException {
-        Ticket ticket = new Ticket();
-
-//        Flight flight;
-//        flight = flightRepository.map(resultSet);
-//        ticket.setFlight(flight);
-        
-        Passenger passenger;
-        passenger = passengerRepository.map(resultSet);
-        ticket.setPassenger(passenger);
-
-        Gate gate;
-        gate = gateRepository.map(resultSet);
-        ticket.setGate(gate);
-
-        ticket.setId(resultSet.getLong("ticket_id"));
-        ticket.setPrice(resultSet.getBigDecimal("price"));
-        ticket.setSeat(resultSet.getInt("seat"));
-        return ticket;
+    private static Ticket findById(Long id, List<Ticket> tickets) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Ticket newTicket = new Ticket();
+                    newTicket.setId(id);
+                    tickets.add(newTicket);
+                    return newTicket;
+                });
     }
+
+    public static List<Ticket> map(ResultSet resultSet) throws SQLException {
+        List<Ticket> tickets = new ArrayList<>();
+        while (resultSet.next()) {
+            tickets = mapRow(resultSet, tickets);
+        }
+        return tickets;
+    }
+
+    public static List<Ticket> mapRow(ResultSet resultSet, List<Ticket> tickets) throws SQLException {
+        long id = resultSet.getLong("ticket_id");
+
+        if (id != 0) {
+            if (tickets == null) {
+                tickets = new ArrayList<>();
+            }
+            Ticket ticket = findById(id, tickets);
+            ticket.setId(resultSet.getLong("ticket_id"));
+            ticket.setPrice(resultSet.getBigDecimal("price"));
+            ticket.setSeat(resultSet.getInt("seat"));
+
+            ticket.setPassenger(PassengerRepositoryImpl.mapRow(resultSet));
+        }
+        return tickets;
+    }
+
+
+    
+    
+//    @Override
+//    public Ticket map(ResultSet resultSet) throws SQLException {
+//        Ticket ticket = new Ticket();
+//
+////        Flight flight;
+////        flight = flightRepository.map(resultSet);
+////        ticket.setFlight(flight);
+//
+//        Passenger passenger;
+//        passenger = passengerRepository.map(resultSet);
+//        ticket.setPassenger(passenger);
+//
+//        Gate gate;
+//        gate = gateRepository.map(resultSet);
+//        ticket.setGate(gate);
+//
+//        ticket.setId(resultSet.getLong("ticket_id"));
+//        ticket.setPrice(resultSet.getBigDecimal("price"));
+//        ticket.setSeat(resultSet.getInt("seat"));
+//        return ticket;
+////    }
     
     @Override
     public List<Ticket> readAll() {
@@ -113,9 +151,12 @@ public class TicketRepositoryImpl implements TicketRepository {
                             " join directions on flights.direction_id = directions.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                tickets.add(map(resultSet));
-            }
+//            while (resultSet.next()) {
+//                tickets.add(map(resultSet));
+//            }
+
+            tickets = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -169,9 +210,10 @@ public class TicketRepositoryImpl implements TicketRepository {
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                ticket = map(resultSet);
-            }
+//            while (resultSet.next()) {
+//                ticket = map(resultSet);
+//            }
+//            tickets = mapRow(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -12,6 +12,15 @@ public class Aircarrier {
     private List<Aircraft> aircrafts;
     private List<Pilot> pilots;
 
+    public String toString() {
+        return ("Aircarrier: id: " + this.id
+                + " name: " + this.name
+                + "\n  pilots: " + this.pilots
+                + "\n  flights: " + this.flights
+                + "\n  aircrafts: " + this.aircrafts
+        );
+    }
+
     public Long getId() {
         return id;
     }

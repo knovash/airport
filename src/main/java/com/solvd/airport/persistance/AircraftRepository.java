@@ -12,8 +12,6 @@ public interface AircraftRepository {
 
     List<Aircraft> readAll();
 
-    Aircraft map(ResultSet resultSet) throws SQLException;
-
     Aircraft readById(Long id);
 
     void update(Aircraft aircraft);

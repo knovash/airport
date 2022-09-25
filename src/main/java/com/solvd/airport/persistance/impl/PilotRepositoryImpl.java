@@ -1,5 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.PilotRepository;
@@ -33,31 +34,54 @@ public class PilotRepositoryImpl implements PilotRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    @Override
-    public Pilot map(ResultSet resultSet) throws SQLException {
-        Pilot pilot = new Pilot();
-
-
-        pilot.setId(resultSet.getLong("pilot_id"));
-        pilot.setName(resultSet.getString("name"));
-        pilot.setAircarrierId(resultSet.getLong("pilot_aircarrier_id"));
-        return pilot;
+    private static Pilot findById(Long id, List<Pilot> pilots) {
+        return pilots.stream()
+                .filter(pilot -> pilot.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Pilot newPilot = new Pilot();
+                    newPilot.setId(id);
+                    pilots.add(newPilot);
+                    return newPilot;
+                });
     }
-    
+
+    public static List<Pilot> map(ResultSet resultSet) throws SQLException {
+        List<Pilot> pilots = new ArrayList<>();
+        while (resultSet.next()) {
+            pilots = mapRow(resultSet, pilots);
+        }
+        return pilots;
+    }
+
+    public static List<Pilot> mapRow(ResultSet resultSet, List<Pilot> pilots) throws SQLException {
+        long id = resultSet.getLong("pilot_id");
+
+        if (id != 0) {
+            if (pilots == null) {
+                pilots = new ArrayList<>();
+            }
+            Pilot pilot = findById(id, pilots);
+            pilot.setId(resultSet.getLong("pilot_id"));
+            pilot.setName(resultSet.getString("pilot_name"));
+            pilot.setAircarrierId(resultSet.getLong("pilot_aircarrier_id"));
+        }
+        return pilots;
+    }
+
     @Override
     public List<Pilot> readAll() {
         System.out.println("READ all pilots");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Pilot> pilots = new ArrayList<>();
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select  pilots.id as pilot_id, pilots.name as name, aircarrier_id as pilot_aircarrier_id from pilots;", Statement.RETURN_GENERATED_KEYS);
+                    "select  pilots.id as pilot_id, pilots.name as pilot_name, aircarrier_id as pilot_aircarrier_id from pilots;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                pilots.add(map(resultSet));
-            }
+
+            pilots = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

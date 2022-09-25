@@ -33,7 +33,6 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    @Override
     public Direction map(ResultSet resultSet) throws SQLException {
         Direction direction = new Direction();
         direction.setId(resultSet.getLong("direction_id"));
@@ -41,7 +40,7 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         direction.setDistance(resultSet.getBigDecimal("distance"));
         return direction;
     }
-    
+
     @Override
     public List<Direction> readAll() {
         System.out.println("READ all directions");

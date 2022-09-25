@@ -1,5 +1,6 @@
 package com.solvd.airport.persistance;
 
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.flight.Ticket;
 
 import java.sql.ResultSet;
@@ -12,11 +13,11 @@ public interface TicketRepository {
 
     List<Ticket> readAll();
 
-    Ticket map(ResultSet resultSet) throws SQLException;
-
     Ticket readById(Long id);
 
     void update(Ticket ticket);
 
     void deleteById(Long id);
+
+
 }

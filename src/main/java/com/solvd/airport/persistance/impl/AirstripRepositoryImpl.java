@@ -35,7 +35,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    @Override
     public Airstrip map(ResultSet resultSet) throws SQLException {
         Airstrip airstrip = new Airstrip();
         airstrip.setId(resultSet.getLong("airstrip_id"));
@@ -43,7 +42,7 @@ public class AirstripRepositoryImpl implements AirstripRepository {
         airstrip.setAirportId(resultSet.getLong("airstrip_airport_id"));
         return airstrip;
     }
-    
+
     @Override
     public List<Airstrip> readAll() {
         System.out.println("READ all airstrips");

@@ -1,5 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistance.*;
@@ -33,6 +34,41 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         CONNECTION_POOL.releaseConnection(connection);}
     }
 
+    public List<Passenger> map(ResultSet resultSet) throws SQLException {
+        List<Passenger> passengers = new ArrayList<>();
+        while (resultSet.next()) {
+            passengers.add(mapRow(resultSet));
+        }
+        return passengers;
+    }
+
+    public static Passenger mapRow(ResultSet resultSet) throws SQLException {
+//        long id = resultSet.getLong("passenger_id");
+Passenger passenger = new Passenger();
+//        if (id != 0) {
+//            if (passengers == null) {
+//                passengers = new ArrayList<>();
+//            }
+//            Passenger passenger = findById(id, passengers);
+            passenger.setId(resultSet.getLong("passenger_id"));
+            passenger.setName(resultSet.getString("passenger_name"));
+//            passport = passportRepository.map(resultSet);
+//        }
+        return passenger;
+    }
+
+    private static Passenger findById(Long id, List<Passenger> passengers) {
+        return passengers.stream()
+                .filter(passenger -> passenger.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Passenger newPassenger = new Passenger();
+                    newPassenger.setId(id);
+                    passengers.add(newPassenger);
+                    return newPassenger;
+                });
+    }
+
     @Override
     public List<Passenger> readAll() {
         System.out.println("READ all passengers");
@@ -49,9 +85,12 @@ public class PassengerRepositoryImpl implements PassengerRepository {
                             "join passports on passengers.passport_id = passports.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                passengers.add(map(resultSet));
-            }
+//            while (resultSet.next()) {
+//                passengers.add(map(resultSet));
+//            }
+
+            passengers = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -59,16 +98,16 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         return passengers;
     }
 
-    @Override
-    public Passenger map(ResultSet resultSet) throws SQLException {
-        Passenger passenger = new Passenger();
-        Passport passport;
-        passport = passportRepository.map(resultSet);
-        passenger.setId(resultSet.getLong("passenger_id"));
-        passenger.setName(resultSet.getString("passenger_name"));
-        passenger.setPassport(passport);
-        return passenger;
-    }
+//    @Override
+//    public Passenger map(ResultSet resultSet) throws SQLException {
+//        Passenger passenger = new Passenger();
+//        Passport passport;
+//        passport = passportRepository.map(resultSet);
+//        passenger.setId(resultSet.getLong("passenger_id"));
+//        passenger.setName(resultSet.getString("passenger_name"));
+//        passenger.setPassport(passport);
+//        return passenger;
+//    }
 
     @Override
     public Passenger readById(Long id) {

@@ -35,7 +35,7 @@ public class GateRepositoryImpl implements GateRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    @Override
+
     public Gate map(ResultSet resultSet) throws SQLException {
         Gate gate = new Gate();
         gate.setId(resultSet.getLong("gate_id"));

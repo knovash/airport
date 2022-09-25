@@ -36,32 +36,61 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    @Override
-    public Aircraft map(ResultSet resultSet) throws SQLException {
-        Aircraft aircraft = new Aircraft();
-        aircraft.setId(resultSet.getLong("aircraft_id"));
-        aircraft.setNumber(resultSet.getInt("aircraft_number"));
-        aircraft.setModel(resultSet.getString("model"));
-        aircraft.setSeats(resultSet.getInt("seats"));
-        aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
-        return aircraft;
+    private static Aircraft findById(Long id, List<Aircraft> aircrafts) {
+        return aircrafts.stream()
+                .filter(aircraft -> aircraft.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Aircraft newAircraft = new Aircraft();
+                    newAircraft.setId(id);
+                    aircrafts.add(newAircraft);
+                    return newAircraft;
+                });
     }
+
+
+    public List<Aircraft> map(ResultSet resultSet) throws SQLException {
+        List<Aircraft> aircrafts = new ArrayList<>();
+        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
+
+        while (resultSet.next()) {
+            aircrafts = mapRow(resultSet, aircrafts);
+        }
+        return aircrafts;
+    }
+
+    public List<Aircraft> mapRow(ResultSet resultSet, List<Aircraft> aircrafts) throws SQLException {
+        long id = resultSet.getLong("aircraft_id");
+
+        if (id != 0) {
+            if (aircrafts == null) {
+                aircrafts = new ArrayList<>();
+            }
+            Aircraft aircraft = findById(id, aircrafts);
+            aircraft.setId(resultSet.getLong("aircraft_id"));
+            aircraft.setNumber(resultSet.getInt("aircraft_number"));
+            aircraft.setModel(resultSet.getString("model"));
+            aircraft.setAircarrierId(resultSet.getLong("aircarrier_id"));
+        }
+        return aircrafts;
+    }
+//    aircrafts = map(resultSet);
 
     @Override
     public List<Aircraft> readAll() {
         System.out.println("READ all aircrafts");
         Connection connection = CONNECTION_POOL.getConnection();
+        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
         List<Aircraft> aircrafts = new ArrayList<>();
         Aircraft aircraft;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircraft_id, number as aircraft_number, aircarrier_id as aircarrier_id, model as model, seats as seats, service_date as service_date  " +
-                            "FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as aircraft_id, number as aircraft_number, aircarrier_id as aircarrier_id, model as model FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                aircrafts.add(map(resultSet));
-            }
+
+            aircrafts = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,8 +115,8 @@ public class AircraftRepositoryImpl implements AircraftRepository {
                 aircraft.setId(resultSet.getLong("aircraft_id"));
                 aircraft.setNumber(resultSet.getInt("aircraft_number"));
                 aircraft.setModel(resultSet.getString("model"));
-                aircraft.setSeats(resultSet.getInt("seats"));
-                aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
+//                aircraft.setSeats(resultSet.getInt("seats"));
+//                aircraft.setServiceDate(resultSet.getTimestamp("service_date").toLocalDateTime().toLocalDate());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

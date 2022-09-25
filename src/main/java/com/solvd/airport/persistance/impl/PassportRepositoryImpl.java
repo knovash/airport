@@ -1,5 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistance.ConnectionPool;
 import com.solvd.airport.persistance.PassportRepository;
@@ -31,13 +32,49 @@ public class PassportRepositoryImpl implements PassportRepository {
         CONNECTION_POOL.releaseConnection(connection);}
     }
 
-    @Override
-    public Passport map(ResultSet resultSet) throws SQLException {
+
+    public List<Passport> map(ResultSet resultSet) throws SQLException {
+        List<Passport> passports = new ArrayList<>();
+        while (resultSet.next()) {
+            passports.add(mapRow(resultSet));
+        }
+        return passports;
+    }
+
+    public static Passport mapRow(ResultSet resultSet) throws SQLException {
+//        long id = resultSet.getLong("passport_id");
         Passport passport = new Passport();
+//        if (id != 0) {
+//            if (passports == null) {
+//                passports = new ArrayList<>();
+//            }
+//            Passport passport = findById(id, passports);
         passport.setId(resultSet.getLong("passport_id"));
         passport.setNumber(resultSet.getInt("passport_number"));
+//            passport = passportRepository.map(resultSet);
+//        }
         return passport;
     }
+
+    private static Passport findById(Long id, List<Passport> passports) {
+        return passports.stream()
+                .filter(passport -> passport.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Passport newPassport = new Passport();
+                    newPassport.setId(id);
+                    passports.add(newPassport);
+                    return newPassport;
+                });
+    }
+    
+    
+//    public Passport map(ResultSet resultSet) throws SQLException {
+//        Passport passport = new Passport();
+//        passport.setId(resultSet.getLong("passport_id"));
+//        passport.setNumber(resultSet.getInt("passport_number"));
+//        return passport;
+//    }
 
     @Override
     public List<Passport> readAll() {
@@ -50,9 +87,12 @@ public class PassportRepositoryImpl implements PassportRepository {
                     "select id as passport_id, number as passport_number from passports;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                passports.add(map(resultSet));
-            }
+//            while (resultSet.next()) {
+//                passports.add(map(resultSet));
+//            }
+            passports = map(resultSet);
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

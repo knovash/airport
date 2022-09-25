@@ -1,6 +1,7 @@
 package com.solvd.airport.persistance;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +12,6 @@ public interface AircarrierRepository {
     void create(Aircarrier aircarrier);
 
     List<Aircarrier> readAll();
-
-    Aircarrier map(ResultSet resultSet) throws SQLException;
 
     Aircarrier readById(Long id);
 

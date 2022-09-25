@@ -7,12 +7,10 @@ public class Aircraft {
     private Long id;
     private Integer number;
     private String model;
-    private Integer seats;
-    private LocalDate serviceDate;
     private Long aircarrierId;
 
     public String toString() {
-        return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model + " seats: " + this.seats + " serviceDate: " + this.serviceDate);
+        return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model + " aircarrierId: " + this.aircarrierId);
     }
 
     public Long getId() {
@@ -37,22 +35,6 @@ public class Aircraft {
 
     public void setModel(String model) {
         this.model = model;
-    }
-
-    public Integer getSeats() {
-        return seats;
-    }
-
-    public void setSeats(Integer seats) {
-        this.seats = seats;
-    }
-
-    public LocalDate getServiceDate() {
-        return serviceDate;
-    }
-
-    public void setServiceDate(LocalDate serviceDate) {
-        this.serviceDate = serviceDate;
     }
 
     public Long getAircarrierId() {

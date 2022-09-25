@@ -1,5 +1,6 @@
 package com.solvd.airport.persistance;
 
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.flight.Direction;
 
 import java.sql.ResultSet;
@@ -11,8 +12,6 @@ public interface DirectionRepository {
     void create(Direction direction);
 
     List<Direction> readAll();
-
-    Direction map(ResultSet resultSet) throws SQLException;
 
     Direction readById(Long id);
 
