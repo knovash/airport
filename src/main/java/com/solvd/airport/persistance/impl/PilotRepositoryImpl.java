@@ -1,7 +1,9 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.PilotRepository;
 
@@ -46,7 +48,7 @@ public class PilotRepositoryImpl implements PilotRepository {
                 });
     }
 
-    public static List<Pilot> map(ResultSet resultSet) throws SQLException {
+    public List<Pilot> map(ResultSet resultSet) throws SQLException {
         List<Pilot> pilots = new ArrayList<>();
         while (resultSet.next()) {
             pilots = mapRow(resultSet, pilots);
@@ -56,15 +58,13 @@ public class PilotRepositoryImpl implements PilotRepository {
 
     public static List<Pilot> mapRow(ResultSet resultSet, List<Pilot> pilots) throws SQLException {
         long id = resultSet.getLong("pilot_id");
-
         if (id != 0) {
-            if (pilots == null) {
-                pilots = new ArrayList<>();
-            }
+            if (pilots == null) pilots = new ArrayList<>();
             Pilot pilot = findById(id, pilots);
+
             pilot.setId(resultSet.getLong("pilot_id"));
             pilot.setName(resultSet.getString("pilot_name"));
-            pilot.setAircarrierId(resultSet.getLong("pilot_aircarrier_id"));
+            pilot.setAircarrierId(resultSet.getLong("aircarrier_id"));
         }
         return pilots;
     }
@@ -76,7 +76,7 @@ public class PilotRepositoryImpl implements PilotRepository {
         List<Pilot> pilots = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select  pilots.id as pilot_id, pilots.name as pilot_name, aircarrier_id as pilot_aircarrier_id from pilots;", Statement.RETURN_GENERATED_KEYS);
+                    "select  pilots.id as pilot_id, pilots.name as pilot_name, aircarrier_id as aircarrier_id from pilots;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
 

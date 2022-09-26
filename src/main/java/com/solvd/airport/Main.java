@@ -39,15 +39,46 @@ public class Main {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("\nMain: READ all aircarriers");
+
         AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
-        List<Aircarrier> aircarriers = aircarrierRepository.readAll();
+        List<Aircarrier> aircarriers;
+        Aircarrier aircarrier;
+
+        System.out.println("\nMain: READ all aircarriers");
+        aircarriers = aircarrierRepository.readAll();
         aircarriers.forEach(System.out::println);
+
+//        System.out.println("\nMain: CREATE new aircarrier");
+//        Aircarrier aircarrierNew = new Aircarrier();
+//        aircarrierNew.setName("NewCarrier");
+//        aircarrierRepository.create(aircarrierNew);
+
+//        System.out.println("\nMain: OUT all aircarriers");
+//        aircarrierRepository.readAll().forEach(System.out::println);
 //
-        System.out.println("\nMain: READ all aircrafts");
-        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-        List<Aircraft> aircrafts = aircraftRepository.readAll();
-        aircrafts.forEach(System.out::println);
+//        System.out.println("\nMain: UPDATE aircarrier");
+//        aircarrierNew.setName("UpdateCarrier");
+//        aircarrierRepository.update(aircarrierNew);
+//
+//        System.out.println("\nMain: READ aircarrier by ID");
+//        Long newId = aircarrierNew.getId();
+//        aircarrier = aircarrierRepository.readById(newId);
+//        System.out.println("Aircarrier: " + aircarrier);
+
+//        System.out.println("\nMain: OUT all aircarriers");
+//        aircarrierRepository.readAll().forEach(System.out::println);
+//
+//        System.out.println("\nMain: DELETE aircarrier");
+//        aircarrierRepository.deleteById(newId);
+//
+//        System.out.println("\nMain: OUT all aircarriers");
+//        aircarrierRepository.readAll().forEach(System.out::println);
+
+
+//        System.out.println("\nMain: READ all aircrafts");
+//        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
+//        List<Aircraft> aircrafts = aircraftRepository.readAll();
+//        aircrafts.forEach(System.out::println);
 
 //        System.out.println("\nMain: READ all airports");
 //        AirportRepository airportRepository = new AirportRepositoryImpl();
@@ -59,12 +90,6 @@ public class Main {
         List<Airstrip> airstrips = airstripRepository.readAll();
         airstrips.forEach(System.out::println);
 
-//        System.out.println("\nMain: CREATE direction");
-//        DirectionService directionService = new DirectionServiceImpl();
-//        Direction d = new Direction();
-//        d.setCountry("newcountry");
-//        d.setDistance(new BigDecimal(999));
-//        directionService.create(d);
 
         System.out.println("\nMain: READ all directions");
         DirectionRepository directionRepository = new DirectionRepositoryImpl();
@@ -100,32 +125,5 @@ public class Main {
         TicketRepository ticketRepository = new TicketRepositoryImpl();
         List<Ticket> tickets = ticketRepository.readAll();
         tickets.forEach(System.out::println);
-
-
-        // CREATE NEW passport insert to bd
-//        System.out.println("\nMain: CREATE passport");
-//        passport.setNumber((int) (Math.random() * 313131));
-//        passportRepository.create(passport);
-//        System.out.println(passport);
-
-//        // UPDATE passport in bd
-//        id = 26L;
-//        passport.setId(id);
-//        passport.setNumber((int) (Math.random() * 313131));
-//        System.out.println(passport);
-//        passportRepository.update(passport);
-//        System.out.println(passport);
-//
-        // DELETE by id passport
-//        id = 39L; // ид в бд удаляемого элемента
-//        System.out.println("id=" + id);
-//        passportRepository.deleteById(id);
-//        List<Passport> finalPassports = passports;
-//        Passport pById = passports.stream()
-//                .filter(p -> id.equals(p.getId()))
-//                .findFirst()
-//                .get();
-//        passports.remove(passports.indexOf(pById)); // delete passport from List objects by number
-
     }
 }

@@ -1,8 +1,12 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
+import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 
 import java.sql.*;
@@ -34,29 +38,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         CONNECTION_POOL.releaseConnection(connection);}
     }
 
-    public List<Passenger> map(ResultSet resultSet) throws SQLException {
-        List<Passenger> passengers = new ArrayList<>();
-        while (resultSet.next()) {
-            passengers.add(mapRow(resultSet));
-        }
-        return passengers;
-    }
-
-    public static Passenger mapRow(ResultSet resultSet) throws SQLException {
-//        long id = resultSet.getLong("passenger_id");
-Passenger passenger = new Passenger();
-//        if (id != 0) {
-//            if (passengers == null) {
-//                passengers = new ArrayList<>();
-//            }
-//            Passenger passenger = findById(id, passengers);
-            passenger.setId(resultSet.getLong("passenger_id"));
-            passenger.setName(resultSet.getString("passenger_name"));
-//            passport = passportRepository.map(resultSet);
-//        }
-        return passenger;
-    }
-
     private static Passenger findById(Long id, List<Passenger> passengers) {
         return passengers.stream()
                 .filter(passenger -> passenger.getId().equals(id))
@@ -67,6 +48,29 @@ Passenger passenger = new Passenger();
                     passengers.add(newPassenger);
                     return newPassenger;
                 });
+    }
+
+    public List<Passenger> map(ResultSet resultSet) throws SQLException {
+        List<Passenger> passengers = new ArrayList<>();
+        while (resultSet.next()) {
+            passengers = mapRow(resultSet, passengers);
+        }
+        return passengers;
+    }
+
+    public static List<Passenger> mapRow(ResultSet resultSet, List<Passenger> passengers) throws SQLException {
+        long id = resultSet.getLong("passenger_id");
+        if (id != 0) {
+            if (passengers == null) passengers = new ArrayList<>();
+            Passenger passenger = findById(id, passengers);
+
+            passenger.setId(resultSet.getLong("passenger_id"));
+            passenger.setName(resultSet.getString("passenger_name"));
+
+            List<Passport> passports = PassportRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            passenger.setPassport(passports.get(0));
+        }
+        return passengers;
     }
 
     @Override
@@ -85,9 +89,6 @@ Passenger passenger = new Passenger();
                             "join passports on passengers.passport_id = passports.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                passengers.add(map(resultSet));
-//            }
 
             passengers = map(resultSet);
 
@@ -97,17 +98,6 @@ Passenger passenger = new Passenger();
         CONNECTION_POOL.releaseConnection(connection);
         return passengers;
     }
-
-//    @Override
-//    public Passenger map(ResultSet resultSet) throws SQLException {
-//        Passenger passenger = new Passenger();
-//        Passport passport;
-//        passport = passportRepository.map(resultSet);
-//        passenger.setId(resultSet.getLong("passenger_id"));
-//        passenger.setName(resultSet.getString("passenger_name"));
-//        passenger.setPassport(passport);
-//        return passenger;
-//    }
 
     @Override
     public Passenger readById(Long id) {

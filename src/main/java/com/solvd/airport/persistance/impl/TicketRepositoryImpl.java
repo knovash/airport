@@ -1,8 +1,12 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.flight.Ticket;
+import com.solvd.airport.domain.passenger.Passenger;
+import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.TicketRepository;
 
@@ -23,13 +27,13 @@ public class TicketRepositoryImpl implements TicketRepository {
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                   "insert into tickets(" +
-                           "flight_id, " +
-                           "passenger_id, " +
-                           "gate_id, " +
-                           "price, " +
-                           "seat" +
-                           ") values (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                    "insert into tickets(" +
+                            "flight_id, " +
+                            "passenger_id, " +
+                            "gate_id, " +
+                            "price, " +
+                            "seat" +
+                            ") values (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, ticket.getFlight().getId());
             preparedStatement.setLong(2, ticket.getPassenger().getId());
             preparedStatement.setLong(3, ticket.getGate().getId());
@@ -58,7 +62,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                 });
     }
 
-    public static List<Ticket> map(ResultSet resultSet) throws SQLException {
+    public List<Ticket> map(ResultSet resultSet) throws SQLException {
         List<Ticket> tickets = new ArrayList<>();
         while (resultSet.next()) {
             tickets = mapRow(resultSet, tickets);
@@ -68,32 +72,96 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     public static List<Ticket> mapRow(ResultSet resultSet, List<Ticket> tickets) throws SQLException {
         long id = resultSet.getLong("ticket_id");
-
         if (id != 0) {
-            if (tickets == null) {
-                tickets = new ArrayList<>();
-            }
+            if (tickets == null) tickets = new ArrayList<>();
             Ticket ticket = findById(id, tickets);
+
             ticket.setId(resultSet.getLong("ticket_id"));
             ticket.setPrice(resultSet.getBigDecimal("price"));
             ticket.setSeat(resultSet.getInt("seat"));
 
-//            ticket.setPassenger(PassengerRepositoryImpl.mapRow(resultSet));
-//
-//            ticket.setFlight(FlightRepositoryImpl.mapRow(resultSet));
-//
-//            List<Flight> pilots = FlightRepositoryImpl.mapRow(resultSet, ticket.getFlight());
-//            aircarrier.setPilots(pilots);
+//            List<Passenger> passengers = PassengerRepositoryImpl.mapRow(resultSet, ticket.getPassenger());
+//            List<Passenger> passengers = new ArrayList<>();
+            List<Passenger> passengers = PassengerRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            Passenger passenger = passengers.get(0);
+            ticket.setPassenger(passenger);
+
+            List<Gate> gates = GateRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            ticket.setGate(gates.get(0));
+
+            List<Flight> flights = FlightRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            ticket.setFlight(flights.get(0));
+            
+            
         }
         return tickets;
     }
 
-    
     @Override
     public List<Ticket> readAll() {
         System.out.println("READ all tickets");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Ticket> tickets = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "select\n" +
+                            "tickets.id as ticket_id, \n" +
+                            "tickets.price as price, \n" +
+                            "tickets.seat as seat,\n" +
+                            "aircarriers.id as aircarrier_id, \n" +
+                            "aircarriers.name as aircarrier_name, \n" +
+                            "aircrafts.id as aircraft_id, \n" +
+                            "aircrafts.number as aircraft_number, \n" +
+                            "aircrafts.model as model, \n" +
+                            "airstrips.id as airstrip_id, \n" +
+                            "airstrips.number as airstrip_number, \n" +
+                            "directions.id as direction_id, \n" +
+                            "directions.country as country, \n" +
+                            "directions.distance as distance,\n" +
+                            "flights.id as flight_id, \n" +
+                            "flights.number as flight_number, \n" +
+                            "flights.date as flight_date,  \n" +
+                            "flights.aircarrier_id as aircarrier_id, \n" +
+                            "flights.aircraft_id as aircraft_id, \n" +
+                            "flights.airstrip_id as airstrip_id, \n" +
+                            "flights.direction_id as direction_id, \n" +
+                            "flights.pilot_id as pilot_id,\n" +
+                            "gates.id as gate_id, \n" +
+                            "gates.number as gate_number,\n" +
+                            "gates.airport_id as airport_id,\n" +
+                            "passengers.id as passenger_id, \n" +
+                            "passengers.name as passenger_name, \n" +
+                            "passengers.passport_id as passport_id, \n" +
+                            "passports.number as passport_number,\n" +
+                            "pilots.id as pilot_id, \n" +
+                            "pilots.name as pilot_name\n" +
+                            "from tickets \n" +
+                            "join flights on tickets.flight_id = flights.id\n" +
+                            "join passengers on passengers.id = tickets.passenger_id\n" +
+                            "join passports on passports.id = passengers.passport_id\n" +
+                            "join gates on gates.id = tickets.gate_id\n" +
+                            "join aircarriers on flights.aircarrier_id = aircarriers.id \n" +
+                            "join aircrafts on flights.aircraft_id = aircrafts.id \n" +
+                            "join airstrips on flights.airstrip_id = airstrips.id \n" +
+                            "join directions on flights.direction_id = directions.id \n" +
+                            "join pilots on flights.pilot_id = pilots.id;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            tickets = map(resultSet);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
+        return tickets;
+    }
+
+    @Override
+    public Ticket readById(Long id) {
+        System.out.println("READ ticket by id=" + id);
+        Connection connection = CONNECTION_POOL.getConnection();
+        Ticket ticket = new Ticket();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select\n" +
@@ -132,61 +200,6 @@ public class TicketRepositoryImpl implements TicketRepository {
                             " join aircrafts on flights.aircraft_id = aircrafts.id\n" +
                             " join airstrips on flights.airstrip_id = airstrips.id\n" +
                             " join directions on flights.direction_id = directions.id;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            tickets = map(resultSet);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
-        return tickets;
-    }
-
-    @Override
-    public Ticket readById(Long id) {
-        System.out.println("READ ticket by id=" + id);
-        Connection connection = CONNECTION_POOL.getConnection();
-        Ticket ticket = new Ticket();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                   "select\n" +
-                           " tickets.id as ticket_id,\n" +
-                           " tickets.price as price,\n" +
-                           " tickets.seat as seat,\n" +
-                           " passengers.id as passenger_id,\n" +
-                           " passengers.name as passenger_name,\n" +
-                           " passengers.passport_id as passport_id,\n" +
-                           " passports.number as passport_number, \n" +
-                           " flights.id as flight_id,\n" +
-                           " flights.number as flight_number, \n" +
-                           " flights.date as flight_date,\n" +
-                           " flights.aircarrier_id as flight_aircarrier_id,\n" +
-                           " flights.aircraft_id as flight_aircraft_id,\n" +
-                           " flights.airstrip_id as flight_airstrip_id,\n" +
-                           " flights.direction_id as flight_direction_id,\n" +
-                           " flights.pilot_id as flight_pilot_id,\n" +
-                           " pilots.name as pilot_name,\n" +
-                           " gates.id as gate_id,\n" +
-                           " gates.number as gate_number,\n" +
-                           " gates.airport_id as gate_airport_id,\n" +
-                           " aircarriers.name as aircarrier_name,\n" +
-                           " aircrafts.number as aircraft_number,\n" +
-                           " aircrafts.model as aircraft_model,\n" +
-                           " airstrips.number as airstrip_number,\n" +
-                           " directions.country as country,\n" +
-                           " directions.distance as distance\n" +
-                           " from tickets\n" +
-                           " join flights on tickets.flight_id = flights.id\n" +
-                           " join passengers on tickets.passenger_id = passengers.id\n" +
-                           " join gates on tickets.gate_id = gates.id\n" +
-                           " join passports on passengers.passport_id = passports.id \n" +
-                           " join pilots on flights.pilot_id = pilots.id\n" +
-                           " join aircarriers on flights.aircarrier_id = aircarriers.id\n" +
-                           " join aircrafts on flights.aircraft_id = aircrafts.id\n" +
-                           " join airstrips on flights.airstrip_id = airstrips.id\n" +
-                           " join directions on flights.direction_id = directions.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();

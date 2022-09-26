@@ -14,9 +14,6 @@ import java.util.List;
 public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final FlightRepository flightRepository = new FlightRepositoryImpl();
-    private static final AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-    private static final PilotRepository pilotRepository = new PilotRepositoryImpl();
 
     @Override
     public void create(Aircarrier aircarrier) { // вызывается из сервиса. делает инсерт данных объекта в бд.
@@ -50,7 +47,6 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
                 });
     }
 
-
     public List<Aircarrier> map(ResultSet resultSet) throws SQLException {
         List<Aircarrier> aircarriers = new ArrayList<>();
         while (resultSet.next()) {
@@ -59,19 +55,14 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         return aircarriers;
     }
 
-
     public static List<Aircarrier> mapRow(ResultSet resultSet, List<Aircarrier> aircarriers) throws SQLException {
         long id = resultSet.getLong("aircarrier_id");
-
         if (id != 0) {
-            if (aircarriers == null) {
-                aircarriers = new ArrayList<>();
-            }
+            if (aircarriers == null) { aircarriers = new ArrayList<>();}
             Aircarrier aircarrier = findById(id, aircarriers);
-            aircarrier.setName(resultSet.getString("aircarrier_name"));
-            aircarrier.setId(resultSet.getLong("aircarrier_id"));
 
-//            aircarrier.setPilots(PilotRepositoryImpl.mapRow(resultSet));
+            aircarrier.setId(resultSet.getLong("aircarrier_id"));
+            aircarrier.setName(resultSet.getString("aircarrier_name"));
 
             List<Pilot> pilots = PilotRepositoryImpl.mapRow(resultSet, aircarrier.getPilots());
             aircarrier.setPilots(pilots);
@@ -82,6 +73,11 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
             List<Flight> flights = FlightRepositoryImpl.mapRow(resultSet, aircarrier.getFlights());
             aircarrier.setFlights(flights);
 
+//            private Long id;
+//            private String name;
+//            private List<Flight> flights;
+//            private List<Aircraft> aircrafts;
+//            private List<Pilot> pilots;
         }
         return aircarriers;
     }
@@ -93,22 +89,47 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         List<Aircarrier> aircarriers = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT \n" +
-                            " aircarriers.id as aircarrier_id, \n" +
-                            " aircarriers.name as aircarrier_name, \n" +
-                            " pilots.id as pilot_id, \n" +
-                            " pilots.name as pilot_name, \n" +
-                            " pilots.aircarrier_id as pilot_aircarrier_id,\n" +
-                            " aircrafts.id as aircraft_id,\n" +
-                            " aircrafts.number as aircraft_number,\n" +
-                            " aircrafts.model as model,\n" +
-                            " flights.number as flight_number,\n" +
-                            " flights.id as flight_id,\n" +
-                            " flights.date as flight_date\n" +
-                            " FROM aircarriers \n" +
-                            " join pilots on aircarriers.id = pilots.aircarrier_id\n" +
-                            " join aircrafts on aircarriers.id = aircrafts.aircarrier_id\n" +
-                            " join flights on aircarriers.id = flights.aircarrier_id;", Statement.RETURN_GENERATED_KEYS);
+                    "select\n" +
+                            "aircarriers.id as aircarrier_id, \n" +
+                            "aircarriers.name as aircarrier_name, \n" +
+                            "tickets.id as ticket_id, \n" +
+                            "tickets.price as price, \n" +
+                            "tickets.seat as seat,\n" +
+                            "aircrafts.id as aircraft_id, \n" +
+                            "aircrafts.number as aircraft_number, \n" +
+                            "aircrafts.model as model, \n" +
+                            "airstrips.id as airstrip_id, \n" +
+                            "airstrips.number as airstrip_number, \n" +
+                            "directions.id as direction_id, \n" +
+                            "directions.country as country, \n" +
+                            "directions.distance as distance,\n" +
+                            "flights.id as flight_id, \n" +
+                            "flights.number as flight_number, \n" +
+                            "flights.date as flight_date,  \n" +
+                            "flights.aircarrier_id as aircarrier_id, \n" +
+                            "flights.aircraft_id as aircraft_id, \n" +
+                            "flights.airstrip_id as airstrip_id, \n" +
+                            "flights.direction_id as direction_id, \n" +
+                            "flights.pilot_id as pilot_id,\n" +
+                            "gates.id as gate_id, \n" +
+                            "gates.number as gate_number,\n" +
+                            "gates.airport_id as airport_id,\n" +
+                            "passengers.id as passenger_id, \n" +
+                            "passengers.name as passenger_name, \n" +
+                            "passengers.passport_id as passport_id, \n" +
+                            "passports.number as passport_number,\n" +
+                            "pilots.id as pilot_id, \n" +
+                            "pilots.name as pilot_name\n" +
+                            "FROM aircarriers \n" +
+                            "left join pilots on aircarriers.id = pilots.aircarrier_id \n" +
+                            "left join aircrafts on aircarriers.id = aircrafts.aircarrier_id \n" +
+                            "left join flights on aircarriers.id = flights.aircarrier_id \n" +
+                            "join tickets on tickets.flight_id = flights.id\n" +
+                            "join passengers on passengers.id = tickets.passenger_id\n" +
+                            "join passports on passports.id = passengers.passport_id\n" +
+                            "join gates on gates.id = tickets.gate_id \n" +
+                            "join airstrips on flights.airstrip_id = airstrips.id \n" +
+                            "join directions on flights.direction_id = directions.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -116,67 +137,79 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            CONNECTION_POOL.releaseConnection(connection);
         }
-        CONNECTION_POOL.releaseConnection(connection);
         return aircarriers;
     }
 
-
     @Override
     public Aircarrier readById(Long id) {
-        System.out.println("READ aircarrier by id=" + id);
+        System.out.println("READ aircarriers by ID=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Aircarrier aircarrier = new Aircarrier();
+        List<Aircarrier> aircarriers = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as aircarrier_id, name as name FROM airport.aircarriers where aircarriers.id = ?;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT \n" +
+                            " aircarriers.id as aircarrier_id, \n" +
+                            " aircarriers.name as aircarrier_name, \n" +
+                            " pilots.id as pilot_id, \n" +
+                            " pilots.name as pilot_name, \n" +
+                            " pilots.aircarrier_id as pilot_aircarrier_id, \n" +
+                            " aircrafts.id as aircraft_id, \n" +
+                            " aircrafts.number as aircraft_number, \n" +
+                            " aircrafts.model as model, \n" +
+                            " flights.number as flight_number, \n" +
+                            " flights.id as flight_id, \n" +
+                            " flights.date as flight_date \n" +
+                            " tickets.id as fticket_id, \n" +
+                            " FROM aircarriers \n" +
+                            " left join pilots on aircarriers.id = pilots.aircarrier_id \n" +
+                            " left join aircrafts on aircarriers.id = aircrafts.aircarrier_id \n" +
+                            " left join flights on aircarriers.id = flights.aircarrier_id \n" +
+                            " left join tickets on flights.id = tickets.flight_id \n" +
+                            " where aircarriers.id = ?;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                aircarrier = new Aircarrier();
-                aircarrier.setId(resultSet.getLong("aircarrier_id"));
-                aircarrier.setName(resultSet.getString("name"));
-//                aircarrier.setFlights(flightRepository.readByAircarrierId(resultSet.getLong("aircarrier_id")));
-//                aircarrier.setAircrafts(aircraftRepository.readByAircarrierId(resultSet.getLong("aircarrier_id")));
-//                aircarrier.setPilots(pilotRepository.readByAircarrierId(resultSet.getLong("aircarrier_id")));
-            }
+            resultSet.next();
+            aircarriers = mapRow(resultSet, aircarriers);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            CONNECTION_POOL.releaseConnection(connection);
         }
-        CONNECTION_POOL.releaseConnection(connection);
-        return aircarrier;
+        return aircarriers.get(0);
     }
 
     @Override
     public void update(Aircarrier aircarrier) {
-//        System.out.println("UPDATE aircarrier");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "update aircarriers set name = ?, set aircarrier_id = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setString(1, aircarrier.getName());
-//            preparedStatement.setLong(2, aircarrier.getAircarrier().getId());
-//            preparedStatement.setLong(3, aircarrier.getId());
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
+        System.out.println("UPDATE aircarrier ID=" + aircarrier.getId());
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update aircarriers set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, aircarrier.getName());
+            preparedStatement.setLong(2, aircarrier.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override
     public void deleteById(Long id) {
-//        System.out.println("DELETE aircarrier by id=" + id);
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "delete from aircarriers where id = ?; ", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
+        System.out.println("DELETE aircarrier by id=" + id);
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "delete from aircarriers where id = ?; ", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
     }
 }

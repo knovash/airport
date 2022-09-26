@@ -1,6 +1,9 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AircraftRepository;
 
@@ -60,14 +63,18 @@ public class AircraftRepositoryImpl implements AircraftRepository {
     public static List<Aircraft> mapRow(ResultSet resultSet, List<Aircraft> aircrafts) throws SQLException {
         long id = resultSet.getLong("aircraft_id");
         if (id != 0) {
-            if (aircrafts == null) {
-                aircrafts = new ArrayList<>();
-            }
+            if (aircrafts == null) aircrafts = new ArrayList<>();
             Aircraft aircraft = findById(id, aircrafts);
+
             aircraft.setId(resultSet.getLong("aircraft_id"));
             aircraft.setNumber(resultSet.getInt("aircraft_number"));
             aircraft.setModel(resultSet.getString("model"));
             aircraft.setAircarrierId(resultSet.getLong("aircarrier_id"));
+
+//            private Long id;
+//            private Integer number;
+//            private String model;
+//            private Long aircarrierId;
         }
         return aircrafts;
     }

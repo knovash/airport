@@ -16,8 +16,8 @@ public class Aircarrier {
         return ("Aircarrier: id: " + this.id
                 + " name: " + this.name
                 + "\n  pilots: " + this.pilots
-                + "\n  flights: " + this.flights
                 + "\n  aircrafts: " + this.aircrafts
+                + "\n  flights: " + this.flights
         );
     }
 

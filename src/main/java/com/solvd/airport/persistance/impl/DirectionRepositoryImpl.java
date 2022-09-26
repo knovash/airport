@@ -14,7 +14,7 @@ public class DirectionRepositoryImpl implements DirectionRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Direction direction) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Direction direction) {
         System.out.println("CREATE direction");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -25,7 +25,7 @@ public class DirectionRepositoryImpl implements DirectionRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                direction.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                direction.setId(resultSet.getLong(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -33,28 +33,52 @@ public class DirectionRepositoryImpl implements DirectionRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-    public Direction map(ResultSet resultSet) throws SQLException {
-        Direction direction = new Direction();
-        direction.setId(resultSet.getLong("direction_id"));
-        direction.setCountry(resultSet.getString("country"));
-        direction.setDistance(resultSet.getBigDecimal("distance"));
-        return direction;
+    private static Direction findById(Long id, List<Direction> directions) {
+        return directions.stream()
+                .filter(direction -> direction.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Direction newDirection = new Direction();
+                    newDirection.setId(id);
+                    directions.add(newDirection);
+                    return newDirection;
+                });
+    }
+
+    public List<Direction> map(ResultSet resultSet) throws SQLException {
+        List<Direction> directions = new ArrayList<>();
+        while (resultSet.next()) {
+            directions = mapRow(resultSet, directions);
+        }
+        return directions;
+    }
+
+    public static List<Direction> mapRow(ResultSet resultSet, List<Direction> directions) throws SQLException {
+        long id = resultSet.getLong("direction_id");
+        if (id != 0) {
+            if (directions == null) directions = new ArrayList<>();
+            Direction direction = findById(id, directions);
+
+            direction.setId(resultSet.getLong("direction_id"));
+            direction.setCountry(resultSet.getString("country"));
+            direction.setDistance(resultSet.getBigDecimal("distance"));
+        }
+        return directions;
     }
 
     @Override
     public List<Direction> readAll() {
         System.out.println("READ all directions");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Direction> directions = new ArrayList<>();
-        Direction direction;
+        List<Direction> directions;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select id as direction_id, country as country, distance as distance from directions;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                directions.add(map(resultSet));
-            }
+
+            directions = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

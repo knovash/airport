@@ -1,5 +1,10 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
+import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.GateRepository;
@@ -11,10 +16,7 @@ import java.util.List;
 public class GateRepositoryImpl implements GateRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-//    FlightRepository flightRepository = new FlightRepositoryImpl();
-//    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
-//    GateRepository gateRepository = new GateRepositoryImpl();
-
+    
     @Override
     public void create(Gate gate) { // вызывается из сервиса. делает инсерт данных объекта в бд.
         System.out.println(" CREATE gate");
@@ -35,15 +37,39 @@ public class GateRepositoryImpl implements GateRepository {
         CONNECTION_POOL.releaseConnection(connection);
     }
 
-
-    public Gate map(ResultSet resultSet) throws SQLException {
-        Gate gate = new Gate();
-        gate.setId(resultSet.getLong("gate_id"));
-        gate.setNumber(resultSet.getInt("gate_number"));
-        gate.setAirportId(resultSet.getLong("gate_airport_id"));
-        return gate;
+    private static Gate findById(Long id, List<Gate> gates) {
+        return gates.stream()
+                .filter(gate -> gate.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Gate newGate = new Gate();
+                    newGate.setId(id);
+                    gates.add(newGate);
+                    return newGate;
+                });
     }
-    
+
+    public List<Gate> map(ResultSet resultSet) throws SQLException {
+        List<Gate> gates = new ArrayList<>();
+        while (resultSet.next()) {
+            gates = mapRow(resultSet, gates);
+        }
+        return gates;
+    }
+
+    public static List<Gate> mapRow(ResultSet resultSet, List<Gate> gates) throws SQLException {
+        long id = resultSet.getLong("gate_id");
+        if (id != 0) {
+            if (gates == null) gates = new ArrayList<>();
+            Gate gate = findById(id, gates);
+
+            gate.setId(resultSet.getLong("gate_id"));
+            gate.setNumber(resultSet.getInt("gate_id"));
+            gate.setAirportId(resultSet.getLong("airport_id"));
+        }
+        return gates;
+    }
+
     @Override
     public List<Gate> readAll() {
         System.out.println("READ all gates");
@@ -53,12 +79,12 @@ public class GateRepositoryImpl implements GateRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as gate_id, number as gate_number, airport_id as gate_airport_id FROM airport.gates;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as gate_id, number as gate_number, airport_id as airport_id FROM airport.gates;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                gates.add(map(resultSet));
-            }
+
+            gates = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

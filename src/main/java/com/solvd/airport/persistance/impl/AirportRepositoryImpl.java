@@ -1,6 +1,9 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airport;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
@@ -37,13 +40,37 @@ public class AirportRepositoryImpl implements AirportRepository {
         CONNECTION_POOL.releaseConnection(connection);}
     }
 
+    private static Airport findById(Long id, List<Airport> airports) {
+        return airports.stream()
+                .filter(airport -> airport.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Airport newAirport = new Airport();
+                    newAirport.setId(id);
+                    airports.add(newAirport);
+                    return newAirport;
+                });
+    }
 
-    public Airport map(ResultSet resultSet) throws SQLException {
-        Airport airport = new Airport();
+    public List<Airport> map(ResultSet resultSet) throws SQLException {
+        List<Airport> airports = new ArrayList<>();
+        while (resultSet.next()) {
+            airports = mapRow(resultSet, airports);
+        }
+        return airports;
+    }
 
-        airport.setId(resultSet.getLong("airport_id"));
-        airport.setName(resultSet.getString("name"));
-        return airport;
+    public static List<Airport> mapRow(ResultSet resultSet, List<Airport> airports) throws SQLException {
+        long id = resultSet.getLong("airport_id");
+        if (id != 0) {
+            if (airports == null) airports = new ArrayList<>();
+
+            Airport airport = findById(id, airports);
+
+            airport.setId(resultSet.getLong("airport_id"));
+            airport.setName(resultSet.getString("name"));
+        }
+        return airports;
     }
 
     @Override
@@ -57,9 +84,9 @@ public class AirportRepositoryImpl implements AirportRepository {
                     "SELECT id as airport_id, name as name  FROM airport.airports;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                airports.add(map(resultSet));
-            }
+
+            airports = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
