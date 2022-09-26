@@ -1,6 +1,9 @@
 package com.solvd.airport.persistance.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AircarrierRepository;
 
@@ -57,7 +60,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
     }
 
 
-    public List<Aircarrier> mapRow(ResultSet resultSet, List<Aircarrier> aircarriers) throws SQLException {
+    public static List<Aircarrier> mapRow(ResultSet resultSet, List<Aircarrier> aircarriers) throws SQLException {
         long id = resultSet.getLong("aircarrier_id");
 
         if (id != 0) {
@@ -68,37 +71,20 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
             aircarrier.setName(resultSet.getString("aircarrier_name"));
             aircarrier.setId(resultSet.getLong("aircarrier_id"));
 
+//            aircarrier.setPilots(PilotRepositoryImpl.mapRow(resultSet));
+
+            List<Pilot> pilots = PilotRepositoryImpl.mapRow(resultSet, aircarrier.getPilots());
+            aircarrier.setPilots(pilots);
+
+            List<Aircraft> aircrafts = AircraftRepositoryImpl.mapRow(resultSet, aircarrier.getAircrafts());
+            aircarrier.setAircrafts(aircrafts);
+
+            List<Flight> flights = FlightRepositoryImpl.mapRow(resultSet, aircarrier.getFlights());
+            aircarrier.setFlights(flights);
+
         }
         return aircarriers;
     }
-
-
-//    aircarriers = map(resultSet);
-
-//     aircarrier.setName(resultSet.getString("aircarrier_name"));
-//             aircarrier.setId(resultSet.getLong("aircarrier_id"));
-
-//    @Override
-//    public List<Aircarrier> map(ResultSet resultSet) throws SQLException {
-////        Aircarrier aircarrier = new Aircarrier();
-//        List<Aircarrier> aircarriers = new ArrayList<>();
-//
-//        while (resultSet.next()) {
-//            Long id = resultSet.getLong("aircarrier_id");
-//
-//            Aircarrier aircarrier = findById(id, aircarriers);
-//
-//            aircarrier.setName(resultSet.getString("aircarrier_name"));
-//            aircarrier.setId(resultSet.getLong("aircarrier_id"));
-//
-//            List<Pilot> pilots;
-//            pilots = pilotRepository.mapRow(resultSet);
-//            aircarrier.setPilots(pilots);
-//        }
-////        return aircarriers;
-//    }
-//
-
 
     @Override
     public List<Aircarrier> readAll() {
@@ -108,13 +94,21 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT \n" +
-                            "aircarriers.id as aircarrier_id, \n" +
-                            "aircarriers.name as aircarrier_name,\n" +
-                            "pilots.id as pilot_id,\n" +
-                            "pilots.name as pilot_name,\n" +
-                            "pilots.aircarrier_id as pilot_aircarrier_id\n" +
-                            "FROM aircarriers\n" +
-                            "join pilots on aircarriers.id = pilots.aircarrier_id;", Statement.RETURN_GENERATED_KEYS);
+                            " aircarriers.id as aircarrier_id, \n" +
+                            " aircarriers.name as aircarrier_name, \n" +
+                            " pilots.id as pilot_id, \n" +
+                            " pilots.name as pilot_name, \n" +
+                            " pilots.aircarrier_id as pilot_aircarrier_id,\n" +
+                            " aircrafts.id as aircraft_id,\n" +
+                            " aircrafts.number as aircraft_number,\n" +
+                            " aircrafts.model as model,\n" +
+                            " flights.number as flight_number,\n" +
+                            " flights.id as flight_id,\n" +
+                            " flights.date as flight_date\n" +
+                            " FROM aircarriers \n" +
+                            " join pilots on aircarriers.id = pilots.aircarrier_id\n" +
+                            " join aircrafts on aircarriers.id = aircrafts.aircarrier_id\n" +
+                            " join flights on aircarriers.id = flights.aircarrier_id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
 

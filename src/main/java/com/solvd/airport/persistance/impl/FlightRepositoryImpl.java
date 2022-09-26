@@ -5,6 +5,7 @@ import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
+import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.FlightRepository;
@@ -22,6 +23,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     private static final PilotRepository pilotRepository = new PilotRepositoryImpl();
     private static final DirectionRepository directionRepository = new DirectionRepositoryImpl();
     private static final TicketRepository ticketRepository = new TicketRepositoryImpl();
+    
 
     @Override
     public void create(Flight flight) { // вызывается из сервиса. делает инсерт данных объекта в бд.
@@ -56,41 +58,43 @@ public class FlightRepositoryImpl implements FlightRepository {
         CONNECTION_POOL.releaseConnection(connection);}
     }
 
+    private static Flight findById(Long id, List<Flight> flights) {
+        return flights.stream()
+                .filter(flight -> flight.getId().equals(id))
+                .findFirst()
+                .orElseGet(() -> {
+                    Flight newFlight = new Flight();
+                    newFlight.setId(id);
+                    flights.add(newFlight);
+                    return newFlight;
+                });
+    }
 
-    public Flight map(ResultSet resultSet) throws SQLException {
-        Flight flight = new Flight();
+    public static List<Flight> map(ResultSet resultSet) throws SQLException {
+        List<Flight> flights = new ArrayList<>();
+        while (resultSet.next()) {
+            flights = mapRow(resultSet, flights);
+        }
+        return flights;
+    }
 
-//        Aircraft aircraft;
-//        aircraft = aircraftRepository.map(resultSet);
-//        flight.setAircraft(aircraft);
+    public static List<Flight> mapRow(ResultSet resultSet, List<Flight> flights) throws SQLException {
+        long id = resultSet.getLong("flight_id");
 
-//        Aircarrier aircarrier;
-//        aircarrier = aircarrierRepository.map(resultSet);
-//        flight.setAircarrier(aircarrier);
+        if (id != 0) {
+            if (flights == null) {
+                flights = new ArrayList<>();
+            }
+            Flight flight = findById(id, flights);
 
-//        Airstrip airstrip;
-//        airstrip = airstripRepository.map(resultSet);
-//        flight.setAirstrip(airstrip);
+            flight.setId(resultSet.getLong("flight_id"));
+            flight.setNumber(resultSet.getInt("flight_number"));
+            flight.setDate(resultSet.getDate("flight_date"));
 
-//        Direction direction;
-//        direction = directionRepository.map(resultSet);
-//        flight.setDirection(direction);
-
-//        List<Pilot> pilots;
-//        pilots = pilotRepository.map(resultSet);
-//        flight.setPilot(pilots);
-
-//        List<Ticket> tickets = new ArrayList<>();
-//        Ticket ticket;
-//        ticket = ticketRepository.map(resultSet);
-//        tickets.add(ticket);
-
-
-//        flight.setTickets(tickets);
-        flight.setId(resultSet.getLong("flight_id"));
-        flight.setNumber(resultSet.getInt("number"));
-        flight.setDate(resultSet.getDate("date"));
-        return flight;
+//            flight.setPassenger(PassengerRepositoryImpl.mapRow(resultSet));
+//            flight.setFlight(FlightRepositoryImpl.mapRow(resultSet));
+        }
+        return flights;
     }
 
 
@@ -109,8 +113,8 @@ public class FlightRepositoryImpl implements FlightRepository {
                             " flights.aircraft_id as aircraft_id, \n" +
                             " flights.airstrip_id as airstrip_id, \n" +
                             " flights.direction_id as direction_id, \n" +
-                            " flights.number as number, \n" +
-                            " flights.date as date, \n" +
+                            " flights.number as flight_number, \n" +
+                            " flights.date as flight_date, \n" +
                             " aircarriers.name as aircarrier_name,\n" +
                             " aircarriers.id as aircarrier_id,\n" +
                             " aircrafts.number as aircraft_number, \n" +
@@ -131,9 +135,12 @@ public class FlightRepositoryImpl implements FlightRepository {
                             " join pilots on flights.pilot_id = pilots.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                flights.add(map(resultSet));
-            }
+//            while (resultSet.next()) {
+//                flights.add(map(resultSet));
+//            }
+
+            flights = map(resultSet);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

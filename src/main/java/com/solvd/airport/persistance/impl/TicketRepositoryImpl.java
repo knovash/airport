@@ -1,5 +1,7 @@
 package com.solvd.airport.persistance.impl;
 
+import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.TicketRepository;
@@ -76,35 +78,16 @@ public class TicketRepositoryImpl implements TicketRepository {
             ticket.setPrice(resultSet.getBigDecimal("price"));
             ticket.setSeat(resultSet.getInt("seat"));
 
-            ticket.setPassenger(PassengerRepositoryImpl.mapRow(resultSet));
+//            ticket.setPassenger(PassengerRepositoryImpl.mapRow(resultSet));
+//
+//            ticket.setFlight(FlightRepositoryImpl.mapRow(resultSet));
+//
+//            List<Flight> pilots = FlightRepositoryImpl.mapRow(resultSet, ticket.getFlight());
+//            aircarrier.setPilots(pilots);
         }
         return tickets;
     }
 
-
-    
-    
-//    @Override
-//    public Ticket map(ResultSet resultSet) throws SQLException {
-//        Ticket ticket = new Ticket();
-//
-////        Flight flight;
-////        flight = flightRepository.map(resultSet);
-////        ticket.setFlight(flight);
-//
-//        Passenger passenger;
-//        passenger = passengerRepository.map(resultSet);
-//        ticket.setPassenger(passenger);
-//
-//        Gate gate;
-//        gate = gateRepository.map(resultSet);
-//        ticket.setGate(gate);
-//
-//        ticket.setId(resultSet.getLong("ticket_id"));
-//        ticket.setPrice(resultSet.getBigDecimal("price"));
-//        ticket.setSeat(resultSet.getInt("seat"));
-//        return ticket;
-////    }
     
     @Override
     public List<Ticket> readAll() {
@@ -151,9 +134,6 @@ public class TicketRepositoryImpl implements TicketRepository {
                             " join directions on flights.direction_id = directions.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                tickets.add(map(resultSet));
-//            }
 
             tickets = map(resultSet);
 

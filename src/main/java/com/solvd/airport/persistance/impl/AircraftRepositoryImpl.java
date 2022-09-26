@@ -48,20 +48,17 @@ public class AircraftRepositoryImpl implements AircraftRepository {
                 });
     }
 
-
     public List<Aircraft> map(ResultSet resultSet) throws SQLException {
         List<Aircraft> aircrafts = new ArrayList<>();
         AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-
         while (resultSet.next()) {
             aircrafts = mapRow(resultSet, aircrafts);
         }
         return aircrafts;
     }
 
-    public List<Aircraft> mapRow(ResultSet resultSet, List<Aircraft> aircrafts) throws SQLException {
+    public static List<Aircraft> mapRow(ResultSet resultSet, List<Aircraft> aircrafts) throws SQLException {
         long id = resultSet.getLong("aircraft_id");
-
         if (id != 0) {
             if (aircrafts == null) {
                 aircrafts = new ArrayList<>();
@@ -74,7 +71,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
         }
         return aircrafts;
     }
-//    aircrafts = map(resultSet);
 
     @Override
     public List<Aircraft> readAll() {
