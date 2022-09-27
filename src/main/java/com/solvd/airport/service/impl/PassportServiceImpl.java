@@ -9,22 +9,25 @@ import java.util.List;
 
 public class PassportServiceImpl implements PassportService {
 
-    private PassportRepository passportRepository = new PassportRepositoryImpl();
+    private PassportRepository passportRepository;
 
     public PassportServiceImpl() {
         this.passportRepository = new PassportRepositoryImpl();
-
     }
 
+//    private Long id;
+//    private Integer number;
+
+
     @Override
-    public Passport create(Passport passport) {
+    public Passport create(Passport passport, Long passengerId) {
         passport.setId(null);
-        passportRepository.create(passport); // passportRepository в persistance там sql insert зааносит информацию из полей в бд
+        passportRepository.create(passport, passengerId);
         return passport;
     }
 
     @Override
     public List<Passport> readAll() {
-        return null;
+        return passportRepository.readAll();
     }
 }

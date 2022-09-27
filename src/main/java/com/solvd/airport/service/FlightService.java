@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface FlightService {
 
-    Flight create(Flight flight, Long aircarrier_id);
+    Flight create(Flight flight, Long aircarrierId);
 
     List<Flight> readAll();
-
 }

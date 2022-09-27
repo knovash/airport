@@ -9,22 +9,26 @@ import java.util.List;
 
 public class AircraftServiceImpl implements AircraftService {
 
-    private AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
+    private final AircraftRepository aircraftRepository;
 
     public AircraftServiceImpl() {
         this.aircraftRepository = new AircraftRepositoryImpl();
-
     }
+
+//    private Long id;
+//    private Integer number;
+//    private String model;
+//    private Long aircarrierId;
 
     @Override
     public Aircraft create(Aircraft aircraft, Long aircarrierId) {
         aircraft.setId(null);
-        aircraftRepository.create(aircraft); // aircraftRepository в persistance там sql insert зааносит информацию из полей в бд
+        aircraftRepository.create(aircraft, aircarrierId);
         return aircraft;
     }
 
     @Override
     public List<Aircraft> readAll() {
-        return null;
+        return aircraftRepository.readAll();
     }
 }

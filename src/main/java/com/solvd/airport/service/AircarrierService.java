@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface AircarrierService {
 
-    Aircarrier create(Aircarrier aircarrier);
+    Aircarrier create(Aircarrier aircarrier, Long airportId);
 
     List<Aircarrier> readAll();
-
 }

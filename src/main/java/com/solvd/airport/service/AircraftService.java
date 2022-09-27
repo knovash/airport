@@ -9,5 +9,4 @@ public interface AircraftService {
     Aircraft create(Aircraft aircraft, Long aircarrier_id);
 
     List<Aircraft> readAll();
-
 }

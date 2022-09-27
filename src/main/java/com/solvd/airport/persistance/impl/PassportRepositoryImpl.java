@@ -13,13 +13,14 @@ public class PassportRepositoryImpl implements PassportRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Passport passport) { 
+    public void create(Passport passport, Long passengerId) {
         System.out.println("CREATE passport");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into passports(number) values (?);", Statement.RETURN_GENERATED_KEYS);
+                    "insert into passports(number, passenger_id) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, passport.getNumber());
+            preparedStatement.setLong(2, passengerId);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {

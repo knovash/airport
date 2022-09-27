@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface PassportService {
 
-    Passport create(Passport passport);
+    Passport create(Passport passport, Long passengerId);
 
     List<Passport> readAll();
-
 }

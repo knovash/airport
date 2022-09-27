@@ -1,14 +1,12 @@
 package com.solvd.airport.persistance;
 
-import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.passenger.Passenger;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 public interface PassengerRepository {
 
-    void create(Passenger passenger);
+    void create(Passenger passenger, Long ticketId);
 
     List<Passenger> readAll();
 

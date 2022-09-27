@@ -13,6 +13,8 @@ import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.impl.*;
+import com.solvd.airport.service.AircarrierService;
+import com.solvd.airport.service.impl.AircarrierServiceImpl;
 
 import java.util.List;
 
@@ -45,14 +47,21 @@ public class Main {
 
         System.out.println("\nMain: CREATE new aircarrier");
         Aircarrier aircarrierNew = new Aircarrier();
-        aircarrierNew.setName("NewCarrier66");
+        aircarrierNew.setName("NewCarrier" + (int) (Math.random() * 333));
         aircarrierRepository.create(aircarrierNew);
+
+        // Service
+
+        AircarrierService aircarrierService = new AircarrierServiceImpl();
+        aircarrierNew.setName("NewCarrier" + (int) (Math.random() * 333));
+//        aircarrierService.create(aircarrierNew);
+
 
         System.out.println("\nMain: OUT all aircarriers");
         aircarrierRepository.readAll().forEach(System.out::println);
 
         System.out.println("\nMain: UPDATE aircarrier");
-        aircarrierNew.setName("UpdateCarrier66");
+        aircarrierNew.setName("UpdateCarrier" + (int) (Math.random() * 333));
         aircarrierRepository.update(aircarrierNew);
 
         System.out.println("\nMain: READ aircarrier by ID");
@@ -118,5 +127,22 @@ public class Main {
         TicketRepository ticketRepository = new TicketRepositoryImpl();
         List<Ticket> tickets = ticketRepository.readAll();
         tickets.forEach(System.out::println);
+
+        System.out.println("\nMain: CREATE new aircraft");
+        Aircraft aircraftNew = new Aircraft();
+        aircraftNew.setNumber((int) (Math.random() * 333));
+        aircraftNew.setModel("NewModel" + (int) (Math.random() * 333));
+        aircraftNew.setAircarrierId((long) (Math.random() * 4));
+//        aircraftRepository.create(aircraftNew);
+
+        System.out.println("\nMain: UPDATE aircraft");
+        aircraftNew.setNumber((int) (Math.random() * 333));
+        aircraftNew.setModel("NewModel" + (int) (Math.random() * 333));
+        aircraftNew.setAircarrierId((long) (Math.random() * 4));
+        aircraftRepository.update(aircraftNew);
+        
+        System.out.println("\nMain: DELETE aircraft");
+        aircraftRepository.deleteById(aircraftNew.getId());
+        
     }
 }

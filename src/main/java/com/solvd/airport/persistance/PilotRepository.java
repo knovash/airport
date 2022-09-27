@@ -1,9 +1,7 @@
 package com.solvd.airport.persistance;
 
-import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 public interface PilotRepository {

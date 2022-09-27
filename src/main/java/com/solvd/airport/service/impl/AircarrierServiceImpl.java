@@ -28,10 +28,16 @@ public class AircarrierServiceImpl implements AircarrierService {
         this.flightService = new FlightServiceImpl();
     }
 
+//    private Long id;
+//    private String name;
+//    private List<Flight> flights;
+//    private List<Aircraft> aircrafts;
+//    private List<Pilot> pilots;
+
     @Override
-    public Aircarrier create(Aircarrier aircarrier) {
+    public Aircarrier create(Aircarrier aircarrier, Long airportId) {
         aircarrier.setId(null);
-        aircarrierRepository.create(aircarrier); // pilotRepository в persistance там sql insert зааносит информацию из полей в бд
+        aircarrierRepository.create(aircarrier);
 
         if (aircarrier.getPilots() != null) {
             List<Pilot> pilots = aircarrier.getPilots().stream()

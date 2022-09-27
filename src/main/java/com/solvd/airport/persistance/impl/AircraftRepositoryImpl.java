@@ -12,16 +12,18 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
+
     @Override
-    public void create(Aircraft aircraft) { 
+    public void create(Aircraft aircraft, Long aircarrierId) { // из сервиса получаем кариерид
         System.out.println(" CREATE aircraft");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "insert into aircrafts( number, model, aircarrier_id) values (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+
             preparedStatement.setLong(1, aircraft.getNumber());
             preparedStatement.setString(2, aircraft.getModel());
-            preparedStatement.setLong(3, aircraft.getAircarrierId());
+            preparedStatement.setLong(3, aircarrierId);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {

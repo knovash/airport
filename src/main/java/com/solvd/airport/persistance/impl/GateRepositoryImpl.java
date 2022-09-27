@@ -13,7 +13,7 @@ public class GateRepositoryImpl implements GateRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
     
     @Override
-    public void create(Gate gate) { 
+    public void create(Gate gate, Long airportId) {
         System.out.println(" CREATE gate");
         Connection connection = CONNECTION_POOL.getConnection();
         try {

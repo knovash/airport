@@ -16,7 +16,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Ticket ticket) {
+    public void create(Ticket ticket, Long flightId) {
         System.out.println("CREATE ticket");
         Connection connection = CONNECTION_POOL.getConnection();
         try {

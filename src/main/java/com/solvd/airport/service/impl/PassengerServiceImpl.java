@@ -19,15 +19,21 @@ public class PassengerServiceImpl implements PassengerService {
         this.passengerRepository = new PassengerRepositoryImpl();
     }
 
+//    private Long id;
+//    private Passport passport;
+//    private String name;
+
     @Override
-    public Passenger create(Passenger passenger) {
+    public Passenger create(Passenger passenger, Long ticketId) {
         passenger.setId(null);
-        passengerRepository.create(passenger); // passengerRepository в persistance там sql insert зааносит информацию из полей в бд
+        passengerRepository.create(passenger, ticketId);
+
         if (passenger.getPassport() != null) {
             Passport passport = passenger.getPassport();
-            passportService.create(passport);
+            passportService.create(passport, passenger.getId());
             passenger.setPassport(passport);
         }
+
         return passenger;
     }
 

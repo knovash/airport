@@ -2,13 +2,11 @@ package com.solvd.airport.persistance;
 
 import com.solvd.airport.domain.carrier.Aircraft;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface AircraftRepository {
 
-    void create(Aircraft aircraft);
+    void create(Aircraft aircraft, Long aircarrier_id);
 
     List<Aircraft> readAll();
 

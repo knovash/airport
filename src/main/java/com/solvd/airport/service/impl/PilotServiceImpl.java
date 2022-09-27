@@ -18,9 +18,7 @@ public class PilotServiceImpl implements PilotService {
     @Override
     public Pilot create(Pilot pilot, Long aircarrierId) {
         pilot.setId(null);
-
-        pilotRepository.create(pilot, aircarrierId); // pilotRepository в persistance там sql insert зааносит информацию из полей в бд
-
+        pilotRepository.create(pilot, aircarrierId);
         return pilot;
     }
 

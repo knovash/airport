@@ -13,7 +13,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Passenger passenger) {
+    public void create(Passenger passenger, Long ticketId) {
         System.out.println(" CREATE passenger");
         Connection connection = CONNECTION_POOL.getConnection();
         try {

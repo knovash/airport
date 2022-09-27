@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface PassengerService {
 
-    Passenger create(Passenger passenger);
+    Passenger create(Passenger passenger, Long ticketId);
 
     List<Passenger> readAll();
-
 }
