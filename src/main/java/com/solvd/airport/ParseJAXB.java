@@ -1,6 +1,5 @@
 package com.solvd.airport;
 
-import com.solvd.airport.Main;
 import com.solvd.airport.persistance.Config;
 
 import javax.xml.bind.JAXBContext;

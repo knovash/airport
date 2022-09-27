@@ -1,9 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AircraftRepository;
 
@@ -14,15 +11,12 @@ import java.util.List;
 public class AircraftRepositoryImpl implements AircraftRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-//    FlightRepository flightRepository = new FlightRepositoryImpl();
-//    PassengerRepository passengerRepository = new PassengerRepositoryImpl();
-//    GateRepository gateRepository = new GateRepositoryImpl();
 
     @Override
-    public void create(Aircraft aircraft) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Aircraft aircraft) { 
         System.out.println(" CREATE aircraft");
         Connection connection = CONNECTION_POOL.getConnection();
-        try { //insert into aircrafts(aircraft_id, name) values (6, 'Denis');
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "insert into aircrafts( number, model, aircarrier_id) values (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, aircraft.getNumber());
@@ -31,7 +25,7 @@ public class AircraftRepositoryImpl implements AircraftRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                aircraft.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                aircraft.setId(resultSet.getLong(1)); 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -53,7 +47,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     public List<Aircraft> map(ResultSet resultSet) throws SQLException {
         List<Aircraft> aircrafts = new ArrayList<>();
-        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
         while (resultSet.next()) {
             aircrafts = mapRow(resultSet, aircrafts);
         }
@@ -70,11 +63,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
             aircraft.setNumber(resultSet.getInt("aircraft_number"));
             aircraft.setModel(resultSet.getString("model"));
             aircraft.setAircarrierId(resultSet.getLong("aircarrier_id"));
-
-//            private Long id;
-//            private Integer number;
-//            private String model;
-//            private Long aircarrierId;
         }
         return aircrafts;
     }
@@ -83,9 +71,7 @@ public class AircraftRepositoryImpl implements AircraftRepository {
     public List<Aircraft> readAll() {
         System.out.println("READ all aircrafts");
         Connection connection = CONNECTION_POOL.getConnection();
-        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-        List<Aircraft> aircrafts = new ArrayList<>();
-        Aircraft aircraft;
+        List<Aircraft> aircrafts;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT id as aircraft_id, number as aircraft_number, aircarrier_id as aircarrier_id, model as model FROM airport.aircrafts;", Statement.RETURN_GENERATED_KEYS);

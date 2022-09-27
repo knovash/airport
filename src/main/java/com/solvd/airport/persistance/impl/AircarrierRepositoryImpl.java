@@ -16,7 +16,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Aircarrier aircarrier) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Aircarrier aircarrier) {
         System.out.println(" CREATE aircarrier name=" + aircarrier.getName());
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -26,7 +26,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                aircarrier.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                aircarrier.setId(resultSet.getLong(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,7 +80,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
     public List<Aircarrier> readAll() {
         System.out.println("READ all aircarriers");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Aircarrier> aircarriers = new ArrayList<>();
+        List<Aircarrier> aircarriers;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select\n" +

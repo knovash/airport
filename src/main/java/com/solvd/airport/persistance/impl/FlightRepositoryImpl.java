@@ -1,13 +1,10 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
-import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.domain.port.Airstrip;
-import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.FlightRepository;
 
@@ -18,16 +15,12 @@ import java.util.List;
 public class FlightRepositoryImpl implements FlightRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
     private static final AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
     private static final AirstripRepository airstripRepository = new AirstripRepositoryImpl();
-    private static final PilotRepository pilotRepository = new PilotRepositoryImpl();
     private static final DirectionRepository directionRepository = new DirectionRepositoryImpl();
-    private static final TicketRepository ticketRepository = new TicketRepositoryImpl();
-
 
     @Override
-    public void create(Flight flight) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Flight flight) { 
         System.out.println(" CREATE flight");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -51,7 +44,7 @@ public class FlightRepositoryImpl implements FlightRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                flight.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                flight.setId(resultSet.getLong(1)); 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -109,8 +102,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     public List<Flight> readAll() {
         System.out.println("READ all flights");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Flight> flights = new ArrayList<>();
-        Flight flight;
+        List<Flight> flights;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

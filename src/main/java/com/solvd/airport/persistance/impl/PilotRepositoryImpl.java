@@ -1,9 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.PilotRepository;
 
@@ -14,10 +11,9 @@ import java.util.List;
 public class PilotRepositoryImpl implements PilotRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final FlightRepository flightRepository = new FlightRepositoryImpl();
 
     @Override
-    public void create(Pilot pilot, Long aircarrier_id) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Pilot pilot, Long aircarrier_id) { 
         System.out.println(" CREATE pilot");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -28,7 +24,7 @@ public class PilotRepositoryImpl implements PilotRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                pilot.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                pilot.setId(resultSet.getLong(1)); 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,7 +69,7 @@ public class PilotRepositoryImpl implements PilotRepository {
     public List<Pilot> readAll() {
         System.out.println("READ all pilots");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Pilot> pilots = new ArrayList<>();
+        List<Pilot> pilots;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select  pilots.id as pilot_id, pilots.name as pilot_name, aircarrier_id as aircarrier_id from pilots;", Statement.RETURN_GENERATED_KEYS);

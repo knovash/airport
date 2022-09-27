@@ -1,12 +1,6 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airport;
-import com.solvd.airport.domain.port.Airstrip;
-import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.AirportRepository;
 
@@ -17,12 +11,9 @@ import java.util.List;
 public class AirportRepositoryImpl implements AirportRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final AirstripRepository airstripRepository = new AirstripRepositoryImpl();
-    private static final AircarrierRepository aircarrierRepository = new AircarrierRepositoryImpl();
-    private static final GateRepository gateRepository = new GateRepositoryImpl();
     
     @Override
-    public void create(Airport airport) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Airport airport) {
         System.out.println(" CREATE airport");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -32,7 +23,7 @@ public class AirportRepositoryImpl implements AirportRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                airport.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                airport.setId(resultSet.getLong(1)); 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -77,8 +68,7 @@ public class AirportRepositoryImpl implements AirportRepository {
     public List<Airport> readAll() {
         System.out.println("READ all airports");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Airport> airports = new ArrayList<>();
-        Airport airport;
+        List<Airport> airports;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT id as airport_id, name as name  FROM airport.airports;", Statement.RETURN_GENERATED_KEYS);

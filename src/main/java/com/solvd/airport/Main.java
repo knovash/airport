@@ -13,9 +13,11 @@ import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.impl.*;
+
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
 
         Config config = new Config();
@@ -67,7 +69,6 @@ public class Main {
         System.out.println("\nMain: OUT all aircarriers");
         aircarrierRepository.readAll().forEach(System.out::println);
 
-
         System.out.println("\nMain: READ all aircrafts");
         AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
         List<Aircraft> aircrafts = aircraftRepository.readAll();
@@ -82,7 +83,6 @@ public class Main {
         AirstripRepository airstripRepository = new AirstripRepositoryImpl();
         List<Airstrip> airstrips = airstripRepository.readAll();
         airstrips.forEach(System.out::println);
-
 
         System.out.println("\nMain: READ all directions");
         DirectionRepository directionRepository = new DirectionRepositoryImpl();

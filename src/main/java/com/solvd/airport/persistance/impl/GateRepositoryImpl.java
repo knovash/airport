@@ -1,10 +1,5 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
-import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.GateRepository;
@@ -18,7 +13,7 @@ public class GateRepositoryImpl implements GateRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
     
     @Override
-    public void create(Gate gate) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Gate gate) { 
         System.out.println(" CREATE gate");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -29,7 +24,7 @@ public class GateRepositoryImpl implements GateRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                gate.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                gate.setId(resultSet.getLong(1)); 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -74,8 +69,7 @@ public class GateRepositoryImpl implements GateRepository {
     public List<Gate> readAll() {
         System.out.println("READ all gates");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Gate> gates = new ArrayList<>();
-        Gate gate;
+        List<Gate> gates ;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

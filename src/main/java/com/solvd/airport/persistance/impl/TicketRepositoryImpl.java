@@ -1,8 +1,5 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.domain.passenger.Passenger;
@@ -17,12 +14,9 @@ import java.util.List;
 public class TicketRepositoryImpl implements TicketRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final FlightRepository flightRepository = new FlightRepositoryImpl();
-    private static final PassengerRepository passengerRepository = new PassengerRepositoryImpl();
-    private static final GateRepository gateRepository = new GateRepositoryImpl();
 
     @Override
-    public void create(Ticket ticket) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Ticket ticket) {
         System.out.println("CREATE ticket");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -42,7 +36,7 @@ public class TicketRepositoryImpl implements TicketRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                ticket.setId(resultSet.getLong("id")); // в объект сетаем ид полученый из бд. с которым произошла запись
+                ticket.setId(resultSet.getLong("id"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,8 +74,6 @@ public class TicketRepositoryImpl implements TicketRepository {
             ticket.setPrice(resultSet.getBigDecimal("price"));
             ticket.setSeat(resultSet.getInt("seat"));
 
-//            List<Passenger> passengers = PassengerRepositoryImpl.mapRow(resultSet, ticket.getPassenger());
-//            List<Passenger> passengers = new ArrayList<>();
             List<Passenger> passengers = PassengerRepositoryImpl.mapRow(resultSet, new ArrayList<>());
             Passenger passenger = passengers.get(0);
             ticket.setPassenger(passenger);
@@ -91,8 +83,6 @@ public class TicketRepositoryImpl implements TicketRepository {
 
             List<Flight> flights = FlightRepositoryImpl.mapRow(resultSet, new ArrayList<>());
             ticket.setFlight(flights.get(0));
-            
-            
         }
         return tickets;
     }
@@ -101,7 +91,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     public List<Ticket> readAll() {
         System.out.println("READ all tickets");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Ticket> tickets = new ArrayList<>();
+        List<Ticket> tickets;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select\n" +

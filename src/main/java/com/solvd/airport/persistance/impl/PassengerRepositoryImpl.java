@@ -1,12 +1,7 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
-import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 
 import java.sql.*;
@@ -16,10 +11,9 @@ import java.util.List;
 public class PassengerRepositoryImpl implements PassengerRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
 
     @Override
-    public void create(Passenger passenger) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Passenger passenger) {
         System.out.println(" CREATE passenger");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -30,7 +24,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                passenger.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                passenger.setId(resultSet.getLong(1));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -76,7 +70,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     @Override
     public List<Passenger> readAll() {
         System.out.println("READ all passengers");
-        List<Passenger> passengers = new ArrayList<>();
+        List<Passenger> passengers;
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

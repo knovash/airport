@@ -61,9 +61,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
             airstrip.setId(resultSet.getLong("airstrip_id"));
             airstrip.setNumber(resultSet.getInt("airstrip_number"));
             airstrip.setAirportId(resultSet.getLong("airport_id"));
-//            private Long id;
-//            private Integer number;
-//            private Long airportId;
         }
         return airstrips;
     }

@@ -1,10 +1,5 @@
 package com.solvd.airport.persistance.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Flight;
-import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistance.ConnectionPool;
 import com.solvd.airport.persistance.PassportRepository;
@@ -18,7 +13,7 @@ public class PassportRepositoryImpl implements PassportRepository {
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
 
     @Override
-    public void create(Passport passport) { // вызывается из сервиса. делает инсерт данных объекта в бд.
+    public void create(Passport passport) { 
         System.out.println("CREATE passport");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
@@ -28,7 +23,7 @@ public class PassportRepositoryImpl implements PassportRepository {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                passport.setId(resultSet.getLong(1)); // в объект сетаем ид полученый из бд. с которым произошла запись
+                passport.setId(resultSet.getLong(1)); 
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,8 +68,7 @@ public class PassportRepositoryImpl implements PassportRepository {
     public List<Passport> readAll() {
         System.out.println("READ all passports");
         Connection connection = CONNECTION_POOL.getConnection();
-        List<Passport> passports = new ArrayList<>();
-        Passport passport;
+        List<Passport> passports;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "select id as passport_id, number as passport_number from passports;", Statement.RETURN_GENERATED_KEYS);
