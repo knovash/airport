@@ -2,7 +2,6 @@ package com.solvd.airport;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.License;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
@@ -14,11 +13,6 @@ import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.domain.port.Gate;
 import com.solvd.airport.persistance.*;
 import com.solvd.airport.persistance.impl.*;
-import com.solvd.airport.service.DirectionService;
-import com.solvd.airport.service.impl.DirectionServiceImpl;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -33,9 +27,8 @@ public class Main {
         Integer poolsize = Config.getPoolsize();
         System.out.println(driver + "\n" + url + "\n" + username + "\n" + password + "\n" + poolsize);
 
-        try { //drivermanager class который помогает создавать получать конекшены к бд
-            Class.forName(driver); // вызовется статический блок и зарегистрируется драйвер
-//            Class.forName("com.mysql.cj.jdbc.Driver");
+        try {
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -48,42 +41,42 @@ public class Main {
         aircarriers = aircarrierRepository.readAll();
         aircarriers.forEach(System.out::println);
 
-//        System.out.println("\nMain: CREATE new aircarrier");
-//        Aircarrier aircarrierNew = new Aircarrier();
-//        aircarrierNew.setName("NewCarrier");
-//        aircarrierRepository.create(aircarrierNew);
+        System.out.println("\nMain: CREATE new aircarrier");
+        Aircarrier aircarrierNew = new Aircarrier();
+        aircarrierNew.setName("NewCarrier66");
+        aircarrierRepository.create(aircarrierNew);
 
-//        System.out.println("\nMain: OUT all aircarriers");
-//        aircarrierRepository.readAll().forEach(System.out::println);
-//
-//        System.out.println("\nMain: UPDATE aircarrier");
-//        aircarrierNew.setName("UpdateCarrier");
-//        aircarrierRepository.update(aircarrierNew);
-//
-//        System.out.println("\nMain: READ aircarrier by ID");
-//        Long newId = aircarrierNew.getId();
-//        aircarrier = aircarrierRepository.readById(newId);
-//        System.out.println("Aircarrier: " + aircarrier);
+        System.out.println("\nMain: OUT all aircarriers");
+        aircarrierRepository.readAll().forEach(System.out::println);
 
-//        System.out.println("\nMain: OUT all aircarriers");
-//        aircarrierRepository.readAll().forEach(System.out::println);
-//
-//        System.out.println("\nMain: DELETE aircarrier");
-//        aircarrierRepository.deleteById(newId);
-//
-//        System.out.println("\nMain: OUT all aircarriers");
-//        aircarrierRepository.readAll().forEach(System.out::println);
+        System.out.println("\nMain: UPDATE aircarrier");
+        aircarrierNew.setName("UpdateCarrier66");
+        aircarrierRepository.update(aircarrierNew);
+
+        System.out.println("\nMain: READ aircarrier by ID");
+        Long newId = aircarrierNew.getId();
+        aircarrier = aircarrierRepository.readById(newId);
+        System.out.println("Aircarrier: " + aircarrier);
+
+        System.out.println("\nMain: OUT all aircarriers");
+        aircarrierRepository.readAll().forEach(System.out::println);
+
+        System.out.println("\nMain: DELETE aircarrier");
+        aircarrierRepository.deleteById(newId);
+
+        System.out.println("\nMain: OUT all aircarriers");
+        aircarrierRepository.readAll().forEach(System.out::println);
 
 
-//        System.out.println("\nMain: READ all aircrafts");
-//        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
-//        List<Aircraft> aircrafts = aircraftRepository.readAll();
-//        aircrafts.forEach(System.out::println);
+        System.out.println("\nMain: READ all aircrafts");
+        AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
+        List<Aircraft> aircrafts = aircraftRepository.readAll();
+        aircrafts.forEach(System.out::println);
 
-//        System.out.println("\nMain: READ all airports");
-//        AirportRepository airportRepository = new AirportRepositoryImpl();
-//        List<Airport> airports = airportRepository.readAll();
-//        airports.forEach(System.out::println);
+        System.out.println("\nMain: READ all airports");
+        AirportRepository airportRepository = new AirportRepositoryImpl();
+        List<Airport> airports = airportRepository.readAll();
+        airports.forEach(System.out::println);
 
         System.out.println("\nMain: READ all airstrips");
         AirstripRepository airstripRepository = new AirstripRepositoryImpl();

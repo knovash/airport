@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 public class Ticket {
 
     private Long id;
-//    private BigDecimal flight_number;
+    private BigDecimal flight_number;
     private Flight flight;
     private Passenger passenger;
-//    private BigDecimal gate_number;
+    private BigDecimal gate_number;
     private Gate gate;
     private BigDecimal price;
     private Integer number;
@@ -19,8 +19,8 @@ public class Ticket {
 
     public String toString() {
         return ("Ticket: id: " + this.id
-//                + " flight_number : " + this.flight_number
-//                + " gate_number : " + this.gate_number
+                + " flight_number : " + this.flight_number
+                + " gate_number : " + this.gate_number
                 + " price: " + this.price
                 + " seat: " + this.seat
                 + "\n  gate : " + this.gate

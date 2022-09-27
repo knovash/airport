@@ -60,7 +60,7 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
             airstrip.setId(resultSet.getLong("airstrip_id"));
             airstrip.setNumber(resultSet.getInt("airstrip_number"));
-            airstrip.setAirportId(resultSet.getLong("airstrip_airport_id"));
+            airstrip.setAirportId(resultSet.getLong("airport_id"));
 //            private Long id;
 //            private Integer number;
 //            private Long airportId;
@@ -76,7 +76,7 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT id as airstrip_id, number as airstrip_number, airport_id as airstrip_airport_id  FROM airport.airstrips;", Statement.RETURN_GENERATED_KEYS);
+                    "SELECT id as airstrip_id, number as airstrip_number, airport_id as airport_id  FROM airport.airstrips;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
 

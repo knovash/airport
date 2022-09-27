@@ -12,6 +12,10 @@ public class Airport {
     private List<Gate> gates;
     private List<Aircarrier> aircarriers;
 
+    public String toString() {
+        return ("Airport: id: " + this.id + " name: " + this.name);
+    }
+
     public Long getId() {
         return id;
     }

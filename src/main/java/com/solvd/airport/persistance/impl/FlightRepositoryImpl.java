@@ -88,49 +88,19 @@ public class FlightRepositoryImpl implements FlightRepository {
 
             flight.setId(resultSet.getLong("flight_id"));
             flight.setNumber(resultSet.getInt("flight_number"));
-//            flight.setDate(resultSet.getDate("flight_date"));
+            flight.setDate(resultSet.getDate("flight_date"));
 
-//            List<Aircraft> aircrafts = AircraftRepositoryImpl.mapRow(resultSet, new ArrayList<>());
-//            flight.setAircraft(aircrafts.get(0));
+            List<Aircraft> aircrafts = AircraftRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            flight.setAircraft(aircrafts.get(0));
+
+            List<Airstrip> airstrips = AirstripRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            flight.setAirstrip(airstrips.get(0));
+
+            List<Direction> directions = DirectionRepositoryImpl.mapRow(resultSet, new ArrayList<>());
+            flight.setDirection(directions.get(0));
 
             List<Pilot> pilots = PilotRepositoryImpl.mapRow(resultSet, new ArrayList<>());
             flight.setPilot(pilots.get(0));
-
-//            List<Direction> directions = DirectionRepositoryImpl.mapRow(resultSet, new ArrayList<>());
-//            flight.setDirection(directions.get(0));
-
-//            List<Aircarrier> aircarriers = AircarrierRepositoryImpl.mapRow(resultSet, new ArrayList<>());
-//            flight.setAircarrier(aircarriers.get(0));
-
-//            List<Airstrip> airstrips = AirstripRepositoryImpl.mapRow(resultSet, new ArrayList<>());
-//            flight.setAirstrip(airstrips.get(0));
-
-//            List<Ticket> tickets = TicketRepositoryImpl.mapRow(resultSet, flight.getTickets());
-//            flight.setTickets(tickets);
-
-//            private Long id;
-//            private Integer number;
-//            private Date date;           
-//            private Aircarrier aircarrier;
-//            private Aircraft aircraft;
-//            private Airstrip airstrip;
-//            private Pilot pilot;
-//            private Direction direction;
-//            private List<Ticket> tickets;
-
-//            List<Aircarrier> aircarriers = AircarrierRepositoryImpl.mapRow(resultSet, new ArrayList<>());
-//            flight.setAircarrier(aircarriers.get(0));
-
-//            List<Pilot> pilots = PilotRepositoryImpl.mapRow(resultSet, flight.getPilots());
-//            flight.setPilots(pilots);
-//
-//            List<Aircraft> aircrafts = AircraftRepositoryImpl.mapRow(resultSet, flight.getAircrafts());
-//            flight.setAircrafts(aircrafts);
-//
-//            List<Flight> flights = FlightRepositoryImpl.mapRow(resultSet, flight.getFlights());
-//            flight.setFlights(flights);
-
-//            flight.setPilots(PilotRepositoryImpl.mapRow(resultSet));
         }
         return flights;
     }

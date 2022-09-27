@@ -17,7 +17,7 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     @Override
     public void create(Aircarrier aircarrier) { // вызывается из сервиса. делает инсерт данных объекта в бд.
-        System.out.println(" CREATE aircarrier");
+        System.out.println(" CREATE aircarrier name=" + aircarrier.getName());
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -72,12 +72,6 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
 
             List<Flight> flights = FlightRepositoryImpl.mapRow(resultSet, aircarrier.getFlights());
             aircarrier.setFlights(flights);
-
-//            private Long id;
-//            private String name;
-//            private List<Flight> flights;
-//            private List<Aircraft> aircrafts;
-//            private List<Pilot> pilots;
         }
         return aircarriers;
     }
@@ -124,12 +118,13 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
                             "left join pilots on aircarriers.id = pilots.aircarrier_id \n" +
                             "left join aircrafts on aircarriers.id = aircrafts.aircarrier_id \n" +
                             "left join flights on aircarriers.id = flights.aircarrier_id \n" +
-                            "join tickets on tickets.flight_id = flights.id\n" +
-                            "join passengers on passengers.id = tickets.passenger_id\n" +
-                            "join passports on passports.id = passengers.passport_id\n" +
-                            "join gates on gates.id = tickets.gate_id \n" +
-                            "join airstrips on flights.airstrip_id = airstrips.id \n" +
-                            "join directions on flights.direction_id = directions.id;", Statement.RETURN_GENERATED_KEYS);
+                            "left join tickets on tickets.flight_id = flights.id\n" +
+                            "left join passengers on passengers.id = tickets.passenger_id\n" +
+                            "left join passports on passports.id = passengers.passport_id\n" +
+                            "left join gates on gates.id = tickets.gate_id \n" +
+                            "left join airstrips on flights.airstrip_id = airstrips.id \n" +
+                            "left join directions on flights.direction_id = directions.id \n" +
+                            "order by aircarriers.id;", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -162,7 +157,6 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
                             " flights.number as flight_number, \n" +
                             " flights.id as flight_id, \n" +
                             " flights.date as flight_date \n" +
-                            " tickets.id as fticket_id, \n" +
                             " FROM aircarriers \n" +
                             " left join pilots on aircarriers.id = pilots.aircarrier_id \n" +
                             " left join aircrafts on aircarriers.id = aircrafts.aircarrier_id \n" +
