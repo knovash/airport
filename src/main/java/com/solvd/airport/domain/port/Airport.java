@@ -9,11 +9,14 @@ public class Airport {
     private Long id;
     private String name;
     private List<Airstrip> airstrips;
-    private List<Gate> gates;
     private List<Aircarrier> aircarriers;
 
     public String toString() {
-        return ("Airport: id: " + this.id + " name: " + this.name);
+        return ("Airport: id: " + this.id
+                + " name: " + this.name
+                + "\n  airstrips: " + this.airstrips
+                + "\n  aircarriers: " + this.aircarriers
+        );
     }
 
     public Long getId() {
@@ -38,14 +41,6 @@ public class Airport {
 
     public void setAirstrips(List<Airstrip> airstrips) {
         this.airstrips = airstrips;
-    }
-
-    public List<Gate> getGates() {
-        return gates;
-    }
-
-    public void setGates(List<Gate> gates) {
-        this.gates = gates;
     }
 
     public List<Aircarrier> getAircarriers() {

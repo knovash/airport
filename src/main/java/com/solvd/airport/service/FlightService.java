@@ -9,4 +9,10 @@ public interface FlightService {
     Flight create(Flight flight, Long aircarrierId);
 
     List<Flight> readAll();
+
+    Flight readById(Long id);
+
+    void update(Flight flight);
+
+    void deleteById(Long id);
 }

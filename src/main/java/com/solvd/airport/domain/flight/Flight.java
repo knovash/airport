@@ -6,7 +6,6 @@ import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.port.Airstrip;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 public class Flight {

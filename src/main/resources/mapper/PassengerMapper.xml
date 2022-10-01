@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.PassengerRepository">
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        Insert into passengers(name, passport_id) values (#{name}, #{passport.id})
+    </insert>
+
+    <select id="readById" resultMap="PassengerResultMap">
+        select
+        passengers.id as passenger_id,
+        passengers.name as name,
+        passengers.passport_id as passport_id,
+        passports.number as passport_number
+        from passengers
+        join passports on passengers.passport_id = passports.id
+        where passengers.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="PassengerResultMap">
+        select
+        passengers.id as passenger_id,
+        passengers.name as name,
+        passengers.passport_id as passport_id,
+        passports.number as passport_number
+        from passengers
+        join passports on passengers.passport_id = passports.id
+        order by passengers.id
+    </select>
+
+    <update id="update" keyProperty="id" useGeneratedKeys="true">
+        update passengers set name = #{name} where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from passengers where id = #{id}
+    </delete>
+
+    <resultMap id="PassengerResultMap" type="com.solvd.airport.domain.passenger.Passenger" autoMapping="false">
+        <id property="id" column="passenger_id"/>
+        <result property="name" column="name"/>
+        <association property="passport"
+                     resultMap="com.solvd.airport.persistence.PassportRepository.PassportResultMap"/>
+    </resultMap>
+</mapper>

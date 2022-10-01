@@ -7,10 +7,10 @@ public class Aircraft {
     private Long id;
     private Integer number;
     private String model;
-    private Long aircarrierId;
+//    private Long aircarrierId;
 
     public String toString() {
-        return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model + " aircarrierId: " + this.aircarrierId);
+        return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model);
     }
 
     public Long getId() {
@@ -37,11 +37,11 @@ public class Aircraft {
         this.model = model;
     }
 
-    public Long getAircarrierId() {
-        return aircarrierId;
-    }
-
-    public void setAircarrierId(Long aircarrierId) {
-        this.aircarrierId = aircarrierId;
-    }
+//    public Long getAircarrierId() {
+//        return aircarrierId;
+//    }
+//
+//    public void setAircarrierId(Long aircarrierId) {
+//        this.aircarrierId = aircarrierId;
+//    }
 }

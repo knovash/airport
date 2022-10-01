@@ -6,7 +6,13 @@ import java.util.List;
 
 public interface AircarrierService {
 
-    Aircarrier create(Aircarrier aircarrier, Long airportId);
+    Aircarrier create(Aircarrier aircarrier);
 
     List<Aircarrier> readAll();
+
+    Aircarrier readById(Long id);
+
+    void update(Aircarrier aircarrier);
+
+    void deleteById(Long id);
 }

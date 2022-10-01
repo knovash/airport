@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.PilotRepository">
+
+    <insert id="create" keyProperty="pilot.id" useGeneratedKeys="true">
+        insert into pilots( name, aircarrier_id)
+        values (#{pilot.name}, #{aircarrierId});
+    </insert>
+
+    <select id="readById" resultMap="PilotResultMap">
+        SELECT
+        id as pilot_id,
+        name as name,
+        aircarrier_id as aircarrier_id
+        FROM airport.pilots where pilots.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="PilotResultMap">
+        SELECT
+        id as pilot_id,
+        name as name,
+        aircarrier_id as aircarrier_id
+        FROM airport.pilots
+        order by pilots.id
+    </select>
+
+    <update id="update" keyProperty="pilot.id" useGeneratedKeys="true">
+        update pilots set
+        name = #{pilot.name},
+        aircarrier_id = #{aircarrierId}
+        where id = #{pilot.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from pilots where id = #{id}
+    </delete>
+
+    <resultMap id="PilotResultMap" type="com.solvd.airport.domain.carrier.Pilot" autoMapping="false">
+        <id property="id" column="pilot_id"/>
+        <result property="name" column="name"/>
+<!--        <association property="aircarrier"-->
+<!--                     resultMap="com.solvd.airport.persistence.AircarrierRepository.AircarrierResultMap"/>-->
+    </resultMap>
+</mapper>

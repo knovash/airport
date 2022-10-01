@@ -9,4 +9,10 @@ public interface TicketService {
     Ticket create(Ticket ticket, Long flightId);
 
     List<Ticket> readAll();
+
+    Ticket readById(Long id);
+
+    void update(Ticket ticket);
+
+    void deleteById(Long id);
 }

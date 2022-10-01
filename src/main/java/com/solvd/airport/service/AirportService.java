@@ -9,4 +9,10 @@ public interface AirportService {
     Airport create(Airport airport);
 
     List<Airport> readAll();
+
+    Airport readById(Long id);
+
+    void update(Airport airport);
+
+    void deleteById(Long id);
 }

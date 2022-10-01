@@ -1,16 +1,13 @@
 package com.solvd.airport.domain.flight;
 
 import com.solvd.airport.domain.passenger.Passenger;
-import com.solvd.airport.domain.port.Gate;
 
 import java.math.BigDecimal;
 
 public class Ticket {
 
     private Long id;
-    private Flight flight;
     private Passenger passenger;
-    private Gate gate;
     private BigDecimal price;
     private Integer number;
     private Integer seat;
@@ -19,9 +16,7 @@ public class Ticket {
         return ("Ticket: id: " + this.id
                 + " price: " + this.price
                 + " seat: " + this.seat
-                + "\n  gate : " + this.gate
                 + "\n  passenger: " + this.passenger
-                + "\n  flight : " + this.flight
         );
     }
 
@@ -63,21 +58,5 @@ public class Ticket {
 
     public void setSeat(Integer seat) {
         this.seat = seat;
-    }
-
-    public Flight getFlight() {
-        return flight;
-    }
-
-    public void setFlight(Flight flight) {
-        this.flight = flight;
-    }
-
-    public Gate getGate() {
-        return gate;
-    }
-
-    public void setGate(Gate gate) {
-        this.gate = gate;
     }
 }

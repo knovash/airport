@@ -1,21 +1,11 @@
 package com.solvd.airport.service.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.flight.Ticket;
-import com.solvd.airport.domain.passenger.Passport;
-import com.solvd.airport.domain.port.Airstrip;
-import com.solvd.airport.persistance.FlightRepository;
-import com.solvd.airport.persistance.impl.FlightRepositoryImpl;
-import com.solvd.airport.service.FlightService;
-import com.solvd.airport.service.AircraftService;
-import com.solvd.airport.service.PilotService;
-import com.solvd.airport.service.TicketService;
+import com.solvd.airport.persistence.FlightRepository;
+import com.solvd.airport.persistence.impl.FlightRepositoryImpl;
+import com.solvd.airport.service.*;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +14,18 @@ public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final PilotService pilotService;
     private final AircraftService aircraftService;
+    private final AircarrierService aircarrierService;
+    private final AirstripService airstripService;
+    private final DirectionService directionService;
     private final TicketService ticketService;
 
     public FlightServiceImpl() {
         this.flightRepository = new FlightRepositoryImpl();
         this.pilotService = new PilotServiceImpl();
         this.aircraftService = new AircraftServiceImpl();
+        this.aircarrierService = new AircarrierServiceImpl();
+        this.airstripService = new AirstripServiceImpl();
+        this.directionService = new DirectionServiceImpl();
         this.ticketService = new TicketServiceImpl();
     }
 
@@ -44,16 +40,9 @@ public class FlightServiceImpl implements FlightService {
 //    private List<Ticket> tickets;
 
     @Override
-    public Flight create(Flight flight, Long aircarrier_id) {
+    public Flight create(Flight flight, Long aircarrierId) {
         flight.setId(null);
-        flightRepository.create(flight); // pilotRepository в persistance там sql insert зааносит информацию из полей в бд
-
-//        if (flight.getPilot() != null) {
-//            Pilot pilot = flight.getPilot();
-//            pilotService.create(pilot, flight.getId());
-//            flight.setPilot(pilot);
-//        }
-        
+        flightRepository.create(flight, aircarrierId);
         if (flight.getTickets() != null) {
             List<Ticket> tickets = flight.getTickets().stream()
                     .map(ticket -> ticketService.create(ticket, flight.getId()))
@@ -67,5 +56,20 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<Flight> readAll() {
         return flightRepository.readAll();
+    }
+
+    @Override
+    public Flight readById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void update(Flight flight) {
+
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
     }
 }

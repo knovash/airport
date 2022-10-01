@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.PassportRepository">
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        Insert into passports(number) values (#{number})
+    </insert>
+
+    <select id="readById" resultMap="PassportResultMap">
+        Select id as passport_id, number as passport_number from passports where id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="PassportResultMap">
+        Select id as passport_id, number as passport_number from passports order by passports.id
+    </select>
+
+    <update id="update" keyProperty="id" useGeneratedKeys="true">
+        update passports set number = #{number} where id = #{id}
+    </update>
+
+    <delete id="deleteById" >
+        delete from passports where id = #{id}
+    </delete>
+
+    <resultMap id="PassportResultMap" type="com.solvd.airport.domain.passenger.Passport" autoMapping="false">
+        <id property="id" column="passport_id" />
+        <result property="number" column="passport_number"/>
+    </resultMap>
+</mapper>

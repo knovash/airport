@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AircraftRepository">
+
+    <insert id="create" keyProperty="aircraft.id" useGeneratedKeys="true">
+        insert into aircrafts( number, model, aircarrier_id)
+        values (#{aircraft.number}, #{aircraft.model}, #{aircarrierId});
+    </insert>
+
+    <select id="readById" resultMap="AircraftResultMap">
+        SELECT
+        id as aircraft_id,
+        number as aircraft_number,
+        model as aircraft_model,
+        aircarrier_id as aircarrier_id
+        FROM airport.aircrafts where aircrafts.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="AircraftResultMap">
+        SELECT
+        id as aircraft_id,
+        number as aircraft_number,
+        model as aircraft_model,
+        aircarrier_id as aircarrier_id
+        FROM airport.aircrafts
+        order by aircrafts.id
+    </select>
+
+    <update id="update" keyProperty="aircraft.id" useGeneratedKeys="true">
+        update aircrafts set
+        number = #{aircraft.number},
+        model = #{aircraft.model},
+        aircarrier_id = #{aircarrierId}
+        where id = #{aircraft.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from aircrafts where id = #{id}
+    </delete>
+
+    <resultMap id="AircraftResultMap" type="com.solvd.airport.domain.carrier.Aircraft" autoMapping="false">
+        <id property="id" column="aircraft_id"/>
+        <result property="number" column="aircraft_number"/>
+        <result property="model" column="aircraft_model"/>
+<!--        <association property="aircarrier"-->
+<!--                     resultMap="com.solvd.airport.persistence.AircarrierRepository.AircarrierResultMap"/>-->
+    </resultMap>
+</mapper>

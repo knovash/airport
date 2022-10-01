@@ -6,7 +6,13 @@ import java.util.List;
 
 public interface PassengerService {
 
-    Passenger create(Passenger passenger, Long ticketId);
+    Passenger create(Passenger passenger);
 
     List<Passenger> readAll();
+
+    Passenger readById(Long id);
+
+    void update(Passenger passenger);
+
+    void deleteById(Long id);
 }
