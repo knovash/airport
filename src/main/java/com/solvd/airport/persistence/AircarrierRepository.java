@@ -3,6 +3,7 @@ package com.solvd.airport.persistence;
 import com.solvd.airport.domain.carrier.Aircarrier;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AircarrierRepository {
 
@@ -10,7 +11,7 @@ public interface AircarrierRepository {
 
     List<Aircarrier> readAll();
 
-    Aircarrier readById(Long id);
+    Optional<Aircarrier> readById(Long id);
 
     void update(Aircarrier aircarrier);
 

@@ -1,9 +1,9 @@
 package com.solvd.airport.service.impl;
 
+import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistence.PassportRepository;
 import com.solvd.airport.persistence.impl.PassportMapperImpl;
-import com.solvd.airport.persistence.impl.PassportRepositoryImpl;
 import com.solvd.airport.service.PassportService;
 
 import java.util.List;
@@ -13,7 +13,6 @@ public class PassportServiceImpl implements PassportService {
     private final PassportRepository passportRepository;
 
     public PassportServiceImpl() {
-//        this.passportRepository = new PassportRepositoryImpl();
         this.passportRepository = new PassportMapperImpl();
     }
 
@@ -34,7 +33,8 @@ public class PassportServiceImpl implements PassportService {
     @Override
     public Passport readById(Long id) {
         System.out.println("SERVICE readById passport");
-        return passportRepository.readById(id);
+        return passportRepository.readById(id)
+                .orElseThrow(() -> new NotFound("Passport with id=" + id + " not found"));
     }
 
     @Override

@@ -1,75 +1,81 @@
 package com.solvd.airport.service.impl;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
+import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.port.Airport;
-import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistence.AirportRepository;
-import com.solvd.airport.persistence.impl.AirportRepositoryImpl;
+import com.solvd.airport.persistence.impl.AirportMapperImpl;
 import com.solvd.airport.service.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AirportServiceImpl implements AirportService {
 
     private final AirportRepository airportRepository;
-    private final AircarrierService aircarrierService;
     private final AirstripService airstripService;
-
+    private final AircarrierService aircarrierService;
 
     public AirportServiceImpl() {
-        this.airportRepository = new AirportRepositoryImpl();
-        this.aircarrierService = new AircarrierServiceImpl();
+//        this.airportRepository = new AirportRepositoryImpl();
+        this.airportRepository = new AirportMapperImpl();
         this.airstripService = new AirstripServiceImpl();
+        this.aircarrierService = new AircarrierServiceImpl();
     }
-
-
-
-//    private Long id;
-//    private String name;
-//    private List<Airstrip> airstrips;
-//    private List<Aircarrier> aircarriers;
 
     @Override
     public Airport create(Airport airport) {
+        System.out.println("SERVICE create airport");
         airport.setId(null);
         airportRepository.create(airport);
 
-        if (airport.getAircarriers() != null) {
-            List<Aircarrier> aircarriers = airport.getAircarriers().stream()
-                    .map(aircarrier -> aircarrierService.create(aircarrier))
-                    .collect(Collectors.toList());
-            airport.setAircarriers(aircarriers);
-        }
-
         if (airport.getAirstrips() != null) {
-            List<Airstrip> airstrips = airport.getAirstrips().stream()
-                    .map(airstrip -> airstripService.create(airstrip, airport.getId()))
-                    .collect(Collectors.toList());
-            airport.setAirstrips(airstrips);
+            airport.getAirstrips().stream()
+                    .forEach(airstrip -> {
+                        if (airstrip.getId() == null) {
+                            airstripService.create(airstrip, airport.getId());
+                        }
+                        else {
+                            airstripService.update(airstrip, airport.getId());
+                        }
+                    });
         }
 
+        if (airport.getAircarriers() != null) {
+            airport.getAircarriers().stream()
+                    .forEach(aircarrier -> {
+                        if (aircarrier.getId() == null) {
+                            aircarrierService.create(aircarrier);
+                        }
+                        else {
+                            aircarrierService.update(aircarrier);
+                        }
+                    });
+        }
 
         return airport;
     }
 
     @Override
     public List<Airport> readAll() {
+        System.out.println("SERVICE readAll airports");
         return airportRepository.readAll();
     }
 
     @Override
     public Airport readById(Long id) {
-        return null;
+        System.out.println("SERVICE readById airport");
+        return airportRepository.readById(id)
+                .orElseThrow(() -> new NotFound("Airport with id=" + id + " not found"));
     }
 
     @Override
     public void update(Airport airport) {
-
+        System.out.println("SERVICE update airport");
+        airportRepository.update(airport);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        System.out.println("SERVICE deleteById airport");
+        airportRepository.deleteById(id);
     }
 }

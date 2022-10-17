@@ -6,16 +6,34 @@
         Insert into directions(country, distance) values (#{country}, #{distance})
     </insert>
 
+    <sql id="fields">
+        d.id as direction_id,
+        d.country as country,
+        d.distance as distance
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>
+        from
+        directions d
+    </sql>
+
     <select id="readById" resultMap="DirectionResultMap">
-        select id as direction_id, country as country, distance as distance from directions where id = #{id}
+        <include refid="readAll"/>
+        where d.id = #{id}
     </select>
 
     <select id="readAll" resultMap="DirectionResultMap">
-        select id as direction_id, country as country, distance as distance from directions order by directions.id
+        <include refid="readAll"/>
+        order by d.id
     </select>
 
     <update id="update" keyProperty="id" useGeneratedKeys="true">
-        update directions set country = #{country}, distance = #{distance} where id = #{id}
+        update directions set
+        country = #{country},
+        distance = #{distance}
+        where id = #{id}
     </update>
 
     <delete id="deleteById" >

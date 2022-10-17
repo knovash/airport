@@ -6,15 +6,16 @@ import com.solvd.airport.persistence.AirstripRepository;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AirstripMapperImpl implements AirstripRepository {
 
     @Override
-    public void create(Airstrip airstrip, Long airportID) {
+    public void create(Airstrip airstrip, Long airportId) {
         System.out.println("MAPPER create airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
-            airstripRepository.create(airstrip, airportID);
+            airstripRepository.create(airstrip, airportId);
         }
     }
 
@@ -28,20 +29,20 @@ public class AirstripMapperImpl implements AirstripRepository {
     }
 
     @Override
-    public Airstrip readById(Long id) {
+    public Optional<Airstrip> readById(Long id) {
         System.out.println("MAPPER readById airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
-            return airstripRepository.readById(id);
+            AirstripRepository mapper = session.getMapper(AirstripRepository.class);
+            return mapper.readById(id);
         }
     }
-//
+
     @Override
-    public void update(Airstrip airstrip, Long airportID) {
+    public void update(Airstrip airstrip, Long airportId) {
         System.out.println("MAPPER update airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
-            airstripRepository.update(airstrip, airportID);
+            airstripRepository.update(airstrip, airportId);
         }
     }
 

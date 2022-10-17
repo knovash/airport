@@ -6,16 +6,32 @@
         Insert into passports(number) values (#{number})
     </insert>
 
+    <sql id="fields">
+        pt.id as passport_id,
+        pt.number as passport_number
+    </sql>
+
+    <sql id="readAll">
+        Select
+        <include refid="fields"/>
+        from
+        passports pt
+    </sql>
+
     <select id="readById" resultMap="PassportResultMap">
-        Select id as passport_id, number as passport_number from passports where id = #{id}
+        <include refid="readAll"/>
+        where pt.id = #{id}
     </select>
 
     <select id="readAll" resultMap="PassportResultMap">
-        Select id as passport_id, number as passport_number from passports order by passports.id
+        <include refid="readAll"/>
+        order by pt.id
     </select>
 
     <update id="update" keyProperty="id" useGeneratedKeys="true">
-        update passports set number = #{number} where id = #{id}
+        update passports set
+        number = #{number}
+        where id = #{id}
     </update>
 
     <delete id="deleteById" >

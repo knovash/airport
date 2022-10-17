@@ -1,6 +1,7 @@
 package com.solvd.airport.domain.carrier;
 
 import com.solvd.airport.domain.flight.Flight;
+import com.solvd.airport.domain.port.AirportAircarrier;
 
 import java.util.List;
 
@@ -11,14 +12,23 @@ public class Aircarrier {
     private List<Flight> flights;
     private List<Aircraft> aircrafts;
     private List<Pilot> pilots;
+    private List<AirportAircarrier> airportAircarriers;
 
     public String toString() {
-        return ("Aircarrier: id: " + this.id
+        return ("\nAircarrier: id: " + this.id
                 + " name: " + this.name
                 + "\n  pilots: " + this.pilots
                 + "\n  aircrafts: " + this.aircrafts
                 + "\n  flights: " + this.flights
         );
+    }
+
+    public List<AirportAircarrier> getAirportAircarriers() {
+        return airportAircarriers;
+    }
+
+    public void setAirportAircarriers(List<AirportAircarrier> airportAircarriers) {
+        this.airportAircarriers = airportAircarriers;
     }
 
     public Long getId() {

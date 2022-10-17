@@ -6,6 +6,7 @@ import com.solvd.airport.persistence.DirectionRepository;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Optional;
 
 public class DirectionMapperImpl implements DirectionRepository {
 
@@ -28,11 +29,11 @@ public class DirectionMapperImpl implements DirectionRepository {
     }
 
     @Override
-    public Direction readById(Long id) {
+    public Optional<Direction> readById(Long id) {
         System.out.println("MAPPER readById direction");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            DirectionRepository directionRepository = session.getMapper(DirectionRepository.class);
-            return directionRepository.readById(id);
+            DirectionRepository mapper = session.getMapper(DirectionRepository.class);
+            return mapper.readById(id);
         }
     }
 

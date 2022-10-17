@@ -7,21 +7,27 @@
         values (#{pilot.name}, #{aircarrierId});
     </insert>
 
-    <select id="readById" resultMap="PilotResultMap">
+    <sql id="fields">
+        pl.id as pilot_id,
+        pl.name as pilot_name
+    </sql>
+
+    <sql id="readAll">
         SELECT
-        id as pilot_id,
-        name as name,
-        aircarrier_id as aircarrier_id
-        FROM airport.pilots where pilots.id = #{id}
+        <include refid="fields"/>
+        <!--        aircarrier_id as aircarrier_id-->
+        FROM
+        pilots pl
+    </sql>
+
+    <select id="readById" resultMap="PilotResultMap">
+        <include refid="readAll"/>
+        where pl.id = #{id}
     </select>
 
     <select id="readAll" resultMap="PilotResultMap">
-        SELECT
-        id as pilot_id,
-        name as name,
-        aircarrier_id as aircarrier_id
-        FROM airport.pilots
-        order by pilots.id
+        <include refid="readAll"/>
+        order by pl.id
     </select>
 
     <update id="update" keyProperty="pilot.id" useGeneratedKeys="true">
@@ -37,7 +43,7 @@
 
     <resultMap id="PilotResultMap" type="com.solvd.airport.domain.carrier.Pilot" autoMapping="false">
         <id property="id" column="pilot_id"/>
-        <result property="name" column="name"/>
+        <result property="name" column="pilot_name"/>
 <!--        <association property="aircarrier"-->
 <!--                     resultMap="com.solvd.airport.persistence.AircarrierRepository.AircarrierResultMap"/>-->
     </resultMap>

@@ -3,6 +3,7 @@ package com.solvd.airport.persistence;
 import com.solvd.airport.domain.port.Airport;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AirportRepository {
 
@@ -10,7 +11,7 @@ public interface AirportRepository {
 
     List<Airport> readAll();
 
-    Airport readById(Long id);
+    Optional<Airport> readById(Long id);
 
     void update(Airport airport);
 

@@ -9,11 +9,10 @@ public class Ticket {
     private Long id;
     private Passenger passenger;
     private BigDecimal price;
-    private Integer number;
     private Integer seat;
 
     public String toString() {
-        return ("Ticket: id: " + this.id
+        return ("\nTicket: id: " + this.id
                 + " price: " + this.price
                 + " seat: " + this.seat
                 + "\n  passenger: " + this.passenger
@@ -42,14 +41,6 @@ public class Ticket {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public Integer getSeat() {

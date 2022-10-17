@@ -6,6 +6,7 @@ import com.solvd.airport.persistence.MybatisConfig;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PilotMapperImpl implements PilotRepository {
 
@@ -28,14 +29,14 @@ public class PilotMapperImpl implements PilotRepository {
     }
 
     @Override
-    public Pilot readById(Long id) {
+    public Optional<Pilot> readById(Long id) {
         System.out.println("MAPPER readById pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
-            return pilotRepository.readById(id);
+            PilotRepository mapper = session.getMapper(PilotRepository.class);
+            return mapper.readById(id);
         }
     }
-//
+
     @Override
     public void update(Pilot pilot, Long aircarrierId) {
         System.out.println("MAPPER update pilot");

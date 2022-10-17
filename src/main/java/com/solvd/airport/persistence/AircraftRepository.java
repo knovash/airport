@@ -4,6 +4,7 @@ import com.solvd.airport.domain.carrier.Aircraft;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AircraftRepository {
 
@@ -11,7 +12,7 @@ public interface AircraftRepository {
 
     List<Aircraft> readAll();
 
-    Aircraft readById(Long id);
+    Optional<Aircraft> readById(Long id);
 
     void update(@Param("aircraft") Aircraft aircraft, @Param("aircarrierId") Long aircarrierId);
 

@@ -7,23 +7,27 @@
         values (#{aircraft.number}, #{aircraft.model}, #{aircarrierId});
     </insert>
 
-    <select id="readById" resultMap="AircraftResultMap">
+    <sql id="fields">
+        af.id as aircraft_id,
+        af.number as aircraft_number,
+        af.model as aircraft_model
+    </sql>
+
+    <sql id="readAll">
         SELECT
-        id as aircraft_id,
-        number as aircraft_number,
-        model as aircraft_model,
+        <include refid="fields"/>,
         aircarrier_id as aircarrier_id
-        FROM airport.aircrafts where aircrafts.id = #{id}
+        FROM aircrafts af
+    </sql>
+
+    <select id="readById" resultMap="AircraftResultMap">
+        <include refid="readAll"/>
+        where af.id = #{id}
     </select>
 
     <select id="readAll" resultMap="AircraftResultMap">
-        SELECT
-        id as aircraft_id,
-        number as aircraft_number,
-        model as aircraft_model,
-        aircarrier_id as aircarrier_id
-        FROM airport.aircrafts
-        order by aircrafts.id
+        <include refid="readAll"/>
+        order by af.id
     </select>
 
     <update id="update" keyProperty="aircraft.id" useGeneratedKeys="true">
@@ -42,7 +46,5 @@
         <id property="id" column="aircraft_id"/>
         <result property="number" column="aircraft_number"/>
         <result property="model" column="aircraft_model"/>
-<!--        <association property="aircarrier"-->
-<!--                     resultMap="com.solvd.airport.persistence.AircarrierRepository.AircarrierResultMap"/>-->
     </resultMap>
 </mapper>

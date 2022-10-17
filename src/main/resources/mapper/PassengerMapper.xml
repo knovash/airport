@@ -3,37 +3,46 @@
 <mapper namespace="com.solvd.airport.persistence.PassengerRepository">
 
     <insert id="create" keyProperty="id" useGeneratedKeys="true">
-        Insert into passengers(name, passport_id) values (#{name}, #{passport.id})
+        Insert into passengers(name, passport_id)
+        values (#{name}, #{passport.id})
     </insert>
 
-    <select id="readById" resultMap="PassengerResultMap">
+    <sql id="fields">
+        pr.id as passenger_id,
+        pr.name as name,
+        <include refid="com.solvd.airport.persistence.PassportRepository.fields"/>
+    </sql>
+
+    <sql id="joins">
+        left join passports pt on pr.passport_id = pt.id
+    </sql>
+
+    <sql id="readAll">
         select
-        passengers.id as passenger_id,
-        passengers.name as name,
-        passengers.passport_id as passport_id,
-        passports.number as passport_number
-        from passengers
-        join passports on passengers.passport_id = passports.id
-        where passengers.id = #{id}
+        <include refid="fields"/>
+        from passengers pr
+        <include refid="joins"/>
+    </sql>
+
+    <select id="readById" resultMap="PassengerResultMap">
+        <include refid="readAll"/>
+        where pr.id = #{id}
     </select>
 
     <select id="readAll" resultMap="PassengerResultMap">
-        select
-        passengers.id as passenger_id,
-        passengers.name as name,
-        passengers.passport_id as passport_id,
-        passports.number as passport_number
-        from passengers
-        join passports on passengers.passport_id = passports.id
-        order by passengers.id
+        <include refid="readAll"/>
+        order by pr.id
     </select>
 
     <update id="update" keyProperty="id" useGeneratedKeys="true">
-        update passengers set name = #{name} where id = #{id}
+        update passengers set
+        name = #{name},
+        passport_id = #{passport.id}
+        where id = #{id}
     </update>
 
     <delete id="deleteById">
-        delete from passengers where id = #{id}
+        delete from passengers where passengers.id = #{id}
     </delete>
 
     <resultMap id="PassengerResultMap" type="com.solvd.airport.domain.passenger.Passenger" autoMapping="false">

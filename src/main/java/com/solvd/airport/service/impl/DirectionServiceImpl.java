@@ -1,12 +1,9 @@
 package com.solvd.airport.service.impl;
 
-
+import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.flight.Direction;
-import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistence.DirectionRepository;
 import com.solvd.airport.persistence.impl.DirectionMapperImpl;
-import com.solvd.airport.persistence.impl.DirectionRepositoryImpl;
-import com.solvd.airport.persistence.impl.PassportMapperImpl;
 import com.solvd.airport.service.DirectionService;
 
 import java.util.List;
@@ -16,9 +13,7 @@ public class DirectionServiceImpl implements DirectionService {
     private DirectionRepository directionRepository;
 
     public DirectionServiceImpl() {
-//        this.directionRepository = new DirectionRepositoryImpl();
         this.directionRepository = new DirectionMapperImpl();
-
     }
 
     @Override
@@ -38,7 +33,8 @@ public class DirectionServiceImpl implements DirectionService {
     @Override
     public Direction readById(Long id) {
         System.out.println("SERVICE readById direction");
-        return directionRepository.readById(id);
+        return directionRepository.readById(id)
+                .orElseThrow(() -> new NotFound("Direction with id=" + id + " not found"));
     }
 
     @Override

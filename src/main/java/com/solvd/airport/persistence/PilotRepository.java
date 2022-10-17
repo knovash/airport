@@ -1,10 +1,10 @@
 package com.solvd.airport.persistence;
 
 import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.carrier.Pilot;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PilotRepository {
 
@@ -12,7 +12,7 @@ public interface PilotRepository {
 
     List<Pilot> readAll();
 
-    Pilot readById(Long id);
+    Optional<Pilot> readById(Long id);
 
     void update(@Param("pilot") Pilot pilot, @Param("aircarrierId") Long aircarrierId);
 

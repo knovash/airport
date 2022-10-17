@@ -3,6 +3,7 @@ package com.solvd.airport.persistence;
 import com.solvd.airport.domain.flight.Direction;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DirectionRepository {
 
@@ -10,7 +11,7 @@ public interface DirectionRepository {
 
     List<Direction> readAll();
 
-    Direction readById(Long id);
+    Optional<Direction> readById(Long id);
 
     void update(Direction direction);
 

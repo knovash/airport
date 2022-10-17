@@ -1,9 +1,9 @@
 package com.solvd.airport.service.impl;
 
 import com.solvd.airport.domain.carrier.Aircraft;
+import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.persistence.AircraftRepository;
 import com.solvd.airport.persistence.impl.AircraftMapperImpl;
-import com.solvd.airport.persistence.impl.AircraftRepositoryImpl;
 import com.solvd.airport.service.AircraftService;
 
 import java.util.List;
@@ -13,7 +13,6 @@ public class AircraftServiceImpl implements AircraftService {
     private final AircraftRepository aircraftRepository;
 
     public AircraftServiceImpl() {
-//        this.aircraftRepository = new AircraftRepositoryImpl();
         this.aircraftRepository = new AircraftMapperImpl();
     }
 
@@ -34,7 +33,8 @@ public class AircraftServiceImpl implements AircraftService {
     @Override
     public Aircraft readById(Long id) {
         System.out.println("SERVICE readById aircraft");
-        return aircraftRepository.readById(id);
+        return aircraftRepository.readById(id)
+                .orElseThrow(() -> new NotFound("Aircraft with id=" + id + " not found"));
     }
 
     @Override

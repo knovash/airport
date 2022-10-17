@@ -11,7 +11,6 @@ import java.util.List;
 public class Flight {
 
     private Long id;
-    private Aircarrier aircarrier;
     private Aircraft aircraft;
     private Airstrip airstrip;
     private Pilot pilot;
@@ -24,11 +23,11 @@ public class Flight {
         return ("Flight: id: " + this.id
                 + " number: " + this.number
                 + " date: " + this.date
-                + "\n  aircarrier: " + this.aircarrier
                 + "\n  aircraft: " + this.aircraft
                 + "\n  airstrip: " + this.airstrip
                 + "\n  pilot: " + this.pilot
                 + "\n  direction: " + this.direction
+                + "\n  tickets: " + this.tickets
         );
     }
 
@@ -94,13 +93,5 @@ public class Flight {
 
     public void setPilot(Pilot pilot) {
         this.pilot = pilot;
-    }
-
-    public Aircarrier getAircarrier() {
-        return aircarrier;
-    }
-
-    public void setAircarrier(Aircarrier aircarrier) {
-        this.aircarrier = aircarrier;
     }
 }

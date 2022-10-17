@@ -6,6 +6,7 @@ import com.solvd.airport.persistence.MybatisConfig;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PassportMapperImpl implements PassportRepository {
 
@@ -28,11 +29,11 @@ public class PassportMapperImpl implements PassportRepository {
     }
 
     @Override
-    public Passport readById(Long id) {
+    public Optional<Passport> readById(Long id) {
         System.out.println("MAPPER readById passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PassportRepository passportRepository = session.getMapper(PassportRepository.class);
-            return passportRepository.readById(id);
+            PassportRepository mapper = session.getMapper(PassportRepository.class);
+            return mapper.readById(id);
         }
     }
 

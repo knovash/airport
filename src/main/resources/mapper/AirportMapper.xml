@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AirportRepository">
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        Insert into airports(name) values (#{name})
+    </insert>
+
+    <sql id="fields">
+        ap.id as airport_id,
+        ap.name as airport_name,
+        <include refid="com.solvd.airport.persistence.AirstripRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.AircarrierRepository.fields"/>
+    </sql>
+
+    <sql id="joins">
+        left join airport_aircarriers aa on ap.id = aa.airport_id
+        left join aircarriers ac on aa.aircarrier_id = ac.id
+<!--        join airstrips str on ap.id = str.airport_id-->
+        <include refid="com.solvd.airport.persistence.AircarrierRepository.joins"/>
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>
+        FROM airports ap
+        <include refid="joins"/>
+    </sql>
+
+    <select id="readById" resultMap="AirportResultMap">
+        <include refid="readAll"/>
+        where ap.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="AirportResultMap">
+        <include refid="readAll"/>
+        order by ap.id;
+    </select>
+
+    <update id="update" keyProperty="id" useGeneratedKeys="true">
+        update airports set name = #{name} where id = #{id}
+    </update>
+
+    <delete id="deleteById" >
+        delete from airports where airports.id = #{id}
+    </delete>
+
+    <resultMap id="AirportResultMap" type="com.solvd.airport.domain.port.Airport" autoMapping="false">
+        <id property="id" column="airport_id" />
+        <result property="name" column="airport_name"/>
+        <collection property="airstrips"
+                     resultMap="com.solvd.airport.persistence.AirstripRepository.AirstripResultMap"/>
+        <collection property="aircarriers"
+                    resultMap="com.solvd.airport.persistence.AircarrierRepository.AircarrierResultMap"/>
+    </resultMap>
+</mapper>

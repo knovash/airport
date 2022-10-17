@@ -1,18 +1,20 @@
 package com.solvd.airport.persistence;
 
 import com.solvd.airport.domain.flight.Ticket;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TicketRepository {
 
-    void create(Ticket ticket, Long flightId);
+    void create(@Param("ticket") Ticket ticket, @Param("flightId") Long flightId);
 
     List<Ticket> readAll();
 
-    Ticket readById(Long id);
+    Optional<Ticket> readById(Long id);
 
-    void update(Ticket ticket);
+    void update(@Param("ticket") Ticket ticket, @Param("flightId") Long flightId);
 
     void deleteById(Long id);
 }

@@ -6,6 +6,7 @@ import com.solvd.airport.persistence.AircraftRepository;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AircraftMapperImpl implements AircraftRepository {
 
@@ -28,14 +29,14 @@ public class AircraftMapperImpl implements AircraftRepository {
     }
 
     @Override
-    public Aircraft readById(Long id) {
+    public Optional<Aircraft> readById(Long id) {
         System.out.println("MAPPER readById aircraft");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            AircraftRepository aircraftRepository = session.getMapper(AircraftRepository.class);
-            return aircraftRepository.readById(id);
+            AircraftRepository mapper = session.getMapper(AircraftRepository.class);
+            return mapper.readById(id);
         }
     }
-//
+
     @Override
     public void update(Aircraft aircraft, Long aircarrierId) {
         System.out.println("MAPPER update aircraft");
