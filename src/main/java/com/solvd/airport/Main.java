@@ -47,39 +47,36 @@ public class Main {
 
         System.out.println("\n--- READ FROM DB ---");
 
-//        System.out.println("\nPASSPORTS READ\n");
-//        System.out.println(passportService.readById(1L));
-//        passportService.readAll().forEach(System.out::println);
-//        System.out.println("\nPASSENGERS READ\n");
-//        System.out.println(passengerService.readById(1L));
-//        passengerService.readAll().forEach(System.out::println);
-//        System.out.println("\nTICKETS READ\n");
-//        System.out.println(ticketService.readById(1L));
-//        ticketService.readAll().forEach(System.out::println);
-//        System.out.println("\nDIRECTONS READ\n");
-//        System.out.println(directionService.readById(1L));
-//        directionService.readAll().forEach(System.out::println);
-//        System.out.println("\nPILOTS READ\n");
-//        System.out.println(pilotService.readById(1L));
-//        pilotService.readAll().forEach(System.out::println);
-//        System.out.println("\nAIRCRAFTS READ\n");
-//        System.out.println(aircraftService.readById(1L));
-//        aircraftService.readAll().forEach(System.out::println);
-//        System.out.println("\nAIRSTRIPS READ\n");
-//        System.out.println(airstripService.readById(1L));
-//        airstripService.readAll().forEach(System.out::println);
-//        System.out.println("\nFLIGHTS READ\n");
-//        System.out.println(flightService.readById(1L));
-//        flightService.readAll().forEach(System.out::println);
-//        System.out.println("\nAIRCARRIERS READ\n");
-//        System.out.println(aircarrierService.readById(1L));
-//        aircarrierService.readAll().forEach(System.out::println);
+        System.out.println("\nPASSPORTS READ\n");
+        System.out.println(passportService.readById(1L));
+        passportService.readAll().forEach(System.out::println);
+        System.out.println("\nPASSENGERS READ\n");
+        System.out.println(passengerService.readById(1L));
+        passengerService.readAll().forEach(System.out::println);
+        System.out.println("\nTICKETS READ\n");
+        System.out.println(ticketService.readById(1L));
+        ticketService.readAll().forEach(System.out::println);
+        System.out.println("\nDIRECTONS READ\n");
+        System.out.println(directionService.readById(1L));
+        directionService.readAll().forEach(System.out::println);
+        System.out.println("\nPILOTS READ\n");
+        System.out.println(pilotService.readById(1L));
+        pilotService.readAll().forEach(System.out::println);
+        System.out.println("\nAIRCRAFTS READ\n");
+        System.out.println(aircraftService.readById(1L));
+        aircraftService.readAll().forEach(System.out::println);
+        System.out.println("\nAIRSTRIPS READ\n");
+        System.out.println(airstripService.readById(1L));
+        airstripService.readAll().forEach(System.out::println);
+        System.out.println("\nFLIGHTS READ\n");
+        System.out.println(flightService.readById(1L));
+        flightService.readAll().forEach(System.out::println);
+        System.out.println("\nAIRCARRIERS READ\n");
+        System.out.println(aircarrierService.readById(1L));
+        aircarrierService.readAll().forEach(System.out::println);
         System.out.println("\nAIRPORTS READ\n");
         System.out.println(airportService.readById(1L));
         airportService.readAll().forEach(System.out::println);
-//        System.out.println("\nAIRPORTS AIRCARRIERS READ\n");
-//        System.out.println(airportAircarrierService.readById(1L));
-//        airportAircarrierService.readAll().forEach(System.out::println);
 
         System.out.println("\n--- SET OBJECTS ---\n");
 
@@ -87,53 +84,53 @@ public class Main {
         passport1.setNumber((int) (Math.random() * 3333));
         Passport passport2 = new Passport();
         passport2.setNumber((int) (Math.random() * 3333));
-//        System.out.println(passport1 + "\n" + passport2);
+        System.out.println(passport1 + "\n" + passport2);
 
         Passenger passenger1 = new Passenger();
-        passenger1.setName("NewName" + (int) (Math.random() * 333));
+        passenger1.setName("NewName" + (int) (Math.random() * 3333));
         passenger1.setPassport(passport1);
         Passenger passenger2 = new Passenger();
-        passenger2.setName("NewName" + (int) (Math.random() * 333));
+        passenger2.setName("NewName" + (int) (Math.random() * 3333));
         passenger2.setPassport(passport2);
-//        System.out.println(passenger1 + "\n" + passenger2);
+        System.out.println(passenger1 + "\n" + passenger2);
 
         Ticket ticket1 = new Ticket();
         ticket1.setPrice(BigDecimal.valueOf((int) (Math.random() * 3333)));
-        ticket1.setSeat((int) (Math.random() * 333));
+        ticket1.setSeat((int) (Math.random() * 3333));
         ticket1.setPassenger(passenger1);
         Ticket ticket2 = new Ticket();
         ticket2.setPrice(BigDecimal.valueOf((int) (Math.random() * 3333)));
-        ticket2.setSeat((int) (Math.random() * 333));
+        ticket2.setSeat((int) (Math.random() * 3333));
         ticket2.setPassenger(passenger2);
-//        System.out.println(ticket1 + "\n" + ticket2);
+        System.out.println(ticket1 + "\n" + ticket2);
 
         Direction direction1 = new Direction();
-        direction1.setCountry("Country" + (int) (Math.random() * 333));
-        direction1.setDistance(BigDecimal.valueOf((int) (Math.random() * 333)));
+        direction1.setCountry("Country" + (int) (Math.random() * 3333));
+        direction1.setDistance(BigDecimal.valueOf((int) (Math.random() * 3333)));
         Direction direction2 = new Direction();
-        direction2.setCountry("Country" + (int) (Math.random() * 333));
-        direction2.setDistance(BigDecimal.valueOf((int) (Math.random() * 333)));
-//        System.out.println(direction1 + "\n" + direction2);
+        direction2.setCountry("Country" + (int) (Math.random() * 3333));
+        direction2.setDistance(BigDecimal.valueOf((int) (Math.random() * 3333)));
+        System.out.println(direction1 + "\n" + direction2);
 
         Pilot pilot1 = new Pilot();
-        pilot1.setName("name" + (int) (Math.random() * 333));
+        pilot1.setName("name" + (int) (Math.random() * 3333));
         Pilot pilot2 = new Pilot();
-        pilot2.setName("name" + (int) (Math.random() * 333));
-//        System.out.println(pilot1 + "\n" + pilot2);
+        pilot2.setName("name" + (int) (Math.random() * 3333));
+        System.out.println(pilot1 + "\n" + pilot2);
 
         Aircraft aircraft1 = new Aircraft();
-        aircraft1.setModel("model" + (int) (Math.random() * 333));
-        aircraft1.setNumber((int) (Math.random() * 333));
+        aircraft1.setModel("model" + (int) (Math.random() * 3333));
+        aircraft1.setNumber((int) (Math.random() * 3333));
         Aircraft aircraft2 = new Aircraft();
-        aircraft2.setModel("model" + (int) (Math.random() * 333));
-        aircraft2.setNumber((int) (Math.random() * 333));
-//        System.out.println(aircraft1 + "\n" + aircraft2);
+        aircraft2.setModel("model" + (int) (Math.random() * 3333));
+        aircraft2.setNumber((int) (Math.random() * 3333));
+        System.out.println(aircraft1 + "\n" + aircraft2);
 
         Airstrip airstrip1 = new Airstrip();
-        airstrip1.setNumber((int) (Math.random() * 333));
+        airstrip1.setNumber((int) (Math.random() * 3333));
         Airstrip airstrip2 = new Airstrip();
-        airstrip2.setNumber((int) (Math.random() * 333));
-//        System.out.println(airstrip1 + "\n" + airstrip2);
+        airstrip2.setNumber((int) (Math.random() * 3333));
+        System.out.println(airstrip1 + "\n" + airstrip2);
 
         Flight flight1 = new Flight();
         flight1.setNumber((int) (Math.random() * 3333));
@@ -143,21 +140,20 @@ public class Main {
         flight1.setAirstrip(airstrip1);
         flight1.setDirection(direction1);
         flight1.setTickets(Arrays.asList(ticket1, ticket2));
-//        System.out.println(flight1);
+        System.out.println(flight1);
 
         Aircarrier aircarrier1 = new Aircarrier();
-        aircarrier1.setName("carrier" + (int) (Math.random() * 333));
+        aircarrier1.setName("carrier" + (int) (Math.random() * 3333));
         aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
         aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
         aircarrier1.setFlights(Arrays.asList(flight1));
-//        System.out.println(aircarrier1);
+        System.out.println(aircarrier1);
 
         Airport airport1 = new Airport();
-        airport1.setName("airport" + (int) (Math.random() * 333));
+        airport1.setName("airport" + (int) (Math.random() * 3333));
         airport1.setAircarriers(Arrays.asList(aircarrier1));
         airport1.setAirstrips(Arrays.asList(airstrip1, airstrip2));
-//        System.out.println(airport1);
-
+        System.out.println(airport1);
 
         System.out.println("\n--- SERVICES ---\n");
 
@@ -197,66 +193,82 @@ public class Main {
 //        System.out.println("aircrafts read all\n");
 //        aircraftService.readAll().forEach(System.out::println);
 //
-//        System.out.println(flight1);
+//        System.out.println("\nflight1\n" + flight1);
 //        flight1 = flightService.create(flight1, 1L);
 //        System.out.println("\nflight created\n" + flight1);
 //        System.out.println("flights read all\n");
 //        flightService.readAll().forEach(System.out::println);
-
+//
 //        System.out.println(aircarrier1);
 //        aircarrier1 = aircarrierService.create(aircarrier1);
 //        System.out.println("\naircarriers read all\n");
 //        aircarrierService.readAll().forEach(System.out::println);
 
-        System.out.println("\nairport object to create\n" + airport1);
+        System.out.println("\n---  A I R P O R T   C R E A T E  ---\n");
+
+//        System.out.println("\nairport object to create\n" + airport1);
         airport1 = airportService.create(airport1);
 
         AirportAircarrier airportAircarrier1 = new AirportAircarrier();
         airportAircarrier1.setAirportId(airport1.getId());
         airportAircarrier1.setAircarrierId(aircarrier1.getId());
         airportAircarrierService.create(airportAircarrier1);
-//        airportAircarrierService.readAll().forEach(System.out::println);
-//        airportService.readAll().forEach(System.out::println);
         System.out.println(airportService.readById(airport1.getId()));
 
-//        System.out.println("\n--- UPDATE OBJECTS ---\n");
-//        passport1.setNumber((int) (Math.random() * 3333)*100);
-//        passport2.setNumber((int) (Math.random() * 3333*100));
-//        passenger1.setName("Upd Name" + (int) (Math.random() * 333)*100);
-//        passenger1.setPassport(passport1);
-//        passenger2.setName("Upd Name" + (int) (Math.random() * 333)*100);
-//        passenger2.setPassport(passport2);
-//        ticket1.setPrice(BigDecimal.valueOf((int) (Math.random() * 3333)*100));
-//        ticket1.setSeat((int) (Math.random() * 333)*100);
-//        ticket1.setPassenger(passenger1);
-//        ticket2.setPrice(BigDecimal.valueOf((int) (Math.random() * 3333)*100));
-//        ticket2.setSeat((int) (Math.random() * 333)*100);
-//        ticket2.setPassenger(passenger2);
-//        direction1.setCountry("Upd Country" + (int) (Math.random() * 333)*100);
-//        direction1.setDistance(BigDecimal.valueOf((int) (Math.random() * 333)*100));
-//        direction2.setCountry("Upd Country" + (int) (Math.random() * 333)*100);
-//        direction2.setDistance(BigDecimal.valueOf((int) (Math.random() * 333)*100));
-//        pilot1.setName("Upd Name" + (int) (Math.random() * 333)*100);
-//        pilot2.setName("Upd Name" + (int) (Math.random() * 333)*100);
-//        aircraft1.setModel("Upd model" + (int) (Math.random() * 333)*100);
-//        aircraft1.setNumber((int) (Math.random() * 333)*100);
-//        aircraft2.setModel("Upd model" + (int) (Math.random() * 333)*100);
-//        aircraft2.setNumber((int) (Math.random() * 333)*100);
-//        airstrip1.setNumber((int) (Math.random() * 333)*100);
-//        airstrip2.setNumber((int) (Math.random() * 333)*100);
-//        flight1.setNumber((int) (Math.random() * 3333)*100);
-//        flight1.setDate(Date.valueOf(LocalDate.now()));
-//        flight1.setAircraft(aircraft1);
-//        flight1.setPilot(pilot1);
-//        flight1.setAirstrip(airstrip1);
-//        flight1.setDirection(direction1);
-//        flight1.setTickets(Arrays.asList(ticket1, ticket2));
-//        aircarrier1.setName("Upd carrier" + (int) (Math.random() * 333)*100);
-//        aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
-//        aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
-//        aircarrier1.setFlights(Arrays.asList(flight1));
-//        System.out.println("\n--- AIRPORTS READ UPDATED ---\n");
-//        System.out.println(airportService.readById(1L));
-//        airportService.readAll().forEach(System.out::println);
+        System.out.println("\n--- READ ALL AIPORTS ---");
+        airportService.readAll().forEach(System.out::println);
+
+        System.out.println("\n--- UPDATE OBJECTS ---\n");
+        passport1.setNumber((int) (Math.random() * 3333) * 100);
+        passport2.setNumber((int) (Math.random() * 3333 * 100));
+        System.out.println(passport1);
+        System.out.println(passport2);
+        passportService.update(passport1);
+        passportService.readAll().forEach(System.out::println);
+        passenger1.setName("Upd Name" + (int) (Math.random() * 333) * 100);
+        passenger1.setPassport(passport1);
+        passenger2.setName("Upd Name" + (int) (Math.random() * 333) * 100);
+        passenger2.setPassport(passport2);
+        ticket1.setPrice(BigDecimal.valueOf((int) (Math.random() * 3333) * 100));
+        ticket1.setSeat((int) (Math.random() * 3333) * 100);
+        ticket1.setPassenger(passenger1);
+        ticket2.setPrice(BigDecimal.valueOf((int) (Math.random() * 3333) * 100));
+        ticket2.setSeat((int) (Math.random() * 3333) * 100);
+        ticket2.setPassenger(passenger2);
+        direction1.setCountry("Upd Country" + (int) (Math.random() * 3333) * 100);
+        direction1.setDistance(BigDecimal.valueOf((int) (Math.random() * 333) * 100));
+        direction2.setCountry("Upd Country" + (int) (Math.random() * 3333) * 100);
+        direction2.setDistance(BigDecimal.valueOf((int) (Math.random() * 3333) * 100));
+        pilot1.setName("Upd Name" + (int) (Math.random() * 3333) * 100);
+        pilot2.setName("Upd Name" + (int) (Math.random() * 3333) * 100);
+        aircraft1.setModel("Upd model" + (int) (Math.random() * 3333) * 100);
+        aircraft1.setNumber((int) (Math.random() * 3333) * 100);
+        aircraft2.setModel("Upd model" + (int) (Math.random() * 333) * 100);
+        aircraft2.setNumber((int) (Math.random() * 3333) * 100);
+        airstrip1.setNumber((int) (Math.random() * 3333) * 100);
+        airstrip2.setNumber((int) (Math.random() * 3333) * 100);
+        flight1.setNumber((int) (Math.random() * 3333) * 100);
+        flight1.setDate(Date.valueOf(LocalDate.now()));
+        flight1.setAircraft(aircraft1);
+        flight1.setPilot(pilot1);
+        flight1.setAirstrip(airstrip1);
+        flight1.setDirection(direction1);
+        flight1.setTickets(Arrays.asList(ticket1, ticket2));
+        aircarrier1.setName("Upd carrier" + (int) (Math.random() * 333) * 100);
+        aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
+        aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
+        aircarrier1.setFlights(Arrays.asList(flight1));
+
+        passengerService.update(passenger1);
+        aircarrierService.update(aircarrier1);
+
+        System.out.println("\n--- READ ALL AIPORTS UPDATED ---");
+        airportService.readAll().forEach(System.out::println);
+
+        passengerService.deleteById(3L);
+        pilotService.deleteById(1L);
+        aircraftService.deleteById(1L);
+        System.out.println("\n--- READ ALL AIPORTS DELETED---");
+        airportService.readAll().forEach(System.out::println);
     }
 }

@@ -30,11 +30,10 @@ public class AircarrierServiceImpl implements AircarrierService {
         System.out.println("SERVICE create aircarrier");
         aircarrier.setId(null);
         aircarrierRepository.create(aircarrier);
-        AirportAircarrier airportAircarrier = new AirportAircarrier();
-        airportAircarrier.setAirportId(1L);
-        airportAircarrier.setAircarrierId(1L);
-
-        airportAircarrierService.create(airportAircarrier);
+//        AirportAircarrier airportAircarrier = new AirportAircarrier();
+//        airportAircarrier.setAirportId(1L);
+//        airportAircarrier.setAircarrierId(1L);
+//        airportAircarrierService.create(airportAircarrier);
         if (aircarrier.getPilots() != null) {
             aircarrier.getPilots().stream()
                     .forEach(pilot -> {
