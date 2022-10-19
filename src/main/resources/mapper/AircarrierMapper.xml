@@ -4,7 +4,6 @@
 
     <insert id="create" keyProperty="id" useGeneratedKeys="true">
         Insert into aircarriers(name) values (#{name})
-<!--        Insert into airport_aircarriers(name) values (#{name})-->
     </insert>
 
     <sql id="fields">

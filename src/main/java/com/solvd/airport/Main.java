@@ -54,7 +54,7 @@ public class Main {
         System.out.println(passengerService.readById(1L));
         passengerService.readAll().forEach(System.out::println);
         System.out.println("\nTICKETS READ\n");
-        System.out.println(ticketService.readById(1L));
+        System.out.println(ticketService.readById(3L));
         ticketService.readAll().forEach(System.out::println);
         System.out.println("\nDIRECTONS READ\n");
         System.out.println(directionService.readById(1L));
@@ -74,6 +74,7 @@ public class Main {
         System.out.println("\nAIRCARRIERS READ\n");
         System.out.println(aircarrierService.readById(1L));
         aircarrierService.readAll().forEach(System.out::println);
+        System.exit (0);
         System.out.println("\nAIRPORTS READ\n");
         System.out.println(airportService.readById(1L));
         airportService.readAll().forEach(System.out::println);

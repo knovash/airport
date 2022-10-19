@@ -4,6 +4,7 @@ import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistence.PassportRepository;
 import com.solvd.airport.persistence.impl.PassportMapperImpl;
+import com.solvd.airport.persistence.impl.PassportRepositoryImpl;
 import com.solvd.airport.service.PassportService;
 
 import java.util.List;
@@ -13,7 +14,8 @@ public class PassportServiceImpl implements PassportService {
     private final PassportRepository passportRepository;
 
     public PassportServiceImpl() {
-        this.passportRepository = new PassportMapperImpl();
+        this.passportRepository = new PassportRepositoryImpl();
+//        this.passportRepository = new PassportMapperImpl();
     }
 
     @Override

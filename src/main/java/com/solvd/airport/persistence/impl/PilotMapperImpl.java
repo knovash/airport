@@ -14,8 +14,8 @@ public class PilotMapperImpl implements PilotRepository {
     public void create(Pilot pilot, Long aircarrierId) {
         System.out.println("MAPPER create pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
-            pilotRepository.create(pilot, aircarrierId);
+            PilotRepository mapper = session.getMapper(PilotRepository.class);
+            mapper.create(pilot, aircarrierId);
         }
     }
 
@@ -23,8 +23,8 @@ public class PilotMapperImpl implements PilotRepository {
     public List<Pilot> readAll() {
         System.out.println("MAPPER readAll pilots");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
-            return pilotRepository.readAll();
+            PilotRepository mapper = session.getMapper(PilotRepository.class);
+            return mapper.readAll();
         }
     }
 
@@ -41,8 +41,8 @@ public class PilotMapperImpl implements PilotRepository {
     public void update(Pilot pilot, Long aircarrierId) {
         System.out.println("MAPPER update pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
-            pilotRepository.update(pilot, aircarrierId);
+            PilotRepository mapper = session.getMapper(PilotRepository.class);
+            mapper.update(pilot, aircarrierId);
         }
     }
 
@@ -50,8 +50,8 @@ public class PilotMapperImpl implements PilotRepository {
     public void deleteById(Long id) {
         System.out.println("MAPPER deleteById pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
-            pilotRepository.deleteById(id);
+            PilotRepository mapper = session.getMapper(PilotRepository.class);
+            mapper.deleteById(id);
         }
     }
 }

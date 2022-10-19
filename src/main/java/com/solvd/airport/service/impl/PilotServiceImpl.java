@@ -3,7 +3,9 @@ package com.solvd.airport.service.impl;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.persistence.PilotRepository;
+import com.solvd.airport.persistence.impl.PassengerRepositoryImpl;
 import com.solvd.airport.persistence.impl.PilotMapperImpl;
+import com.solvd.airport.persistence.impl.PilotRepositoryImpl;
 import com.solvd.airport.service.PilotService;
 
 import java.util.List;
@@ -13,7 +15,8 @@ public class PilotServiceImpl implements PilotService {
     private final PilotRepository pilotRepository;
 
     public PilotServiceImpl() {
-        this.pilotRepository = new PilotMapperImpl();
+//        this.pilotRepository = new PilotMapperImpl();
+        this.pilotRepository = new PilotRepositoryImpl();
     }
 
     @Override

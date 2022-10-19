@@ -4,6 +4,8 @@ import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.persistence.AircraftRepository;
 import com.solvd.airport.persistence.impl.AircraftMapperImpl;
+import com.solvd.airport.persistence.impl.AircraftRepositoryImpl;
+import com.solvd.airport.persistence.impl.PassengerRepositoryImpl;
 import com.solvd.airport.service.AircraftService;
 
 import java.util.List;
@@ -13,7 +15,8 @@ public class AircraftServiceImpl implements AircraftService {
     private final AircraftRepository aircraftRepository;
 
     public AircraftServiceImpl() {
-        this.aircraftRepository = new AircraftMapperImpl();
+//        this.aircraftRepository = new AircraftMapperImpl();
+        this.aircraftRepository = new AircraftRepositoryImpl();
     }
 
     @Override

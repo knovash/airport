@@ -14,8 +14,8 @@ public class PassportMapperImpl implements PassportRepository {
     public void create(Passport passport) {
         System.out.println("MAPPER create passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PassportRepository passportRepository = session.getMapper(PassportRepository.class);
-            passportRepository.create(passport);
+            PassportRepository mapper = session.getMapper(PassportRepository.class);
+            mapper.create(passport);
         }
     }
 
@@ -23,8 +23,8 @@ public class PassportMapperImpl implements PassportRepository {
     public List<Passport> readAll() {
         System.out.println("MAPPER readAll passports");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PassportRepository passportRepository = session.getMapper(PassportRepository.class);
-            return passportRepository.readAll();
+            PassportRepository mapper = session.getMapper(PassportRepository.class);
+            return mapper.readAll();
         }
     }
 
@@ -41,8 +41,8 @@ public class PassportMapperImpl implements PassportRepository {
     public void update(Passport passport) {
         System.out.println("MAPPER update passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PassportRepository passportRepository = session.getMapper(PassportRepository.class);
-            passportRepository.update(passport);
+            PassportRepository mapper = session.getMapper(PassportRepository.class);
+            mapper.update(passport);
         }
     }
 
@@ -50,8 +50,8 @@ public class PassportMapperImpl implements PassportRepository {
     public void deleteById(Long id) {
         System.out.println("MAPPER deleteById passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
-            PassportRepository passportRepository = session.getMapper(PassportRepository.class);
-            passportRepository.deleteById(id);
+            PassportRepository mapper = session.getMapper(PassportRepository.class);
+            mapper.deleteById(id);
         }
     }
 }

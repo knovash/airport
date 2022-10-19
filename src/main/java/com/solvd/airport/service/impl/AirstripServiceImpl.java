@@ -4,6 +4,7 @@ import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistence.AirstripRepository;
 import com.solvd.airport.persistence.impl.AirstripMapperImpl;
+import com.solvd.airport.persistence.impl.AirstripRepositoryImpl;
 import com.solvd.airport.service.AirstripService;
 
 import java.util.List;
@@ -13,7 +14,8 @@ public class AirstripServiceImpl implements AirstripService {
     private final AirstripRepository airstripRepository;
 
     public AirstripServiceImpl() {
-        this.airstripRepository = new AirstripMapperImpl();
+//        this.airstripRepository = new AirstripMapperImpl();
+        this.airstripRepository = new AirstripRepositoryImpl();
     }
 
     @Override

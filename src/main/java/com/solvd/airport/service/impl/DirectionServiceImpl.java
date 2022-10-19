@@ -4,6 +4,8 @@ import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.persistence.DirectionRepository;
 import com.solvd.airport.persistence.impl.DirectionMapperImpl;
+import com.solvd.airport.persistence.impl.DirectionRepositoryImpl;
+import com.solvd.airport.persistence.impl.PassengerRepositoryImpl;
 import com.solvd.airport.service.DirectionService;
 
 import java.util.List;
@@ -13,7 +15,8 @@ public class DirectionServiceImpl implements DirectionService {
     private DirectionRepository directionRepository;
 
     public DirectionServiceImpl() {
-        this.directionRepository = new DirectionMapperImpl();
+//        this.directionRepository = new DirectionMapperImpl();
+        this.directionRepository = new DirectionRepositoryImpl();
     }
 
     @Override

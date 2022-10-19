@@ -5,6 +5,7 @@ import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.port.AirportAircarrier;
 import com.solvd.airport.persistence.AircarrierRepository;
 import com.solvd.airport.persistence.impl.AircarrierMapperImpl;
+import com.solvd.airport.persistence.impl.AircarrierRepositoryImpl;
 import com.solvd.airport.service.*;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class AircarrierServiceImpl implements AircarrierService {
     private final AirportAircarrierService airportAircarrierService;
 
     public AircarrierServiceImpl() {
-        this.aircarrierRepository = new AircarrierMapperImpl();
+//        this.aircarrierRepository = new AircarrierMapperImpl();
+        this.aircarrierRepository = new AircarrierRepositoryImpl();
         this.aircraftService = new AircraftServiceImpl();
         this.flightService = new FlightServiceImpl();
         this.pilotService = new PilotServiceImpl();
@@ -30,10 +32,6 @@ public class AircarrierServiceImpl implements AircarrierService {
         System.out.println("SERVICE create aircarrier");
         aircarrier.setId(null);
         aircarrierRepository.create(aircarrier);
-//        AirportAircarrier airportAircarrier = new AirportAircarrier();
-//        airportAircarrier.setAirportId(1L);
-//        airportAircarrier.setAircarrierId(1L);
-//        airportAircarrierService.create(airportAircarrier);
         if (aircarrier.getPilots() != null) {
             aircarrier.getPilots().stream()
                     .forEach(pilot -> {

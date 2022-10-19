@@ -5,6 +5,7 @@ import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.persistence.PassengerRepository;
 import com.solvd.airport.persistence.impl.PassengerMapperImpl;
+import com.solvd.airport.persistence.impl.PassengerRepositoryImpl;
 import com.solvd.airport.service.PassengerService;
 import com.solvd.airport.service.PassportService;
 
@@ -16,8 +17,9 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassportService passportService;
 
     public PassengerServiceImpl() {
+//        this.passengerRepository = new PassengerMapperImpl();
+        this.passengerRepository = new PassengerRepositoryImpl();
         this.passportService = new PassportServiceImpl();
-        this.passengerRepository = new PassengerMapperImpl();
     }
 
     @Override

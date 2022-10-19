@@ -15,7 +15,6 @@
     <sql id="readAll">
         SELECT
         <include refid="fields"/>
-        <!--        aircarrier_id as aircarrier_id-->
         FROM
         pilots pl
     </sql>
