@@ -15,7 +15,6 @@ public class AirportServiceImpl implements AirportService {
     private final AircarrierService aircarrierService;
 
     public AirportServiceImpl() {
-//        this.airportRepository = new AirportRepositoryImpl();
         this.airportRepository = new AirportMapperImpl();
         this.airstripService = new AirstripServiceImpl();
         this.aircarrierService = new AircarrierServiceImpl();
@@ -28,7 +27,7 @@ public class AirportServiceImpl implements AirportService {
         airportRepository.create(airport);
 
         if (airport.getAirstrips() != null) {
-            airport.getAirstrips().stream()
+            airport.getAirstrips()
                     .forEach(airstrip -> {
                         if (airstrip.getId() == null) {
                             airstripService.create(airstrip, airport.getId());
@@ -40,7 +39,7 @@ public class AirportServiceImpl implements AirportService {
         }
 
         if (airport.getAircarriers() != null) {
-            airport.getAircarriers().stream()
+            airport.getAircarriers()
                     .forEach(aircarrier -> {
                         if (aircarrier.getId() == null) {
                             aircarrierService.create(aircarrier);

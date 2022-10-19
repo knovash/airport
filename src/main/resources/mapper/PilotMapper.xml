@@ -15,7 +15,6 @@
     <sql id="readAll">
         SELECT
         <include refid="fields"/>
-        <!--        aircarrier_id as aircarrier_id-->
         FROM
         pilots pl
     </sql>
@@ -44,7 +43,5 @@
     <resultMap id="PilotResultMap" type="com.solvd.airport.domain.carrier.Pilot" autoMapping="false">
         <id property="id" column="pilot_id"/>
         <result property="name" column="pilot_name"/>
-<!--        <association property="aircarrier"-->
-<!--                     resultMap="com.solvd.airport.persistence.AircarrierRepository.AircarrierResultMap"/>-->
     </resultMap>
 </mapper>

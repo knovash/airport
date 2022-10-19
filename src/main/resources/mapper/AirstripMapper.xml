@@ -10,7 +10,6 @@
     <sql id="fields">
         str.id as airstrip_id,
         str.number as airstrip_number
-<!--        airport_id as airport_id-->
     </sql>
 
     <sql id="readAll">
@@ -43,7 +42,5 @@
     <resultMap id="AirstripResultMap" type="com.solvd.airport.domain.port.Airstrip" autoMapping="false">
         <id property="id" column="airstrip_id"/>
         <result property="number" column="airstrip_number"/>
-<!--        <association property="airport"-->
-<!--                     resultMap="com.solvd.airport.persistence.AirportRepository.AirportResultMap"/>-->
     </resultMap>
 </mapper>

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DirectionServiceImpl implements DirectionService {
 
-    private DirectionRepository directionRepository;
+    private final DirectionRepository directionRepository;
 
     public DirectionServiceImpl() {
         this.directionRepository = new DirectionMapperImpl();

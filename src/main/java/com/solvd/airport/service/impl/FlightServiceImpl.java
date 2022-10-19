@@ -15,7 +15,6 @@ import java.util.List;
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
-    private final PassengerService passengerService;
     private final TicketService ticketService;
     private final PilotService pilotService;
     private final AirstripService airstripService;
@@ -24,7 +23,6 @@ public class FlightServiceImpl implements FlightService {
 
     public FlightServiceImpl() {
         this.flightRepository = new FlightMapperImpl();
-        this.passengerService = new PassengerServiceImpl();
         this.ticketService = new TicketServiceImpl();
         this.pilotService = new PilotServiceImpl();
         this.airstripService = new AirstripServiceImpl();
@@ -74,7 +72,7 @@ public class FlightServiceImpl implements FlightService {
         }
         flightRepository.create(flight, aircarrierId);
         if (flight.getTickets() != null) {
-            flight.getTickets().stream()
+            flight.getTickets()
                     .forEach(ticket -> {
                         if (ticket.getId() == null) {
                             ticketService.create(ticket, flight.getId());
@@ -144,7 +142,7 @@ public class FlightServiceImpl implements FlightService {
 
 
         if (flight.getTickets() != null) {
-            flight.getTickets().stream()
+            flight.getTickets()
                     .forEach(ticket -> {
                         if (ticket.getId() == null) {
                             ticketService.create(ticket, flight.getId());

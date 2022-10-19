@@ -36,7 +36,6 @@
         <include refid="com.solvd.airport.persistence.TicketRepository.joins"/>
         left join directions d on f.direction_id = d.id
         left join airstrips str on f.airstrip_id = str.id
-<!--        join airstrips on f.airstrip_id = airstrips.id-->
     </sql>
 
     <sql id="readAll">

@@ -15,14 +15,12 @@ public class AircarrierServiceImpl implements AircarrierService {
     private final PilotService pilotService;
     private final AircraftService aircraftService;
     private final FlightService flightService;
-    private final AirportAircarrierService airportAircarrierService;
 
     public AircarrierServiceImpl() {
         this.aircarrierRepository = new AircarrierMapperImpl();
         this.aircraftService = new AircraftServiceImpl();
         this.flightService = new FlightServiceImpl();
         this.pilotService = new PilotServiceImpl();
-        this.airportAircarrierService = new AirportAircarrierServiceImpl();
     }
 
     @Override
@@ -30,12 +28,8 @@ public class AircarrierServiceImpl implements AircarrierService {
         System.out.println("SERVICE create aircarrier");
         aircarrier.setId(null);
         aircarrierRepository.create(aircarrier);
-//        AirportAircarrier airportAircarrier = new AirportAircarrier();
-//        airportAircarrier.setAirportId(1L);
-//        airportAircarrier.setAircarrierId(1L);
-//        airportAircarrierService.create(airportAircarrier);
         if (aircarrier.getPilots() != null) {
-            aircarrier.getPilots().stream()
+            aircarrier.getPilots()
                     .forEach(pilot -> {
                         if (pilot.getId() == null) {
                             pilotService.create(pilot, aircarrier.getId());
@@ -46,7 +40,7 @@ public class AircarrierServiceImpl implements AircarrierService {
                     });
         }
         if (aircarrier.getAircrafts() != null) {
-            aircarrier.getAircrafts().stream()
+            aircarrier.getAircrafts()
                     .forEach(aircraft -> {
                         if (aircraft.getId() == null) {
                             aircraftService.create(aircraft, aircarrier.getId());
@@ -57,7 +51,7 @@ public class AircarrierServiceImpl implements AircarrierService {
                     });
         }
         if (aircarrier.getFlights() != null) {
-            aircarrier.getFlights().stream()
+            aircarrier.getFlights()
                     .forEach(flight -> {
                         if (flight.getId() == null) {
                             flightService.create(flight, aircarrier.getId());
@@ -88,7 +82,7 @@ public class AircarrierServiceImpl implements AircarrierService {
         System.out.println("SERVICE update aircarrier");
         aircarrierRepository.update(aircarrier);
         if (aircarrier.getPilots() != null) {
-            aircarrier.getPilots().stream()
+            aircarrier.getPilots()
                     .forEach(pilot -> {
                         if (pilot.getId() == null) {
                             pilotService.create(pilot, aircarrier.getId());
@@ -99,7 +93,7 @@ public class AircarrierServiceImpl implements AircarrierService {
                     });
         }
         if (aircarrier.getAircrafts() != null) {
-            aircarrier.getAircrafts().stream()
+            aircarrier.getAircrafts()
                     .forEach(aircraft -> {
                         if (aircraft.getId() == null) {
                             aircraftService.create(aircraft, aircarrier.getId());
@@ -110,7 +104,7 @@ public class AircarrierServiceImpl implements AircarrierService {
                     });
         }
         if (aircarrier.getFlights() != null) {
-            aircarrier.getFlights().stream()
+            aircarrier.getFlights()
                     .forEach(flight -> {
                         if (flight.getId() == null) {
                             flightService.create(flight, aircarrier.getId());

@@ -16,7 +16,6 @@
     <sql id="joins">
         left join airport_aircarriers aa on ap.id = aa.airport_id
         left join aircarriers ac on aa.aircarrier_id = ac.id
-<!--        join airstrips str on ap.id = str.airport_id-->
         <include refid="com.solvd.airport.persistence.AircarrierRepository.joins"/>
     </sql>
 

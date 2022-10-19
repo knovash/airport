@@ -38,7 +38,6 @@ public class AirportAircarrierMapperImpl implements AirportAircarrierRepository 
         }
     }
 
-    //
     @Override
     public void update(AirportAircarrier airportAircarrier) {
         System.out.println("MAPPER update airportAircarrier");

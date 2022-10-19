@@ -38,7 +38,6 @@ public class AirportMapperImpl implements AirportRepository {
         }
     }
 
-    //
     @Override
     public void update(Airport airport) {
         System.out.println("MAPPER update airport");

@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -146,12 +147,12 @@ public class Main {
         aircarrier1.setName("carrier" + (int) (Math.random() * 3333));
         aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
         aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
-        aircarrier1.setFlights(Arrays.asList(flight1));
+        aircarrier1.setFlights(List.of(flight1));
         System.out.println(aircarrier1);
 
         Airport airport1 = new Airport();
         airport1.setName("airport" + (int) (Math.random() * 3333));
-        airport1.setAircarriers(Arrays.asList(aircarrier1));
+        airport1.setAircarriers(List.of(aircarrier1));
         airport1.setAirstrips(Arrays.asList(airstrip1, airstrip2));
         System.out.println(airport1);
 
@@ -206,9 +207,7 @@ public class Main {
 
         System.out.println("\n---  A I R P O R T   C R E A T E  ---\n");
 
-//        System.out.println("\nairport object to create\n" + airport1);
         airport1 = airportService.create(airport1);
-
         AirportAircarrier airportAircarrier1 = new AirportAircarrier();
         airportAircarrier1.setAirportId(airport1.getId());
         airportAircarrier1.setAircarrierId(aircarrier1.getId());
@@ -257,7 +256,7 @@ public class Main {
         aircarrier1.setName("Upd carrier" + (int) (Math.random() * 333) * 100);
         aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
         aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
-        aircarrier1.setFlights(Arrays.asList(flight1));
+        aircarrier1.setFlights(List.of(flight1));
 
         passengerService.update(passenger1);
         aircarrierService.update(aircarrier1);
@@ -265,10 +264,10 @@ public class Main {
         System.out.println("\n--- READ ALL AIPORTS UPDATED ---");
         airportService.readAll().forEach(System.out::println);
 
-        passengerService.deleteById(3L);
-        pilotService.deleteById(1L);
-        aircraftService.deleteById(1L);
-        System.out.println("\n--- READ ALL AIPORTS DELETED---");
-        airportService.readAll().forEach(System.out::println);
+//        passengerService.deleteById(3L);
+//        pilotService.deleteById(1L);
+//        aircraftService.deleteById(1L);
+//        System.out.println("\n--- READ ALL AIPORTS DELETED---");
+//        airportService.readAll().forEach(System.out::println);
     }
 }
