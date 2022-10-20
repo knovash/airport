@@ -2,7 +2,6 @@ package com.solvd.airport.service.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.exception.NotFound;
-import com.solvd.airport.domain.port.AirportAircarrier;
 import com.solvd.airport.persistence.AircarrierRepository;
 import com.solvd.airport.persistence.impl.AircarrierMapperImpl;
 import com.solvd.airport.service.*;

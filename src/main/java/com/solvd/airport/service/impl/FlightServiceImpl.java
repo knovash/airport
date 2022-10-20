@@ -139,8 +139,6 @@ public class FlightServiceImpl implements FlightService {
             }
         }
 
-
-
         if (flight.getTickets() != null) {
             flight.getTickets()
                     .forEach(ticket -> {

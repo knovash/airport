@@ -26,7 +26,7 @@ public class Main {
     public static void main(String[] args) {
 
         Config config = new Config();
-        config.getFromFile("config.properties");
+        config.getFromFile();
         String driver = Config.getDriver();
         String url = Config.getUrl();
         String username = Config.getUsername();
@@ -158,52 +158,52 @@ public class Main {
 
         System.out.println("\n--- SERVICES ---\n");
 
-//        passport1 = passportService.create(passport1);
-//        passport2 = passportService.create(passport2);
-//        System.out.println(passport1 + "\n" + passport2);
-//        System.out.println("passports read all\n");
-//        passportService.readAll().forEach(System.out::println);
-//
-//        passenger1 = passengerService.create(passenger1);
-//        passenger2 = passengerService.create(passenger2);
-//        System.out.println("\npassenger created\n" + passenger1 + "\n" + passenger2);
-//        System.out.println("passengers read all\n");
-//        passengerService.readAll().forEach(System.out::println);
-//
-//        ticket1 = ticketService.create(ticket1, 1L);
-//        ticket2 = ticketService.create(ticket2, 1L);
-//        System.out.println("\nticket created\n" + ticket1 + "\n" + ticket2);
-//        System.out.println("tickets read all\n");
-//        ticketService.readAll().forEach(System.out::println);
-//
-//        direction1 = directionService.create(direction1);
-//        direction2 = directionService.create(direction2);
-//        System.out.println("\ndirection created\n" + direction1 + "\n" + direction2);
-//        System.out.println("directions read all\n");
-//        directionService.readAll().forEach(System.out::println);
-//
-//        pilot1 = pilotService.create(pilot1, 1L);
-//        pilot2 = pilotService.create(pilot2, 1L);
-//        System.out.println("\npilot created\n" + pilot1 + "\n" + pilot2);
-//        System.out.println("pilots read all\n");
-//        pilotService.readAll().forEach(System.out::println);
-//
-//        aircraft1 = aircraftService.create(aircraft1, 1L);
-//        aircraft2 = aircraftService.create(aircraft2, 1L);
-//        System.out.println("\naircraft created\n" + aircraft1 + "\n" + aircraft2);
-//        System.out.println("aircrafts read all\n");
-//        aircraftService.readAll().forEach(System.out::println);
-//
-//        System.out.println("\nflight1\n" + flight1);
-//        flight1 = flightService.create(flight1, 1L);
-//        System.out.println("\nflight created\n" + flight1);
-//        System.out.println("flights read all\n");
-//        flightService.readAll().forEach(System.out::println);
-//
-//        System.out.println(aircarrier1);
-//        aircarrier1 = aircarrierService.create(aircarrier1);
-//        System.out.println("\naircarriers read all\n");
-//        aircarrierService.readAll().forEach(System.out::println);
+        passport1 = passportService.create(passport1);
+        passport2 = passportService.create(passport2);
+        System.out.println(passport1 + "\n" + passport2);
+        System.out.println("passports read all\n");
+        passportService.readAll().forEach(System.out::println);
+
+        passenger1 = passengerService.create(passenger1);
+        passenger2 = passengerService.create(passenger2);
+        System.out.println("\npassenger created\n" + passenger1 + "\n" + passenger2);
+        System.out.println("passengers read all\n");
+        passengerService.readAll().forEach(System.out::println);
+
+        ticket1 = ticketService.create(ticket1, 1L);
+        ticket2 = ticketService.create(ticket2, 1L);
+        System.out.println("\nticket created\n" + ticket1 + "\n" + ticket2);
+        System.out.println("tickets read all\n");
+        ticketService.readAll().forEach(System.out::println);
+
+        direction1 = directionService.create(direction1);
+        direction2 = directionService.create(direction2);
+        System.out.println("\ndirection created\n" + direction1 + "\n" + direction2);
+        System.out.println("directions read all\n");
+        directionService.readAll().forEach(System.out::println);
+
+        pilot1 = pilotService.create(pilot1, 1L);
+        pilot2 = pilotService.create(pilot2, 1L);
+        System.out.println("\npilot created\n" + pilot1 + "\n" + pilot2);
+        System.out.println("pilots read all\n");
+        pilotService.readAll().forEach(System.out::println);
+
+        aircraft1 = aircraftService.create(aircraft1, 1L);
+        aircraft2 = aircraftService.create(aircraft2, 1L);
+        System.out.println("\naircraft created\n" + aircraft1 + "\n" + aircraft2);
+        System.out.println("aircrafts read all\n");
+        aircraftService.readAll().forEach(System.out::println);
+
+        System.out.println("\nflight1\n" + flight1);
+        flight1 = flightService.create(flight1, 1L);
+        System.out.println("\nflight created\n" + flight1);
+        System.out.println("flights read all\n");
+        flightService.readAll().forEach(System.out::println);
+
+        System.out.println(aircarrier1);
+        aircarrier1 = aircarrierService.create(aircarrier1);
+        System.out.println("\naircarriers read all\n");
+        aircarrierService.readAll().forEach(System.out::println);
 
         System.out.println("\n---  A I R P O R T   C R E A T E  ---\n");
 

@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Properties;
 
 @XmlRootElement
@@ -26,11 +27,11 @@ public class Config {
         return ("Settings: \ndriver: " + driver + "\nurl: " + url + "\nusername: " + username + "\npassword: " + password + "\npoolsize: " + poolsize);
     }
 
-    public void getFromFile(String fileName) {
+    public void getFromFile() {
 
         Properties props = new Properties();
         URL resource = Main.class.getClassLoader().getResource("config.properties");
-        File file = new File(resource.getFile());
+        File file = new File(Objects.requireNonNull(resource).getFile());
         FileInputStream in = null;
         try {
             in = new FileInputStream(file);
@@ -46,9 +47,7 @@ public class Config {
             poolsize = Integer.valueOf(props.getProperty("poolsize"));
 
             Connection con = DriverManager.getConnection(url, username, password);
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -58,7 +57,7 @@ public class Config {
     }
 
     public void setDriver(String driver) {
-        this.driver = driver;
+        Config.driver = driver;
     }
 
     public static String getUrl() {
@@ -66,7 +65,7 @@ public class Config {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        Config.url = url;
     }
 
     public static String getUsername() {
@@ -74,7 +73,7 @@ public class Config {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        Config.username = username;
     }
 
     public static String getPassword() {
@@ -82,7 +81,7 @@ public class Config {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Config.password = password;
     }
 
     public static Integer getPoolsize() {
@@ -90,6 +89,6 @@ public class Config {
     }
 
     public void setPoolsize(Integer poolsize) {
-        this.poolsize = poolsize;
+        Config.poolsize = poolsize;
     }
 }

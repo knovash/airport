@@ -4,8 +4,6 @@ public class Pilot {
 
     private Long id;
     private String name;
-//    private Long aircarrierId;
-
     public String toString() {
         return ("Pilot: id: " + this.id + " name: " + this.name);
     }
@@ -26,12 +24,4 @@ public class Pilot {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public Long getAircarrierId() {
-//        return aircarrierId;
-//    }
-//
-//    public void setAircarrierId(Long aircarrier_id) {
-//        this.aircarrierId = aircarrier_id;
-//    }
 }

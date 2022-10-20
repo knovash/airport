@@ -1,14 +1,8 @@
 package com.solvd.airport.domain.port;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-
-import java.util.List;
-
 public class AirportAircarrier {
 
     private Long id;
-//    private List<Airport> airportsId;
-//    private List<Aircarrier> aircarriersId;
     private Long airportId;
     private Long aircarrierId;
 

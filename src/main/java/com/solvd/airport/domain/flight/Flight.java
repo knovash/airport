@@ -1,6 +1,5 @@
 package com.solvd.airport.domain.flight;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.port.Airstrip;
