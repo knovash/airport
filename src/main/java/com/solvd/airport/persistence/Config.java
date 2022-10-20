@@ -2,8 +2,6 @@ package com.solvd.airport.persistence;
 
 import com.solvd.airport.Main;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,8 +12,6 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Properties;
 
-@XmlRootElement
-@XmlType(propOrder = {"driver", "url", "username", "password", "poolsize"})
 public class Config {
     private static String driver;
     private static String url;
