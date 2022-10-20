@@ -4,7 +4,6 @@ import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.persistence.ConnectionPool;
 import com.solvd.airport.persistence.PassengerRepository;
 import com.solvd.airport.persistence.TicketRepository;
-import com.solvd.airport.persistence.PassportRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import static com.solvd.airport.persistence.impl.PassportRepositoryImpl.passport
 public class TicketRepositoryImpl implements TicketRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
     private static final PassengerRepository passengerRepository = new PassengerRepositoryImpl();
 
     protected static final String ticketFields =
@@ -39,15 +37,16 @@ public class TicketRepositoryImpl implements TicketRepository {
                     ticketJoins;
 
     @Override
-    public void create(Ticket ticket, Long aircarrierId) {
+    public void create(Ticket ticket, Long flightId) {
         System.out.println("REPOSITORY CREATE ticket");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into tickets(name, passport_id) values (?, ?);", Statement.RETURN_GENERATED_KEYS);
+                    "insert into tickets(price, seat, passenger_id, flight_id) values (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setBigDecimal(1, ticket.getPrice());
-            preparedStatement.setLong(1, ticket.getSeat());
-            preparedStatement.setLong(2, ticket.getPassenger().getId());
+            preparedStatement.setInt(2, ticket.getSeat());
+            preparedStatement.setLong(3, ticket.getPassenger().getId());
+            preparedStatement.setLong(4, flightId);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
@@ -62,10 +61,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public Optional<Ticket> readById(Long id) {
-        System.out.println("REPOSITORY READ ticket by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Ticket ticket = new Ticket();
-        List<Ticket> tickets;
+        Ticket ticket;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     ticketReadAll +
@@ -83,7 +80,6 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public List<Ticket> readAll() {
-        System.out.println("REPOSITORY READ all tickets");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Ticket> tickets;
         try {
@@ -102,19 +98,27 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public void update(Ticket ticket, Long aircarrierId) {
+    public void update(Ticket ticket, Long flightId) {
         System.out.println("UPDATE ticket");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "update tickets set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setString(1, ticket.getName());
-//            preparedStatement.setLong(2, ticket.getId());
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
+        Connection connection = CONNECTION_POOL.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "update tickets set " +
+                            "price = ?, " +
+                            "seat = ?, " +
+                            "passenger_id = ?, " +
+                            "flight_id = ? " +
+                            "where id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setBigDecimal(1, ticket.getPrice());
+            preparedStatement.setInt(2, ticket.getSeat());
+            preparedStatement.setLong(3, ticket.getPassenger().getId());
+            preparedStatement.setLong(4, flightId);
+            preparedStatement.setLong(5, ticket.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override

@@ -7,7 +7,6 @@ import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistence.FlightRepository;
-import com.solvd.airport.persistence.impl.FlightMapperImpl;
 import com.solvd.airport.persistence.impl.FlightRepositoryImpl;
 import com.solvd.airport.service.*;
 
@@ -24,7 +23,6 @@ public class FlightServiceImpl implements FlightService {
     private final DirectionService directionService;
 
     public FlightServiceImpl() {
-//        this.flightRepository = new FlightMapperImpl();
         this.flightRepository = new FlightRepositoryImpl();
         this.passengerService = new PassengerServiceImpl();
         this.ticketService = new TicketServiceImpl();
@@ -76,7 +74,7 @@ public class FlightServiceImpl implements FlightService {
         }
         flightRepository.create(flight, aircarrierId);
         if (flight.getTickets() != null) {
-            flight.getTickets().stream()
+            flight.getTickets()
                     .forEach(ticket -> {
                         if (ticket.getId() == null) {
                             ticketService.create(ticket, flight.getId());
@@ -146,7 +144,7 @@ public class FlightServiceImpl implements FlightService {
 
 
         if (flight.getTickets() != null) {
-            flight.getTickets().stream()
+            flight.getTickets()
                     .forEach(ticket -> {
                         if (ticket.getId() == null) {
                             ticketService.create(ticket, flight.getId());

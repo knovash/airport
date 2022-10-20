@@ -2,7 +2,6 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.persistence.ConnectionPool;
-import com.solvd.airport.persistence.PassportRepository;
 import com.solvd.airport.persistence.AircraftRepository;
 
 import java.sql.*;
@@ -13,7 +12,6 @@ import java.util.Optional;
 public class AircraftRepositoryImpl implements AircraftRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
 
     protected static final String aircraftFields =
             "af.id as aircraft_id, " +
@@ -23,7 +21,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
     protected static final String aircraftReadAll =
             "select " +
                     aircraftFields +
-//                    ", aircarrier_id as aircarrier_id " +
                     "        FROM aircrafts af";
 
     @Override
@@ -48,9 +45,8 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     @Override
     public Optional<Aircraft> readById(Long id) {
-        System.out.println("REPOSITORY READ aircraft by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Aircraft aircraft = new Aircraft();
+        Aircraft aircraft;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     aircraftReadAll +
@@ -88,18 +84,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     @Override
     public void update(Aircraft aircraft, Long aircarrierId) {
-        System.out.println("UPDATE aircraft");
-        Connection connection = CONNECTION_POOL.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update aircrafts set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, aircraft.getModel());
-            preparedStatement.setInt(2, aircraft.getNumber());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override

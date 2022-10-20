@@ -9,7 +9,6 @@ import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.domain.port.Airport;
-import com.solvd.airport.domain.port.AirportAircarrier;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistence.*;
 import com.solvd.airport.service.*;
@@ -19,13 +18,14 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
         Config config = new Config();
-        config.getFromFile("config.properties");
+        config.getFromFile();
         String driver = Config.getDriver();
         String url = Config.getUrl();
         String username = Config.getUsername();
@@ -35,7 +35,6 @@ public class Main {
 
         AircarrierService aircarrierService = new AircarrierServiceImpl();
         AircraftService aircraftService = new AircraftServiceImpl();
-        AirportService airportService = new AirportServiceImpl();
         AirstripService airstripService = new AirstripServiceImpl();
         DirectionService directionService = new DirectionServiceImpl();
         FlightService flightService = new FlightServiceImpl();
@@ -43,7 +42,6 @@ public class Main {
         PassportService passportService = new PassportServiceImpl();
         PilotService pilotService = new PilotServiceImpl();
         TicketService ticketService = new TicketServiceImpl();
-        AirportAircarrierService airportAircarrierService = new AirportAircarrierServiceImpl();
 
         System.out.println("\n--- READ FROM DB ---");
 
@@ -74,10 +72,6 @@ public class Main {
         System.out.println("\nAIRCARRIERS READ\n");
         System.out.println(aircarrierService.readById(1L));
         aircarrierService.readAll().forEach(System.out::println);
-        System.exit (0);
-        System.out.println("\nAIRPORTS READ\n");
-        System.out.println(airportService.readById(1L));
-        airportService.readAll().forEach(System.out::println);
 
         System.out.println("\n--- SET OBJECTS ---\n");
 
@@ -147,77 +141,38 @@ public class Main {
         aircarrier1.setName("carrier" + (int) (Math.random() * 3333));
         aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
         aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
-        aircarrier1.setFlights(Arrays.asList(flight1));
+        aircarrier1.setFlights(List.of(flight1));
         System.out.println(aircarrier1);
 
         Airport airport1 = new Airport();
         airport1.setName("airport" + (int) (Math.random() * 3333));
-        airport1.setAircarriers(Arrays.asList(aircarrier1));
+        airport1.setAircarriers(List.of(aircarrier1));
         airport1.setAirstrips(Arrays.asList(airstrip1, airstrip2));
         System.out.println(airport1);
 
         System.out.println("\n--- SERVICES ---\n");
 
-//        passport1 = passportService.create(passport1);
-//        passport2 = passportService.create(passport2);
-//        System.out.println(passport1 + "\n" + passport2);
-//        System.out.println("passports read all\n");
-//        passportService.readAll().forEach(System.out::println);
-//
-//        passenger1 = passengerService.create(passenger1);
-//        passenger2 = passengerService.create(passenger2);
-//        System.out.println("\npassenger created\n" + passenger1 + "\n" + passenger2);
-//        System.out.println("passengers read all\n");
-//        passengerService.readAll().forEach(System.out::println);
-//
-//        ticket1 = ticketService.create(ticket1, 1L);
-//        ticket2 = ticketService.create(ticket2, 1L);
-//        System.out.println("\nticket created\n" + ticket1 + "\n" + ticket2);
-//        System.out.println("tickets read all\n");
-//        ticketService.readAll().forEach(System.out::println);
-//
-//        direction1 = directionService.create(direction1);
-//        direction2 = directionService.create(direction2);
-//        System.out.println("\ndirection created\n" + direction1 + "\n" + direction2);
-//        System.out.println("directions read all\n");
-//        directionService.readAll().forEach(System.out::println);
-//
-//        pilot1 = pilotService.create(pilot1, 1L);
-//        pilot2 = pilotService.create(pilot2, 1L);
-//        System.out.println("\npilot created\n" + pilot1 + "\n" + pilot2);
-//        System.out.println("pilots read all\n");
-//        pilotService.readAll().forEach(System.out::println);
-//
-//        aircraft1 = aircraftService.create(aircraft1, 1L);
-//        aircraft2 = aircraftService.create(aircraft2, 1L);
-//        System.out.println("\naircraft created\n" + aircraft1 + "\n" + aircraft2);
-//        System.out.println("aircrafts read all\n");
-//        aircraftService.readAll().forEach(System.out::println);
-//
-//        System.out.println("\nflight1\n" + flight1);
-//        flight1 = flightService.create(flight1, 1L);
-//        System.out.println("\nflight created\n" + flight1);
-//        System.out.println("flights read all\n");
-//        flightService.readAll().forEach(System.out::println);
-//
-//        System.out.println(aircarrier1);
-//        aircarrier1 = aircarrierService.create(aircarrier1);
-//        System.out.println("\naircarriers read all\n");
-//        aircarrierService.readAll().forEach(System.out::println);
+        passport1 = passportService.create(passport1);
+        passport2 = passportService.create(passport2);
+        System.out.println(passport1 + "\n" + passport2);
+        System.out.println("passports read all\n");
+        passportService.readAll().forEach(System.out::println);
 
-        System.out.println("\n---  A I R P O R T   C R E A T E  ---\n");
+        passenger1 = passengerService.create(passenger1);
+        passenger2 = passengerService.create(passenger2);
+        System.out.println("\npassenger created\n" + passenger1 + "\n" + passenger2);
+        System.out.println("passengers read all\n");
+        passengerService.readAll().forEach(System.out::println);
 
-//        System.out.println("\nairport object to create\n" + airport1);
-        airport1 = airportService.create(airport1);
+        ticket1 = ticketService.create(ticket1, 1L);
+        ticket2 = ticketService.create(ticket2, 1L);
+        System.out.println("\nticket created\n" + ticket1 + "\n" + ticket2);
+        System.out.println("tickets read all\n");
+        ticketService.readAll().forEach(System.out::println);
 
-        AirportAircarrier airportAircarrier1 = new AirportAircarrier();
-        airportAircarrier1.setAirportId(airport1.getId());
-        airportAircarrier1.setAircarrierId(aircarrier1.getId());
-        airportAircarrierService.create(airportAircarrier1);
-        System.out.println(airportService.readById(airport1.getId()));
-
-        System.out.println("\n--- READ ALL AIPORTS ---");
-        airportService.readAll().forEach(System.out::println);
+        System.out.println("\nAIRCARRIERS READ\n");
+        System.out.println(aircarrierService.readById(1L));
+        aircarrierService.readAll().forEach(System.out::println);
 
         System.out.println("\n--- UPDATE OBJECTS ---\n");
         passport1.setNumber((int) (Math.random() * 3333) * 100);
@@ -258,18 +213,11 @@ public class Main {
         aircarrier1.setName("Upd carrier" + (int) (Math.random() * 333) * 100);
         aircarrier1.setPilots(Arrays.asList(pilot1, pilot2));
         aircarrier1.setAircrafts(Arrays.asList(aircraft1, aircraft2));
-        aircarrier1.setFlights(Arrays.asList(flight1));
+        aircarrier1.setFlights(List.of(flight1));
 
-        passengerService.update(passenger1);
-        aircarrierService.update(aircarrier1);
-
-        System.out.println("\n--- READ ALL AIPORTS UPDATED ---");
-        airportService.readAll().forEach(System.out::println);
-
-        passengerService.deleteById(3L);
-        pilotService.deleteById(1L);
-        aircraftService.deleteById(1L);
-        System.out.println("\n--- READ ALL AIPORTS DELETED---");
-        airportService.readAll().forEach(System.out::println);
+        ticketService.update(ticket1, 1L);
+        ticketService.update(ticket2, 1L);
+        System.out.println("tickets read all\n");
+        ticketService.readAll().forEach(System.out::println);
     }
 }

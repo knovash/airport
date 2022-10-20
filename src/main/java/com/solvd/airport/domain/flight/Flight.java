@@ -1,6 +1,5 @@
 package com.solvd.airport.domain.flight;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.domain.carrier.Aircraft;
 import com.solvd.airport.domain.carrier.Pilot;
 import com.solvd.airport.domain.port.Airstrip;
@@ -55,6 +54,14 @@ public class Flight {
         this.airstrip = airstrip;
     }
 
+    public Pilot getPilot() {
+        return pilot;
+    }
+
+    public void setPilot(Pilot pilot) {
+        this.pilot = pilot;
+    }
+
     public Direction getDirection() {
         return direction;
     }
@@ -85,13 +92,5 @@ public class Flight {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
-    }
-
-    public Pilot getPilot() {
-        return pilot;
-    }
-
-    public void setPilot(Pilot pilot) {
-        this.pilot = pilot;
     }
 }

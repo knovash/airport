@@ -1,9 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
-import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.persistence.*;
 
 import java.sql.*;
@@ -14,7 +11,6 @@ import java.util.Optional;
 import static com.solvd.airport.persistence.impl.AircraftRepositoryImpl.aircraftFields;
 import static com.solvd.airport.persistence.impl.AirstripRepositoryImpl.airstripFields;
 import static com.solvd.airport.persistence.impl.DirectionRepositoryImpl.directionFields;
-import static com.solvd.airport.persistence.impl.PassengerRepositoryImpl.passengerJoins;
 import static com.solvd.airport.persistence.impl.PilotRepositoryImpl.pilotFields;
 import static com.solvd.airport.persistence.impl.TicketRepositoryImpl.ticketFields;
 import static com.solvd.airport.persistence.impl.TicketRepositoryImpl.ticketJoins;
@@ -22,12 +18,10 @@ import static com.solvd.airport.persistence.impl.TicketRepositoryImpl.ticketJoin
 public class FlightRepositoryImpl implements FlightRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
     private static final AirstripRepository airstripRepository = new AirstripRepositoryImpl();
     private static final PilotRepository pilotRepository = new PilotRepositoryImpl();
     private static final AircraftRepository aircraftRepository = new AircraftRepositoryImpl();
     private static final DirectionRepository directionRepository = new DirectionRepositoryImpl();
-    private static final TicketRepository ticketRepository = new TicketRepositoryImpl();
 
     protected static final String flightFields =
             "f.id as flight_id, " +
@@ -75,9 +69,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public Optional<Flight> readById(Long id) {
-        System.out.println("REPOSITORY READ flight by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Flight flight = new Flight();
+        Flight flight;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     flightReadAll +
@@ -95,7 +88,6 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public List<Flight> readAll() {
-        System.out.println("REPOSITORY READ all flights");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Flight> flights;
         try {
@@ -115,18 +107,6 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void update(Flight flight, Long aircarrierId) {
-//        System.out.println("UPDATE flight");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "update flights set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setString(1, flight.getModel());
-//            preparedStatement.setInt(2, flight.getNumber());
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override

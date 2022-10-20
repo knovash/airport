@@ -1,22 +1,17 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.carrier.Pilot;
-import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.persistence.ConnectionPool;
 import com.solvd.airport.persistence.PilotRepository;
-import com.solvd.airport.persistence.PassportRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.solvd.airport.persistence.impl.PassportRepositoryImpl.passportFields;
-
 public class PilotRepositoryImpl implements PilotRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
 
     protected static final String pilotFields =
             "pl.id as pilot_id, " +
@@ -48,9 +43,8 @@ public class PilotRepositoryImpl implements PilotRepository {
 
     @Override
     public Optional<Pilot> readById(Long id) {
-        System.out.println("REPOSITORY READ pilot by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Pilot pilot = new Pilot();
+        Pilot pilot;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     pilotReadAll +
@@ -68,7 +62,6 @@ public class PilotRepositoryImpl implements PilotRepository {
 
     @Override
     public List<Pilot> readAll() {
-        System.out.println("REPOSITORY READ all pilots");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Pilot> pilots;
         try {
@@ -88,17 +81,7 @@ public class PilotRepositoryImpl implements PilotRepository {
 
     @Override
     public void update(Pilot pilot, Long aircarrierId) {
-        System.out.println("UPDATE pilot");
-        Connection connection = CONNECTION_POOL.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update pilots set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, pilot.getName());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
+
     }
 
     @Override

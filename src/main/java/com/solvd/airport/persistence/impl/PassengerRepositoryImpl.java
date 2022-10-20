@@ -1,8 +1,6 @@
 package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.passenger.Passenger;
-import com.solvd.airport.domain.passenger.Passport;
-import com.solvd.airport.persistence.AirstripRepository;
 import com.solvd.airport.persistence.ConnectionPool;
 import com.solvd.airport.persistence.PassengerRepository;
 import com.solvd.airport.persistence.PassportRepository;
@@ -55,9 +53,8 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public Optional<Passenger> readById(Long id) {
-        System.out.println("REPOSITORY READ passenger by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Passenger passenger = new Passenger();
+        Passenger passenger;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     passengerReadAll +
@@ -75,7 +72,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public List<Passenger> readAll() {
-        System.out.println("REPOSITORY READ all passengers");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Passenger> passengers;
         try {

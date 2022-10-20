@@ -1,13 +1,10 @@
 package com.solvd.airport.domain.carrier;
 
-import java.time.LocalDate;
-
 public class Aircraft {
 
     private Long id;
     private Integer number;
     private String model;
-//    private Long aircarrierId;
 
     public String toString() {
         return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model);
@@ -36,12 +33,4 @@ public class Aircraft {
     public void setModel(String model) {
         this.model = model;
     }
-
-//    public Long getAircarrierId() {
-//        return aircarrierId;
-//    }
-//
-//    public void setAircarrierId(Long aircarrierId) {
-//        this.aircarrierId = aircarrierId;
-//    }
 }

@@ -2,8 +2,6 @@ package com.solvd.airport.persistence.impl;
 
 import com.solvd.airport.domain.carrier.Aircarrier;
 import com.solvd.airport.persistence.ConnectionPool;
-import com.solvd.airport.persistence.PassengerRepository;
-import com.solvd.airport.persistence.PassportRepository;
 import com.solvd.airport.persistence.AircarrierRepository;
 
 import java.sql.*;
@@ -14,16 +12,11 @@ import java.util.Optional;
 import static com.solvd.airport.persistence.impl.AircraftRepositoryImpl.aircraftFields;
 import static com.solvd.airport.persistence.impl.FlightRepositoryImpl.flightFields;
 import static com.solvd.airport.persistence.impl.FlightRepositoryImpl.flightJoins;
-import static com.solvd.airport.persistence.impl.PassengerRepositoryImpl.passengerFields;
-import static com.solvd.airport.persistence.impl.PassengerRepositoryImpl.passengerJoins;
-import static com.solvd.airport.persistence.impl.PassportRepositoryImpl.passportFields;
 import static com.solvd.airport.persistence.impl.PilotRepositoryImpl.pilotFields;
 
 public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
-    private static final PassengerRepository passengerRepository = new PassengerRepositoryImpl();
 
     protected static final String aircarrierFields =
             "ac.id as aircarrier_id, " +
@@ -66,10 +59,8 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     @Override
     public Optional<Aircarrier> readById(Long id) {
-        System.out.println("REPOSITORY READ aircarrier by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Aircarrier aircarrier = new Aircarrier();
-        List<Aircarrier> aircarriers;
+        Aircarrier aircarrier;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     aircarrierReadAll +
@@ -107,18 +98,6 @@ public class AircarrierRepositoryImpl implements AircarrierRepository {
 
     @Override
     public void update(Aircarrier aircarrier) {
-        System.out.println("UPDATE aircarrier");
-//        Connection connection = CONNECTION_POOL.getConnection();
-//        try {
-//            PreparedStatement preparedStatement = connection.prepareStatement(
-//                    "update aircarriers set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setString(1, aircarrier.getName());
-//            preparedStatement.setLong(2, aircarrier.getId());
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override

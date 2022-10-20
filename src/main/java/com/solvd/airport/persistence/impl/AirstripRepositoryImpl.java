@@ -3,7 +3,6 @@ package com.solvd.airport.persistence.impl;
 import com.solvd.airport.domain.port.Airstrip;
 import com.solvd.airport.persistence.AirstripRepository;
 import com.solvd.airport.persistence.ConnectionPool;
-import com.solvd.airport.persistence.PassportRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.Optional;
 public class AirstripRepositoryImpl implements AirstripRepository {
 
     private static final ConnectionPool CONNECTION_POOL = ConnectionPool.getInstance();
-    private static final PassportRepository passportRepository = new PassportRepositoryImpl();
 
     protected static final String airstripFields =
             "str.id as airstrip_id, " +
@@ -45,9 +43,8 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
     @Override
     public Optional<Airstrip> readById(Long id) {
-        System.out.println("REPOSITORY READ airstrip by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
-        Airstrip airstrip = new Airstrip();
+        Airstrip airstrip;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     airstripReadAll +
@@ -85,17 +82,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
     @Override
     public void update(Airstrip airstrip, Long airportId) {
-        System.out.println("UPDATE airstrip");
-        Connection connection = CONNECTION_POOL.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update airstrips set name = ? where id = ?;", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, airstrip.getNumber());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        CONNECTION_POOL.releaseConnection(connection);
     }
 
     @Override

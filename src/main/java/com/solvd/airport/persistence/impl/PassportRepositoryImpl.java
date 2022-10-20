@@ -44,7 +44,6 @@ public class PassportRepositoryImpl implements PassportRepository {
 
     @Override
     public List<Passport> readAll() {
-        System.out.println("REPOSITORY READ all passports");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Passport> passports;
         try {
@@ -63,7 +62,6 @@ public class PassportRepositoryImpl implements PassportRepository {
 
     @Override
     public Optional<Passport> readById(Long id) {
-        System.out.println("REPOSITORY READ passport by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         Passport passport = new Passport();
         try {

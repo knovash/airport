@@ -4,8 +4,6 @@ import com.solvd.airport.domain.exception.NotFound;
 import com.solvd.airport.domain.flight.Ticket;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.persistence.TicketRepository;
-import com.solvd.airport.persistence.impl.PassengerRepositoryImpl;
-import com.solvd.airport.persistence.impl.TicketMapperImpl;
 import com.solvd.airport.persistence.impl.TicketRepositoryImpl;
 import com.solvd.airport.service.PassengerService;
 import com.solvd.airport.service.TicketService;
@@ -18,7 +16,6 @@ public class TicketServiceImpl implements TicketService {
     private final PassengerService passengerService;
 
     public TicketServiceImpl() {
-//        this.ticketRepository = new TicketMapperImpl();
         this.ticketRepository = new TicketRepositoryImpl();
         this.passengerService = new PassengerServiceImpl();
     }
