@@ -25,7 +25,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     @Override
     public void create(Aircraft aircraft, Long aircarrierId) {
-        System.out.println("REPOSITORY CREATE aircraft");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -64,7 +63,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     @Override
     public List<Aircraft> readAll() {
-        System.out.println("REPOSITORY READ all aircrafts");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Aircraft> aircrafts;
         try {
@@ -88,7 +86,6 @@ public class AircraftRepositoryImpl implements AircraftRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE aircraft by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

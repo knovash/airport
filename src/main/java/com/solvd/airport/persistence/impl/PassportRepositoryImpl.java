@@ -24,7 +24,6 @@ public class PassportRepositoryImpl implements PassportRepository {
 
     @Override
     public void create(Passport passport) {
-        System.out.println("REPOSITORY CREATE passport");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -84,7 +83,6 @@ public class PassportRepositoryImpl implements PassportRepository {
 
     @Override
     public void update(Passport passport) {
-        System.out.println("UPDATE passport");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -100,7 +98,6 @@ public class PassportRepositoryImpl implements PassportRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE passport by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

@@ -25,7 +25,6 @@ public class DirectionRepositoryImpl implements DirectionRepository {
 
     @Override
     public void create(Direction direction) {
-        System.out.println("REPOSITORY CREATE direction");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -64,7 +63,6 @@ public class DirectionRepositoryImpl implements DirectionRepository {
 
     @Override
     public List<Direction> readAll() {
-        System.out.println("REPOSITORY READ all directions");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Direction> directions;
         try {
@@ -88,7 +86,6 @@ public class DirectionRepositoryImpl implements DirectionRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE direction by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

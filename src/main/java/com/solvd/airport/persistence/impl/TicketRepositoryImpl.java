@@ -38,7 +38,6 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void create(Ticket ticket, Long flightId) {
-        System.out.println("REPOSITORY CREATE ticket");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -99,7 +98,6 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void update(Ticket ticket, Long flightId) {
-        System.out.println("UPDATE ticket");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -123,7 +121,6 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE ticket by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

@@ -12,17 +12,14 @@ public class AircarrierMapperImpl implements AircarrierRepository {
 
     @Override
     public void create(Aircarrier aircarrier) {
-        System.out.println("MAPPER create aircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircarrierRepository aircarrierRepository = session.getMapper(AircarrierRepository.class);
             aircarrierRepository.create(aircarrier);
         }
-        System.out.println("MAPPER aircarrier created");
     }
 
     @Override
     public List<Aircarrier> readAll() {
-        System.out.println("MAPPER readAll aircarriers");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircarrierRepository aircarrierRepository = session.getMapper(AircarrierRepository.class);
             return aircarrierRepository.readAll();
@@ -31,17 +28,14 @@ public class AircarrierMapperImpl implements AircarrierRepository {
 
     @Override
     public Optional<Aircarrier> readById(Long id) {
-        System.out.println("MAPPER readById aircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircarrierRepository mapper = session.getMapper(AircarrierRepository.class);
             return mapper.readById(id);
         }
     }
 
-    //
     @Override
     public void update(Aircarrier aircarrier) {
-        System.out.println("MAPPER update aircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircarrierRepository aircarrierRepository = session.getMapper(AircarrierRepository.class);
             aircarrierRepository.update(aircarrier);
@@ -50,7 +44,6 @@ public class AircarrierMapperImpl implements AircarrierRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById aircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircarrierRepository aircarrierRepository = session.getMapper(AircarrierRepository.class);
             aircarrierRepository.deleteById(id);

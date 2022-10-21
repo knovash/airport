@@ -49,7 +49,6 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void create(Flight flight, Long aircarrierId) {
-        System.out.println("REPOSITORY CREATE flight");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -111,7 +110,6 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE flight by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

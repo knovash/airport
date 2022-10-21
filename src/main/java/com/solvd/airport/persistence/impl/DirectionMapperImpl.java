@@ -12,7 +12,6 @@ public class DirectionMapperImpl implements DirectionRepository {
 
     @Override
     public void create(Direction direction) {
-        System.out.println("MAPPER create direction");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             DirectionRepository directionRepository = session.getMapper(DirectionRepository.class);
             directionRepository.create(direction);
@@ -21,7 +20,6 @@ public class DirectionMapperImpl implements DirectionRepository {
 
     @Override
     public List<Direction> readAll() {
-        System.out.println("MAPPER readAll directions");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             DirectionRepository directionRepository = session.getMapper(DirectionRepository.class);
             return directionRepository.readAll();
@@ -30,7 +28,6 @@ public class DirectionMapperImpl implements DirectionRepository {
 
     @Override
     public Optional<Direction> readById(Long id) {
-        System.out.println("MAPPER readById direction");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             DirectionRepository mapper = session.getMapper(DirectionRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class DirectionMapperImpl implements DirectionRepository {
 
     @Override
     public void update(Direction direction) {
-        System.out.println("MAPPER update direction");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             DirectionRepository directionRepository = session.getMapper(DirectionRepository.class);
             directionRepository.update(direction);
@@ -48,7 +44,6 @@ public class DirectionMapperImpl implements DirectionRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById direction");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             DirectionRepository directionRepository = session.getMapper(DirectionRepository.class);
             directionRepository.deleteById(id);

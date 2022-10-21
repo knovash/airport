@@ -24,7 +24,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
     @Override
     public void create(Airstrip airstrip, Long airportId) {
-        System.out.println("REPOSITORY CREATE airstrip");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -62,7 +61,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
     @Override
     public List<Airstrip> readAll() {
-        System.out.println("REPOSITORY READ all airstrips");
         Connection connection = CONNECTION_POOL.getConnection();
         List<Airstrip> airstrips;
         try {
@@ -86,7 +84,6 @@ public class AirstripRepositoryImpl implements AirstripRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE airstrip by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

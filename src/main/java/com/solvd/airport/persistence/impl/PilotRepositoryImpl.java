@@ -24,7 +24,6 @@ public class PilotRepositoryImpl implements PilotRepository {
 
     @Override
     public void create(Pilot pilot, Long aircarrierId) {
-        System.out.println("REPOSITORY CREATE pilot");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -86,7 +85,6 @@ public class PilotRepositoryImpl implements PilotRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE pilot by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(

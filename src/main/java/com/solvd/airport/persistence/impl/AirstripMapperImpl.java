@@ -12,7 +12,6 @@ public class AirstripMapperImpl implements AirstripRepository {
 
     @Override
     public void create(Airstrip airstrip, Long airportId) {
-        System.out.println("MAPPER create airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
             airstripRepository.create(airstrip, airportId);
@@ -21,7 +20,6 @@ public class AirstripMapperImpl implements AirstripRepository {
 
     @Override
     public List<Airstrip> readAll() {
-        System.out.println("MAPPER readAll airstrips");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
             return airstripRepository.readAll();
@@ -30,7 +28,6 @@ public class AirstripMapperImpl implements AirstripRepository {
 
     @Override
     public Optional<Airstrip> readById(Long id) {
-        System.out.println("MAPPER readById airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository mapper = session.getMapper(AirstripRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class AirstripMapperImpl implements AirstripRepository {
 
     @Override
     public void update(Airstrip airstrip, Long airportId) {
-        System.out.println("MAPPER update airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
             airstripRepository.update(airstrip, airportId);
@@ -48,7 +44,6 @@ public class AirstripMapperImpl implements AirstripRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById airstrip");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirstripRepository airstripRepository = session.getMapper(AirstripRepository.class);
             airstripRepository.deleteById(id);

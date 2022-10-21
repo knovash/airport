@@ -12,7 +12,6 @@ public class TicketMapperImpl implements TicketRepository {
 
     @Override
     public void create(Ticket ticket, Long aircarrierId) {
-        System.out.println("MAPPER create ticket");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             TicketRepository ticketRepository = session.getMapper(TicketRepository.class);
             ticketRepository.create(ticket, aircarrierId);
@@ -21,7 +20,6 @@ public class TicketMapperImpl implements TicketRepository {
 
     @Override
     public List<Ticket> readAll() {
-        System.out.println("MAPPER readAll tickets");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             TicketRepository ticketRepository = session.getMapper(TicketRepository.class);
             return ticketRepository.readAll();
@@ -30,7 +28,6 @@ public class TicketMapperImpl implements TicketRepository {
 
     @Override
     public Optional<Ticket> readById(Long id) {
-        System.out.println("MAPPER readById ticket");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             TicketRepository mapper = session.getMapper(TicketRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class TicketMapperImpl implements TicketRepository {
 
     @Override
     public void update(Ticket ticket, Long aircarrierId) {
-        System.out.println("MAPPER update ticket");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             TicketRepository ticketRepository = session.getMapper(TicketRepository.class);
             ticketRepository.update(ticket, aircarrierId);
@@ -48,7 +44,6 @@ public class TicketMapperImpl implements TicketRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById ticket");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             TicketRepository ticketRepository = session.getMapper(TicketRepository.class);
             ticketRepository.deleteById(id);

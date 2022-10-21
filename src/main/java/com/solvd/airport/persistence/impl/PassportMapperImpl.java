@@ -12,7 +12,6 @@ public class PassportMapperImpl implements PassportRepository {
 
     @Override
     public void create(Passport passport) {
-        System.out.println("MAPPER create passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassportRepository mapper = session.getMapper(PassportRepository.class);
             mapper.create(passport);
@@ -21,7 +20,6 @@ public class PassportMapperImpl implements PassportRepository {
 
     @Override
     public List<Passport> readAll() {
-        System.out.println("MAPPER readAll passports");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassportRepository mapper = session.getMapper(PassportRepository.class);
             return mapper.readAll();
@@ -30,7 +28,6 @@ public class PassportMapperImpl implements PassportRepository {
 
     @Override
     public Optional<Passport> readById(Long id) {
-        System.out.println("MAPPER readById passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassportRepository mapper = session.getMapper(PassportRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class PassportMapperImpl implements PassportRepository {
 
     @Override
     public void update(Passport passport) {
-        System.out.println("MAPPER update passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassportRepository mapper = session.getMapper(PassportRepository.class);
             mapper.update(passport);
@@ -48,7 +44,6 @@ public class PassportMapperImpl implements PassportRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById passport");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassportRepository mapper = session.getMapper(PassportRepository.class);
             mapper.deleteById(id);

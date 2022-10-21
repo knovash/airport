@@ -32,7 +32,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public void create(Passenger passenger) {
-        System.out.println("REPOSITORY CREATE passenger");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -91,7 +90,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public void update(Passenger passenger) {
-        System.out.println("UPDATE passenger");
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -107,7 +105,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("DELETE passenger by id=" + id);
         Connection connection = CONNECTION_POOL.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
