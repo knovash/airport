@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AirstripRepository">
+
+    <insert id="create" keyProperty="airstrip.id" useGeneratedKeys="true">
+        insert into airstrips(number, airport_id)
+        values (#{airstrip.number}, #{airportId});
+    </insert>
+
+    <sql id="fields">
+        str.id as airstrip_id,
+        str.number as airstrip_number
+<!--        airport_id as airport_id-->
+    </sql>
+
+    <sql id="readAll">
+        SELECT
+        <include refid="fields"/>
+        FROM airstrips str
+    </sql>
+
+    <select id="readById" resultMap="AirstripResultMap">
+        <include refid="readAll"/>
+        where str.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="AirstripResultMap">
+        <include refid="readAll"/>
+        order by str.id
+    </select>
+
+    <update id="update" keyProperty="airstrip.id" useGeneratedKeys="true">
+        update airstrips set
+        number = #{airstrip.number},
+        airport_id = #{airportId}
+        where id = #{airstrip.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from airstrips where id = #{id}
+    </delete>
+
+    <resultMap id="AirstripResultMap" type="com.solvd.airport.domain.port.Airstrip" autoMapping="false">
+        <id property="id" column="airstrip_id"/>
+        <result property="number" column="airstrip_number"/>
+<!--        <association property="airport"-->
+<!--                     resultMap="com.solvd.airport.persistence.AirportRepository.AirportResultMap"/>-->
+    </resultMap>
+</mapper>
