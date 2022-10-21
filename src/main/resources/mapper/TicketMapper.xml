@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.TicketRepository">
+
+    <insert id="create" keyProperty="ticket.id" useGeneratedKeys="true">
+        insert into tickets(price, seat, passenger_id, flight_id)
+        values (#{ticket.price}, #{ticket.seat}, #{ticket.passenger.id}, #{flightId})
+    </insert>
+
+    <sql id="fields">
+        t.id as ticket_id,
+        t.price as ticket_price,
+        t.seat as ticket_seat,
+        <include refid="com.solvd.airport.persistence.PassportRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.PassengerRepository.fields"/>
+    </sql>
+
+    <sql id="joins">
+        left join passengers pr on t.passenger_id = pr.id
+        <include refid="com.solvd.airport.persistence.PassengerRepository.joins"/>
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>
+        FROM tickets t
+        <include refid="joins"/>
+    </sql>
+
+    <select id="readById" resultMap="TicketResultMap">
+        <include refid="readAll"/>
+        where t.id = #{id}
+        order by t.id
+    </select>
+
+    <select id="readAll" resultMap="TicketResultMap">
+        <include refid="readAll"/>
+        order by t.id
+    </select>
+
+    <update id="update" keyProperty="ticket.id" useGeneratedKeys="true">
+        update tickets set
+        price = #{ticket.price},
+        seat = #{ticket.seat},
+        flight_id = #{flightId},
+        passenger_id = #{ticket.passenger.id}
+        where id = #{ticket.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from tickets where id = #{id}
+    </delete>
+
+    <resultMap id="TicketResultMap" type="com.solvd.airport.domain.flight.Ticket" autoMapping="false">
+        <id property="id" column="ticket_id"/>
+        <result property="price" column="ticket_price"/>
+        <result property="seat" column="ticket_seat"/>
+        <association property="passenger"
+                     resultMap="com.solvd.airport.persistence.PassengerRepository.PassengerResultMap"/>
+    </resultMap>
+</mapper>
