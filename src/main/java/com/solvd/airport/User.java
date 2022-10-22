@@ -1,3 +1,5 @@
+package com.solvd.airport;
+
 public class User {
 
     private String firstName;

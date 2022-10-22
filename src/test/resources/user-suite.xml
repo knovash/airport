@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Verify user logic">
+    <test name="User test 1">
+        <classes>
+            <class name="com.solvd.airport.UserTest">
+            <methods>
+                <include name="verifyUserIdNotEmptyOnCreateTest"/>
+                <include name="verifyUserIdNotEmptyOnCreateTest2"/>
+            </methods>
+            </class>
+            <class name="com.solvd.airport.UserTest"/>
+            <class name="com.solvd.airport.UserTest2"/>
+        </classes>
+    </test>
+
+    <test name="User test 2">
+        <classes>
+            <class name="com.solvd.airport.UserTest2"/>
+        </classes>
+    </test>
+</suite>

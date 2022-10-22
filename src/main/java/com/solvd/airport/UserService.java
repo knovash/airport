@@ -1,3 +1,5 @@
+package com.solvd.airport;
+
 public class UserService {
 
     public User createUser(User user) {
