@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Verify airport logic">
+    <test name="Airport read from db test" parallel="tests" thread-count="5">
+        <classes>
+            <class name="com.solvd.airport.AirportTest">
+            <methods>
+                <include name="verifyPassportReadTest"/>
+                <include name="verifyPassengerReadTest"/>
+            </methods>
+            </class>
+
+            <class name="com.solvd.airport.AirportTest">
+                <methods>
+                    <include name="verifyPassportCreateTest"/>
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+</suite>
