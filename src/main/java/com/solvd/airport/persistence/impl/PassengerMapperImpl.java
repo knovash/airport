@@ -12,7 +12,6 @@ public class PassengerMapperImpl implements PassengerRepository {
 
     @Override
     public void create(Passenger passenger) {
-        System.out.println("MAPPER create passenger");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassengerRepository passengerRepository = session.getMapper(PassengerRepository.class);
             passengerRepository.create(passenger);
@@ -21,7 +20,6 @@ public class PassengerMapperImpl implements PassengerRepository {
 
     @Override
     public List<Passenger> readAll() {
-        System.out.println("MAPPER readAll passengers");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassengerRepository passengerRepository = session.getMapper(PassengerRepository.class);
             return passengerRepository.readAll();
@@ -30,7 +28,6 @@ public class PassengerMapperImpl implements PassengerRepository {
 
     @Override
     public Optional<Passenger> readById(Long id) {
-        System.out.println("MAPPER readById passenger");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassengerRepository mapper = session.getMapper(PassengerRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class PassengerMapperImpl implements PassengerRepository {
 
     @Override
     public void update(Passenger passenger) {
-        System.out.println("MAPPER update passenger");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassengerRepository passengerRepository = session.getMapper(PassengerRepository.class);
             passengerRepository.update(passenger);
@@ -48,7 +44,6 @@ public class PassengerMapperImpl implements PassengerRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById passenger");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PassengerRepository passengerRepository = session.getMapper(PassengerRepository.class);
             passengerRepository.deleteById(id);

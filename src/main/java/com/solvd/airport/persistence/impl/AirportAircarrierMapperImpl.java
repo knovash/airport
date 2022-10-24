@@ -12,17 +12,14 @@ public class AirportAircarrierMapperImpl implements AirportAircarrierRepository 
 
     @Override
     public void create(AirportAircarrier airportAircarrier) {
-        System.out.println("MAPPER create airportAircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirportAircarrierRepository mapper = session.getMapper(AirportAircarrierRepository.class);
             mapper.create(airportAircarrier);
         }
-        System.out.println("MAPPER airportAircarrier created");
     }
 
     @Override
     public List<AirportAircarrier> readAll() {
-        System.out.println("MAPPER readAll airportAircarriers");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirportAircarrierRepository mapper = session.getMapper(AirportAircarrierRepository.class);
             return mapper.readAll();
@@ -31,7 +28,6 @@ public class AirportAircarrierMapperImpl implements AirportAircarrierRepository 
 
     @Override
     public Optional<AirportAircarrier> readById(Long id) {
-        System.out.println("MAPPER readById airportAircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirportAircarrierRepository mapper = session.getMapper(AirportAircarrierRepository.class);
             return mapper.readById(id);
@@ -40,7 +36,6 @@ public class AirportAircarrierMapperImpl implements AirportAircarrierRepository 
 
     @Override
     public void update(AirportAircarrier airportAircarrier) {
-        System.out.println("MAPPER update airportAircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirportAircarrierRepository mapper = session.getMapper(AirportAircarrierRepository.class);
             mapper.update(airportAircarrier);
@@ -49,7 +44,6 @@ public class AirportAircarrierMapperImpl implements AirportAircarrierRepository 
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById airportAircarrier");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AirportAircarrierRepository mapper = session.getMapper(AirportAircarrierRepository.class);
             mapper.deleteById(id);

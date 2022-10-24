@@ -12,7 +12,6 @@ public class AircraftMapperImpl implements AircraftRepository {
 
     @Override
     public void create(Aircraft aircraft, Long aircarrierId) {
-        System.out.println("MAPPER create aircraft");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircraftRepository aircraftRepository = session.getMapper(AircraftRepository.class);
             aircraftRepository.create(aircraft, aircarrierId);
@@ -21,7 +20,6 @@ public class AircraftMapperImpl implements AircraftRepository {
 
     @Override
     public List<Aircraft> readAll() {
-        System.out.println("MAPPER readAll aircrafts");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircraftRepository aircraftRepository = session.getMapper(AircraftRepository.class);
             return aircraftRepository.readAll();
@@ -30,7 +28,6 @@ public class AircraftMapperImpl implements AircraftRepository {
 
     @Override
     public Optional<Aircraft> readById(Long id) {
-        System.out.println("MAPPER readById aircraft");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircraftRepository mapper = session.getMapper(AircraftRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class AircraftMapperImpl implements AircraftRepository {
 
     @Override
     public void update(Aircraft aircraft, Long aircarrierId) {
-        System.out.println("MAPPER update aircraft");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircraftRepository aircraftRepository = session.getMapper(AircraftRepository.class);
             aircraftRepository.update(aircraft, aircarrierId);
@@ -48,7 +44,6 @@ public class AircraftMapperImpl implements AircraftRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById aircraft");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             AircraftRepository aircraftRepository = session.getMapper(AircraftRepository.class);
             aircraftRepository.deleteById(id);

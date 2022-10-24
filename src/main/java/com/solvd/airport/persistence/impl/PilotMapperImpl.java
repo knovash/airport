@@ -12,7 +12,6 @@ public class PilotMapperImpl implements PilotRepository {
 
     @Override
     public void create(Pilot pilot, Long aircarrierId) {
-        System.out.println("MAPPER create pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
             pilotRepository.create(pilot, aircarrierId);
@@ -21,7 +20,6 @@ public class PilotMapperImpl implements PilotRepository {
 
     @Override
     public List<Pilot> readAll() {
-        System.out.println("MAPPER readAll pilots");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
             return pilotRepository.readAll();
@@ -30,7 +28,6 @@ public class PilotMapperImpl implements PilotRepository {
 
     @Override
     public Optional<Pilot> readById(Long id) {
-        System.out.println("MAPPER readById pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PilotRepository mapper = session.getMapper(PilotRepository.class);
             return mapper.readById(id);
@@ -39,7 +36,6 @@ public class PilotMapperImpl implements PilotRepository {
 
     @Override
     public void update(Pilot pilot, Long aircarrierId) {
-        System.out.println("MAPPER update pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
             pilotRepository.update(pilot, aircarrierId);
@@ -48,7 +44,6 @@ public class PilotMapperImpl implements PilotRepository {
 
     @Override
     public void deleteById(Long id) {
-        System.out.println("MAPPER deleteById pilot");
         try (SqlSession session = MybatisConfig.getSqlSessionFactory().openSession(true)) {
             PilotRepository pilotRepository = session.getMapper(PilotRepository.class);
             pilotRepository.deleteById(id);

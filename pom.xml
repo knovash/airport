@@ -15,8 +15,8 @@
         <mysql-mybatis-version>3.5.11</mysql-mybatis-version>
         <testng-version>7.6.1</testng-version>
         <apache-logger-version>2.19.0</apache-logger-version>
-        <!--        <slf4j-version>2.0.3</slf4j-version>-->
         <slf4j-version>2.0.3</slf4j-version>
+        <surefire-version>3.0.0-M7</surefire-version>
     </properties>
 
     <dependencies>
@@ -46,18 +46,6 @@
             <artifactId>log4j-core</artifactId>
             <version>${apache-logger-version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-api</artifactId>-->
-        <!--            <version>${slf4j-version}</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-api</artifactId>-->
-        <!--            <version>${slf4j-version}</version>-->
-        <!--        </dependency>-->
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -79,6 +67,16 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-version}</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${project.build.directory}/test-classes/suite/${suite}.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
             </plugin>
         </plugins>
