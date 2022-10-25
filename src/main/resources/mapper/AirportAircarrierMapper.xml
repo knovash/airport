@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AirportAircarrierRepository">
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        insert into airport_aircarriers
+        (airport_id, aircarrier_id)
+        values (#{airportId}, #{aircarrierId});
+    </insert>
+
+    <sql id="fields">
+        aa.id as airport_aircarrier_id,
+        aa.airport_id as airport_id,
+        aa.aircarrier_id as aircarrier_id
+    </sql>
+
+    <sql id="joins">
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>
+        FROM airport_aircarriers aa
+        <include refid="joins"/>
+    </sql>
+
+    <select id="readById" resultMap="AirportAircarrierResultMap">
+        <include refid="readAll"/>
+        where aa.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="AirportAircarrierResultMap">
+        <include refid="readAll"/>
+        order by aa.id;
+    </select>
+
+    <update id="update" keyProperty="id" useGeneratedKeys="true">
+        update airportAircarriers
+        set
+        (airport_id = #{airportId},
+        aircarrier_id = #{aircarrierId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from airportAircarriers where airportAircarriers.id = #{id}
+    </delete>
+
+    <resultMap id="AirportAircarrierResultMap" type="com.solvd.airport.domain.port.AirportAircarrier"
+               autoMapping="false">
+        <id property="id" column="airport_aircarrier_id"/>
+        <result property="airportId" column="airport_id"/>
+        <result property="aircarrierId" column="aircarrier_id"/>
+    </resultMap>
+</mapper>
