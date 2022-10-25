@@ -1,9 +1,12 @@
 package com.solvd.airport;
 
+import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
+import com.solvd.airport.service.FlightService;
 import com.solvd.airport.service.PassengerService;
 import com.solvd.airport.service.PassportService;
+import com.solvd.airport.service.impl.FlightServiceImpl;
 import com.solvd.airport.service.impl.PassengerServiceImpl;
 import com.solvd.airport.service.impl.PassportServiceImpl;
 import org.testng.annotations.DataProvider;
@@ -107,7 +110,7 @@ public class AirportTest {
     }
 
     @Test(testName = "Verifies passports numbers is 7 digits")
-    public void verifyPassportsNumbers7Digits() {
+    public void verifyPassportsNumbers7DigitsTest() {
         PassportService passportService = new PassportServiceImpl();
         List<Passport> passports;
         passports = passportService.readAll();
@@ -151,6 +154,19 @@ public class AirportTest {
         SoftAssert sa = new SoftAssert();
         passengers.forEach(passenger -> {
             sa.assertTrue((Pattern.matches("[a-zA-Z]*", passenger.getName())), "Passenger name contains forbidden characters in " + passenger.getName());
+        });
+        sa.assertAll();
+    }
+
+    @Test(testName = "Verifies flights has pilots")
+    public void verifyFlightPilotsTest() {
+        FlightService flightService = new FlightServiceImpl();
+        List<Flight> flights;
+        flights = flightService.readAll();
+
+        SoftAssert sa = new SoftAssert();
+        flights.forEach(flight -> {
+            sa.assertNotNull(flight.getPilot(), "Flight has no pilot");
         });
         sa.assertAll();
     }
