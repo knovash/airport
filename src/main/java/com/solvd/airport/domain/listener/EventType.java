@@ -1,5 +1,5 @@
 package com.solvd.airport.domain.listener;
 
 public enum EventType {
-MESSAGE, LIVE_VIDEO
+BOARDING_START, FLIGHT_DELAYED, FLIGHT_CANCELLED
 }

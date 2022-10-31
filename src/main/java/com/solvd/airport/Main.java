@@ -8,8 +8,6 @@ import com.solvd.airport.domain.human.FactoryHuman;
 import com.solvd.airport.domain.human.HumanType;
 import com.solvd.airport.domain.listener.EventHolder;
 import com.solvd.airport.domain.listener.EventType;
-import com.solvd.airport.domain.listener.IEvent;
-import com.solvd.airport.domain.listener.User;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.domain.port.Airport;
@@ -28,6 +26,7 @@ import java.util.List;
 /**
  * the factory pattern is used to create passengers or pilots with a random name
  * the builder pattern is used to create aircrafts
+ * the listener patter is used to notify passengers
  */
 
 public class Main {
@@ -55,33 +54,24 @@ public class Main {
         TicketService ticketService = new TicketServiceImpl();
         AirportAircarrierService airportAircarrierService = new AirportAircarrierServiceImpl();
 
+/**
+ * the listener patter is used to notify passengers
+ */
+        System.out.println("\nNotify everyone about the start of boarding");
+        List<Passenger> passengers = passengerService.readAll();
+        passengers.forEach(passenger -> EventHolder.subscribe(passenger, EventType.BOARDING_START));
+        EventHolder.notify(EventType.BOARDING_START);
+
+        System.out.println("\nNotify the passengers of flight 101 about the delay");
+        List<Flight> flights = flightService.readAll();
+        flights.stream()
+                .filter(flight -> flight.getNumber().equals(101))
+                .flatMap(flight -> flight.getTickets().stream())
+                .map(ticket -> ticket.getPassenger())
+                .forEach(passenger -> EventHolder.subscribe(passenger, EventType.FLIGHT_DELAYED));
+        EventHolder.notify(EventType.FLIGHT_DELAYED);
+
         System.out.println("\n--- READ FROM DB ---");
-
-        User ivan1 = new User();
-        User ivan2 = new User();
-        User ivan3 = new User();
-        ivan1.setFirstName("ivan1");
-        ivan2.setFirstName("ivan2");
-        ivan3.setFirstName("ivan3");
-        EventHolder.subscribe(ivan1, EventType.MESSAGE);
-        EventHolder.subscribe(ivan2, EventType.MESSAGE);
-        EventHolder.subscribe(ivan3, EventType.MESSAGE);
-
-        System.out.println("----");
-        Passenger passenger11 = new Passenger();
-        Passenger passenger12 = new Passenger();
-        passenger11.setName("ssssss");
-        passenger12.setName("ffffff");
-        EventHolder.subscribe(passenger11, EventType.MESSAGE);
-        EventHolder.subscribe(passenger12, EventType.MESSAGE);
-
-        EventHolder.notify(EventType.MESSAGE);
-
-
-
-
-
-        System.exit(0);
 
         System.out.println("\nPASSPORTS READ\n");
         System.out.println(passportService.readById(1L));
@@ -113,8 +103,6 @@ public class Main {
         System.out.println("\nAIRPORTS READ\n");
         System.out.println(airportService.readById(1L));
         airportService.readAll().forEach(System.out::println);
-
-        System.exit(0);
 
         System.out.println("\n--- SET OBJECTS ---\n");
 
