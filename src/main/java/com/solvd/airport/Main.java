@@ -1,11 +1,15 @@
 package com.solvd.airport;
 
-import com.solvd.airport.domain.carrier.Aircarrier;
-import com.solvd.airport.domain.carrier.Aircraft;
-import com.solvd.airport.domain.carrier.Pilot;
+import com.solvd.airport.domain.carrier.*;
 import com.solvd.airport.domain.flight.Direction;
 import com.solvd.airport.domain.flight.Flight;
 import com.solvd.airport.domain.flight.Ticket;
+import com.solvd.airport.domain.human.FactoryHuman;
+import com.solvd.airport.domain.human.HumanType;
+import com.solvd.airport.domain.listener.EventHolder;
+import com.solvd.airport.domain.listener.EventType;
+import com.solvd.airport.domain.listener.IEvent;
+import com.solvd.airport.domain.listener.User;
 import com.solvd.airport.domain.passenger.Passenger;
 import com.solvd.airport.domain.passenger.Passport;
 import com.solvd.airport.domain.port.Airport;
@@ -20,6 +24,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+
+/**
+ * the factory pattern is used to create passengers or pilots with a random name
+ * the builder pattern is used to create aircrafts
+ */
 
 public class Main {
 
@@ -47,6 +56,32 @@ public class Main {
         AirportAircarrierService airportAircarrierService = new AirportAircarrierServiceImpl();
 
         System.out.println("\n--- READ FROM DB ---");
+
+        User ivan1 = new User();
+        User ivan2 = new User();
+        User ivan3 = new User();
+        ivan1.setFirstName("ivan1");
+        ivan2.setFirstName("ivan2");
+        ivan3.setFirstName("ivan3");
+        EventHolder.subscribe(ivan1, EventType.MESSAGE);
+        EventHolder.subscribe(ivan2, EventType.MESSAGE);
+        EventHolder.subscribe(ivan3, EventType.MESSAGE);
+
+        System.out.println("----");
+        Passenger passenger11 = new Passenger();
+        Passenger passenger12 = new Passenger();
+        passenger11.setName("ssssss");
+        passenger12.setName("ffffff");
+        EventHolder.subscribe(passenger11, EventType.MESSAGE);
+        EventHolder.subscribe(passenger12, EventType.MESSAGE);
+
+        EventHolder.notify(EventType.MESSAGE);
+
+
+
+
+
+        System.exit(0);
 
         System.out.println("\nPASSPORTS READ\n");
         System.out.println(passportService.readById(1L));
@@ -89,11 +124,15 @@ public class Main {
         passport2.setNumber((int) (Math.random() * 3333));
         System.out.println(passport1 + "\n" + passport2);
 
-        Passenger passenger1 = new Passenger();
-        passenger1.setName("NewName" + (int) (Math.random() * 3333));
+
+        Passenger passenger1 = (Passenger) FactoryHuman.getHuman(HumanType.PASSENGER);
+        /**
+         * code replaced by a pattern factory
+         * Passenger passenger1 = new Passenger();
+         * passenger1.setName("NewName" + (int) (Math.random() * 3333));
+         */
         passenger1.setPassport(passport1);
-        Passenger passenger2 = new Passenger();
-        passenger2.setName("NewName" + (int) (Math.random() * 3333));
+        Passenger passenger2 = (Passenger) FactoryHuman.getHuman(HumanType.PASSENGER);
         passenger2.setPassport(passport2);
         System.out.println(passenger1 + "\n" + passenger2);
 
@@ -115,18 +154,30 @@ public class Main {
         direction2.setDistance(BigDecimal.valueOf((int) (Math.random() * 3333)));
         System.out.println(direction1 + "\n" + direction2);
 
-        Pilot pilot1 = new Pilot();
-        pilot1.setName("name" + (int) (Math.random() * 3333));
-        Pilot pilot2 = new Pilot();
-        pilot2.setName("name" + (int) (Math.random() * 3333));
+        Pilot pilot1 = (Pilot) FactoryHuman.getHuman(HumanType.PILOT);
+        /**
+        * code replaced by a pattern factory
+        * Pilot pilot1 = new Pilot();
+        * pilot1.setName("name" + (int) (Math.random() * 3333));
+        */
+        Pilot pilot2 = (Pilot) FactoryHuman.getHuman(HumanType.PILOT);
         System.out.println(pilot1 + "\n" + pilot2);
-
         Aircraft aircraft1 = new Aircraft();
-        aircraft1.setModel("model" + (int) (Math.random() * 3333));
-        aircraft1.setNumber((int) (Math.random() * 3333));
+        /**
+        * code replaced by a pattern builder
+        * aircraft1.setModel("model" + (int) (Math.random() * 3333));
+        * aircraft1.setNumber((int) (Math.random() * 3333));
+        */
+        aircraft1.toBuilder()
+                .model("model" + (int) (Math.random() * 3333))
+                .number((int) (Math.random() * 3333))
+                .build();
         Aircraft aircraft2 = new Aircraft();
-        aircraft2.setModel("model" + (int) (Math.random() * 3333));
-        aircraft2.setNumber((int) (Math.random() * 3333));
+        aircraft2.toBuilder()
+                .model("model" + (int) (Math.random() * 3333))
+                .number((int) (Math.random() * 3333))
+                .build();
+
         System.out.println(aircraft1 + "\n" + aircraft2);
 
         Airstrip airstrip1 = new Airstrip();
@@ -242,10 +293,14 @@ public class Main {
         direction2.setDistance(BigDecimal.valueOf((int) (Math.random() * 3333) * 100));
         pilot1.setName("Upd Name" + (int) (Math.random() * 3333) * 100);
         pilot2.setName("Upd Name" + (int) (Math.random() * 3333) * 100);
-        aircraft1.setModel("Upd model" + (int) (Math.random() * 3333) * 100);
-        aircraft1.setNumber((int) (Math.random() * 3333) * 100);
-        aircraft2.setModel("Upd model" + (int) (Math.random() * 333) * 100);
-        aircraft2.setNumber((int) (Math.random() * 3333) * 100);
+        aircraft1.toBuilder()
+                .model("model" + (int) (Math.random() * 3333))
+                .number((int) (Math.random() * 3333))
+                .build();
+        aircraft2.toBuilder()
+                .model("model" + (int) (Math.random() * 3333))
+                .number((int) (Math.random() * 3333))
+                .build();
         airstrip1.setNumber((int) (Math.random() * 3333) * 100);
         airstrip2.setNumber((int) (Math.random() * 3333) * 100);
         flight1.setNumber((int) (Math.random() * 3333) * 100);
@@ -265,11 +320,5 @@ public class Main {
 
         System.out.println("\n--- READ ALL AIPORTS UPDATED ---");
         airportService.readAll().forEach(System.out::println);
-
-//        passengerService.deleteById(3L);
-//        pilotService.deleteById(1L);
-//        aircraftService.deleteById(1L);
-//        System.out.println("\n--- READ ALL AIPORTS DELETED---");
-//        airportService.readAll().forEach(System.out::println);
     }
 }

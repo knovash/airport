@@ -1,6 +1,9 @@
 package com.solvd.airport.domain.passenger;
 
-public class Passenger {
+import com.solvd.airport.domain.human.HumanF;
+import com.solvd.airport.domain.listener.EventType;
+
+public class Passenger extends HumanF  {
 
     private Long id;
     private Passport passport;
@@ -32,5 +35,10 @@ public class Passenger {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void onEvent(EventType type) {
+        System.out.println("On event " + type + " " + this.name);
     }
 }

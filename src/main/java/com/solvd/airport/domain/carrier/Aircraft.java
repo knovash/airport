@@ -10,27 +10,52 @@ public class Aircraft {
         return ("Aircraft: id: " + this.id + " number: " + this.number + " model: " + this.model);
     }
 
-    public Long getId() {
-        return id;
+    public static AircraftBuilder builder() {
+        return new AircraftBuilder(new Aircraft());
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    //for mutable
+    public AircraftBuilder toBuilder() {
+        return new AircraftBuilder(this);
+    }
+
+    public static class AircraftBuilder {
+
+        private final Aircraft aircraft;
+
+        public AircraftBuilder(Aircraft aircraft) {
+            this.aircraft = aircraft;
+        }
+
+        public AircraftBuilder id(Long id) {
+            this.aircraft.id = id;
+            return this;
+        }
+
+        public AircraftBuilder number(Integer number) {
+            this.aircraft.number = number;
+            return this;
+        }
+
+        public AircraftBuilder model(String model) {
+            this.aircraft.model = model;
+            return this;
+        }
+
+        public Aircraft build() {
+            return aircraft;
+        }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public String getModel() {
         return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 }

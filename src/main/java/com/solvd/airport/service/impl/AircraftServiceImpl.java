@@ -19,7 +19,8 @@ public class AircraftServiceImpl implements AircraftService {
     @Override
     public Aircraft create(Aircraft aircraft, Long aircarrierId) {
         System.out.println("SERVICE create aircraft");
-        aircraft.setId(null);
+//        aircraft.setId(null);
+        aircraft.toBuilder().id(null).build();
         aircraftRepository.create(aircraft, aircarrierId);
         return aircraft;
     }

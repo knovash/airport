@@ -1,6 +1,9 @@
 package com.solvd.airport.domain.carrier;
 
-public class Pilot {
+import com.solvd.airport.domain.human.HumanF;
+import com.solvd.airport.domain.listener.EventType;
+
+public class Pilot extends HumanF {
 
     private Long id;
     private String name;
@@ -23,5 +26,10 @@ public class Pilot {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void onEvent(EventType type) {
+
     }
 }
