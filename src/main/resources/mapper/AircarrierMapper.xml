@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.AircarrierRepository">
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        Insert into aircarriers(name) values (#{name})
+    </insert>
+
+    <sql id="fields">
+        ac.id as aircarrier_id,
+        ac.name as aircarrier_name,
+        <include refid="com.solvd.airport.persistence.FlightRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.AircraftRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.PilotRepository.fields"/>
+    </sql>
+
+    <sql id="joins">
+        left join flights f on ac.id = f.aircarrier_id
+        <include refid="com.solvd.airport.persistence.FlightRepository.joins"/>
+        left join aircrafts af on ac.id = af.aircarrier_id
+        left join pilots pl on ac.id = pl.aircarrier_id
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>
+        FROM aircarriers ac
+        <include refid="joins"/>
+    </sql>
+
+    <select id="readById" resultMap="AircarrierResultMap">
+        <include refid="readAll"/>
+        where ac.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="AircarrierResultMap">
+        <include refid="readAll"/>
+        order by ac.id;
+    </select>
+
+    <update id="update" keyProperty="id" useGeneratedKeys="true">
+        update aircarriers set name = #{name} where id = #{id}
+    </update>
+
+    <delete id="deleteById" >
+        delete from aircarriers where aircarriers.id = #{id}
+    </delete>
+
+    <resultMap id="AircarrierResultMap" type="com.solvd.airport.domain.carrier.Aircarrier" autoMapping="false">
+        <id property="id" column="aircarrier_id" />
+        <result property="name" column="aircarrier_name"/>
+        <collection property="aircrafts"
+                     resultMap="com.solvd.airport.persistence.AircraftRepository.AircraftResultMap"/>
+        <collection property="pilots"
+                    resultMap="com.solvd.airport.persistence.PilotRepository.PilotResultMap"/>
+        <collection property="flights"
+                    resultMap="com.solvd.airport.persistence.FlightRepository.FlightResultMap"/>
+    </resultMap>
+</mapper>

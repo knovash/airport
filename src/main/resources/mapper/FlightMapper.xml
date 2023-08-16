@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.FlightRepository">
+
+    <insert id="create" keyProperty="flight.id" useGeneratedKeys="true">
+        insert into flights
+        (number,
+        date,
+        aircarrier_id,
+        aircraft_id,
+        pilot_id,
+        direction_id,
+        airstrip_id)
+        values
+        (#{flight.number},
+        #{flight.date},
+        #{aircarrierId},
+        #{flight.aircraft.id},
+        #{flight.pilot.id},
+        #{flight.direction.id},
+        #{flight.airstrip.id})
+    </insert>
+
+    <sql id="fields">
+        f.id as flight_id,
+        f.number as flight_number,
+        f.date as flight_date,
+        <include refid="com.solvd.airport.persistence.DirectionRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.PilotRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.TicketRepository.fields"/>,
+        <include refid="com.solvd.airport.persistence.AirstripRepository.fields"/>
+    </sql>
+
+    <sql id="joins">
+        left join tickets t on f.id = t.flight_id
+        <include refid="com.solvd.airport.persistence.TicketRepository.joins"/>
+        left join directions d on f.direction_id = d.id
+        left join airstrips str on f.airstrip_id = str.id
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>,
+        <include refid="com.solvd.airport.persistence.AircraftRepository.fields"/>
+        from flights f
+        <include refid="joins"/>
+        left join aircrafts af on af.id = f.aircraft_id
+        left join pilots pl on f.pilot_id = pl.id
+    </sql>
+
+    <select id="readById" resultMap="FlightResultMap">
+        <include refid="readAll"/>
+        where f.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="FlightResultMap">
+        <include refid="readAll"/>
+        order by f.id
+    </select>
+
+    <update id="update" keyProperty="flight.id" useGeneratedKeys="true">
+        update flights set
+        number = #{flight.number},
+        date = #{flight.date},
+        aircarrier_id = #{aircarrierId},
+        aircraft_id = #{flight.aircraft.id},
+        pilot_id = #{flight.pilot.id},
+        direction_id = #{flight.direction.id},
+        airstrip_id = #{flight.airstrip.id}
+        where id = #{flight.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from flights where id = #{id}
+    </delete>
+
+    <resultMap id="FlightResultMap" type="com.solvd.airport.domain.flight.Flight" autoMapping="false">
+        <id property="id" column="flight_id"/>
+        <result property="number" column="flight_number"/>
+        <result property="date" column="flight_date"/>
+        <association property="aircraft"
+                     resultMap="com.solvd.airport.persistence.AircraftRepository.AircraftResultMap"/>
+        <association property="direction"
+                     resultMap="com.solvd.airport.persistence.DirectionRepository.DirectionResultMap"/>
+        <association property="pilot"
+                     resultMap="com.solvd.airport.persistence.PilotRepository.PilotResultMap"/>
+        <association property="airstrip"
+                     resultMap="com.solvd.airport.persistence.AirstripRepository.AirstripResultMap"/>
+        <collection property="tickets"
+                    resultMap="com.solvd.airport.persistence.TicketRepository.TicketResultMap"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.airport.persistence.DirectionRepository">
+
+    <insert id="create" keyProperty="id" useGeneratedKeys="true">
+        Insert into directions(country, distance) values (#{country}, #{distance})
+    </insert>
+
+    <sql id="fields">
+        d.id as direction_id,
+        d.country as country,
+        d.distance as distance
+    </sql>
+
+    <sql id="readAll">
+        select
+        <include refid="fields"/>
+        from
+        directions d
+    </sql>
+
+    <select id="readById" resultMap="DirectionResultMap">
+        <include refid="readAll"/>
+        where d.id = #{id}
+    </select>
+
+    <select id="readAll" resultMap="DirectionResultMap">
+        <include refid="readAll"/>
+        order by d.id
+    </select>
+
+    <update id="update" keyProperty="id" useGeneratedKeys="true">
+        update directions set
+        country = #{country},
+        distance = #{distance}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" >
+        delete from directions where id = #{id}
+    </delete>
+
+    <resultMap id="DirectionResultMap" type="com.solvd.airport.domain.flight.Direction" autoMapping="false">
+        <id property="id" column="direction_id" />
+        <result property="country" column="country"/>
+        <result property="distance" column="distance"/>
+    </resultMap>
+</mapper>
