@@ -79,6 +79,8 @@ public class Main {
         System.out.println(airportService.readById(1L));
         airportService.readAll().forEach(System.out::println);
 
+        System.exit(0);
+
         System.out.println("\n--- SET OBJECTS ---\n");
 
         Passport passport1 = new Passport();
